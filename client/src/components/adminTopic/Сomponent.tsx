@@ -3,11 +3,12 @@ import styles from './index.module.css'
 import  Table  from  '@/components/common/table'
 import ChapterTheory from './chapterTheory/index'
 import ChapterTest from './chapterTest/index'
+import ChapterEx from './chapterEx/index'
 import { AdminThemeInterface } from './interfaces';
 
 
 
-export default function AdminThemesComponent({ theme, chapter, handleChapter, editorLoaded }: AdminThemeInterface){
+export default function AdminThemesComponent({ theme, chapter, handleChapter, mutate }: AdminThemeInterface){
 
   return(
     <Container as='main' className={styles.container} >
@@ -39,19 +40,17 @@ export default function AdminThemesComponent({ theme, chapter, handleChapter, ed
           {chapter === 'theory' ? 
           <ChapterTheory
             theme={theme}
-            editorLoaded={editorLoaded}
           />
           : chapter === 'tests' ? 
           <ChapterTest
             theme={theme}
+            mutate={mutate}
           />
           :
-          <Segment>
-            <h2>Practise</h2>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus doloremque velit incidunt recusandae maxime eligendi numquam rem iste minima repellendus expedita dolorem ratione tenetur ducimus ipsum, aperiam libero nam fugiat?
-            This is an stretched grid column. This segment will always match the
-            tab height
-          </Segment> }
+          <ChapterEx
+            theme={theme}
+            mutate={mutate}
+          /> }
         </Grid.Column>
       </Grid>
     </Container>

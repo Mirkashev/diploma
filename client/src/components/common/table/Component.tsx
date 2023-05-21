@@ -5,6 +5,7 @@ import { TableInterface } from './table.interfaces';
 
 
 export default function TableComponent({array, pathname, toggleShowTest, setTestWindowData}: TableInterface) {
+
   return (
     <Table celled>
       <Table.Header>

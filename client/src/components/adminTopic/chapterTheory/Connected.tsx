@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { AdminThemeInterface, ChapterTheoryInterface } from "../interfaces";
-
+import { useState } from "react";
 import ChapterTheoryComponent from "./Component";
 import { ConnectedChapterTheoryType } from "../types";
 
@@ -29,23 +27,14 @@ const sendTheory = async (id: number, data: string)=> {
   }
 }
 
+const ConnectedChapterTheory = ({ theme }: ConnectedChapterTheoryType)=> {
 
-
-const ConnectedChapterTheory = ({ theme, editorLoaded }: ConnectedChapterTheoryType)=> {
-
-  const [data, setData] = useState('');
-
-  useEffect(()=> {
-    if(theme) {
-      setData(theme?.theory?.content);
-    }
-  }, [theme])
+  const [data, setData] = useState(theme?.theory?.content || '');
 
 
   return (
     <ChapterTheoryComponent 
       theme={theme}
-      editorLoaded={editorLoaded}
       sendTheory={sendTheory}
       data={data}
       setData={setData}

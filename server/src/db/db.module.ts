@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User, Question, Test, Theme, Media, Theory, } from './entities';
+import { User, Question, Test, Theme, Media, Theory, Exercise, ExerciseEl, ExerciseElCoordinates,  } from './entities';
 
 @Global()
 @Module({
@@ -12,6 +12,9 @@ import { User, Question, Test, Theme, Media, Theory, } from './entities';
       Theme,
       Media,
       Theory,
+      Exercise,
+      ExerciseEl,
+      ExerciseElCoordinates
     ]),
   ],
   imports: [
@@ -22,7 +25,11 @@ import { User, Question, Test, Theme, Media, Theory, } from './entities';
       Theme,
       Media,
       Theory,
+      Exercise,
+      ExerciseEl,
+      ExerciseElCoordinates
     ]),
   ]
 })
 export class DbModule {}
+ 

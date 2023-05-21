@@ -25,7 +25,14 @@ export class ThemesService {
   }
 
   async findOne(id: number) {
-    return await this.repo.find({relations:['theory', 'tests'], where:{ id: id }, select:{ theory: { content: true }}});
+    ['theory', 'tests', 'exercises']
+    return await this.repo.find({relations:{
+      theory: true,
+      tests: true,
+      exercises: {
+        exerciseElCoordinates:true
+      }
+    }, where:{ id: id }, select:{ theory: { content: true }}});
   }
 
   async findByLogin(login: string) {

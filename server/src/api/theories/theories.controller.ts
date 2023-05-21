@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TheoriesService } from './theories.service';
-import { Theory } from './entities/theories.entity';
+import { Theory } from '../../db/entities/theories.entity';
 
 @Controller('theories')
 export class TheoriesController {

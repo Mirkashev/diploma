@@ -4,8 +4,7 @@ import { ChapterTheoryInterface } from "../interfaces";
 import dynamic from "next/dynamic";
 const CKeditor = dynamic(() => import("@/components/common/ckEditor"), { ssr: false });
 
-export default function ChapterTheoryComponent({ theme, editorLoaded, sendTheory, data, setData }: ChapterTheoryInterface){
-
+export default function ChapterTheoryComponent({ theme,  sendTheory, data, setData }: ChapterTheoryInterface){
   return (
     <>
       <Button 
@@ -19,8 +18,8 @@ export default function ChapterTheoryComponent({ theme, editorLoaded, sendTheory
         onChange={(data: string) => {
           setData(data);
         }}
-        value={data}
-        editorLoaded={editorLoaded}
+        value={data ? data: ''}
+        editorLoaded={true}
       />
   </>
   )

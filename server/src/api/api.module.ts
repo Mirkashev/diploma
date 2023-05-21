@@ -25,6 +25,10 @@ import { AuthGuard } from 'src/guards/auth.guard';
 
 import { TheoriesController } from './theories/theories.controller';
 import { TheoriesService } from './theories/theories.service';
+import { ExercisesController } from './exercises/exercises.controller';
+import { ExercisesService } from './exercises/exercises.service';
+import { InstrumentsController } from './instruments/instruments.controller';
+import { InstrumentsService } from './instruments/instruments.service';
 
 @Module({
   controllers: [
@@ -36,7 +40,8 @@ import { TheoriesService } from './theories/theories.service';
     GroupsController,
     TheoriesController,
     AuthController,
-
+    ExercisesController,
+    InstrumentsController,
   ],
   providers: [
     UsersService, 
@@ -47,6 +52,8 @@ import { TheoriesService } from './theories/theories.service';
     GroupsService,
     TheoriesService,
     AuthService,
+    ExercisesService,
+    InstrumentsService,
     {
       provide: 'APP_GUARD',
       useClass: AuthGuard

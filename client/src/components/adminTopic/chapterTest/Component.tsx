@@ -1,39 +1,36 @@
-import AddModal from "@/components/common/modal/title/Component";
+import AddModal from "@/components/common/modal/title";
 import Table from "@/components/common/table/Component";
 import Test from "./test";
 import { ChapterTestsInterface } from "../interfaces";
 
 export default function ChapterTestComponent({
-  testData, 
-  setTestData, 
-  sendTest, 
+  mutate,
   theme, 
   showTest, 
   toggleShowTest, 
   testWindowData, 
   setTestWindowData
 }: ChapterTestsInterface) {
-
-  if(showTest) {
-    return (
-      <Test test={testWindowData} toggleShowTest={toggleShowTest}/>
-    )
-  }
-
+  
   return(
     <>
-      <AddModal
-        title={'Добавить тест'} 
-        data={testData}
-        setData={setTestData}
-        save={sendTest}
-        id={theme?.id}
-      />
-      <Table 
-        array={theme?.tests}
-        toggleShowTest={toggleShowTest}
-        setTestWindowData={setTestWindowData}
-      />
+      {showTest ? 
+        <Test test={testWindowData} toggleShowTest={toggleShowTest}/>
+      :
+      <>
+        <AddModal
+          title={'Добавить тест'} 
+          id={theme?.id}
+          route={'/tests'}
+          mutate={mutate}
+        />
+        <Table 
+          array={theme?.tests}
+          toggleShowTest={toggleShowTest}
+          setTestWindowData={setTestWindowData}
+        />
+      </>
+      }
     </>
   )
 }

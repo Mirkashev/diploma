@@ -1,3 +1,3 @@
-// import ConnectedAdminTheme from './Сonnected.tsx'
+import ConnectedChapterEx from "./Connected";
 
-// export default ConnectedAdminTheme;
+export default ConnectedChapterEx;

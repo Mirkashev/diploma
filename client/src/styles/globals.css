@@ -7,3 +7,13 @@
 .ck-sticky-panel__content {
   position: static !important;
 }
+
+.react-resizable-handle {
+  width: 10px;
+  height: 10px;
+  display: block;
+  position:absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #000;
+}

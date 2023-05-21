@@ -5,6 +5,7 @@ export type Theme = {
     content: string,
   },
   tests: Array<any>,
+  exercises: Array<any>
 }
 
 export type Test ={
@@ -13,11 +14,15 @@ export type Test ={
   questions: Array<any>
 }
 
-export type ConnectedChapter = {
-  theme: Theme,
+export type Exercise ={
+  id: number,
+  title: string,
+  coordiantes?: Array<any>,
+  url?: string
 }
+
+
 
 export type ConnectedChapterTheoryType = {
   theme: Theme,
-  editorLoaded: boolean
 }

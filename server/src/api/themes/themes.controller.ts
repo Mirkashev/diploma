@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ThemesService } from './themes.service';
-import { Theme } from './entities/theme.entity';
+import { Theme } from '../../db/entities/theme.entity';
 
 @Controller('themes')
 export class ThemesController {

@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
-import { Theory } from "src/api/theories/entities/theories.entity";
-import { Test } from "src/db/entities";
+import { Theory } from "src/db/entities/theories.entity";
+import { Exercise, Test } from "src/db/entities";
 import {
   Column,
   Entity,
@@ -36,6 +36,9 @@ export class Theme {
 
   @OneToMany(()=> Test, x=> x.theme, {cascade: true})
   tests?: Test;
+
+  @OneToMany(()=> Exercise, x=> x.theme, {cascade: true})
+  exercises?: Exercise;
 
   constructor(from: Partial<Theme>) {
     Object.assign(this, from);

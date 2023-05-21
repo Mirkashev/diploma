@@ -1,10 +1,6 @@
-import { useState } from "react"
-import { Button, Header, Image, Input, Modal } from 'semantic-ui-react'
+import { Button, Form, Header, Image, Input, Modal } from 'semantic-ui-react'
 
-//TODO: create + edit variations
-export default function AddModal({title, data, setData, save, id}: any) {
-  const [open, setOpen] = useState(false);
-
+export default function AddModal({title, submit, open, setOpen}: any) {
   return (
     <Modal
       onClose={() => setOpen(false)}
@@ -14,29 +10,24 @@ export default function AddModal({title, data, setData, save, id}: any) {
       size="mini"
     >
       <Modal.Header>{title}</Modal.Header>
-      <Modal.Content>
-        <Modal.Description>
-          {/* <Header>Введите название темы</Header> */}
-          <Input style={{width:'100%'}} placeholder={`Введите название`} onChange={(e)=> setData(e.target.value)}/>
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button
-          content="Сохранить"
-          labelPosition='right'
-          icon='checkmark'
-          onClick={() => {
-            setOpen(false);
-            if(id) {
-              save(id, data);
-              return;
-            }
+        <Modal.Content>
+          <Form onSubmit={submit}> 
+            <Form.Field>
+              <Form.Input 
+                placeholder={`Введите название`}
+                name='title'
+                required
+                />
+            </Form.Field>
+            <Form.Field>
+              <Form.Button
+                content='Сохранить'
+                type="submit"
+              />
+            </Form.Field>
+          </Form>
+        </Modal.Content>
 
-            save(data);
-          }}
-          // positive
-        />
-      </Modal.Actions>
     </Modal>
   )
 }
