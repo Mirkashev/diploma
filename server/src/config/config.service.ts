@@ -57,6 +57,13 @@ export class ConfigService {
         pass: this.getString('DB_PASS'),
         ca: this.getStringOptional('DB_CA')
       },
+      minio: {
+        endPoint: this.getString('MINIO_ENDPOINT'),
+        port: this.getNumber('MINIO_PORT'),
+        useSSL: false, // If on localhost, keep it at false. If deployed on https, change to true
+        accessKey: this.getString('MINIO_ACCESS_KEY'),
+        secretKey: this.getString('MINIO_SECRET_KEY'),
+      }
     };
     return new ConfigService(config);
   }

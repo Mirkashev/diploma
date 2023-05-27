@@ -1,43 +1,71 @@
-import { useState } from "react"
-import { Button, Header, Image, Input, Modal } from 'semantic-ui-react'
+import toBase64 from "@/utils/fileToBase64";
+import { useEffect, useState } from "react"
+import { Button, Form, Image, Input, Modal } from 'semantic-ui-react'
 
 //TODO: create + edit variations
-export default function AddInstrumentModal({title, data, setData, save, id}: any) {
-  const [open, setOpen] = useState(false);
+export default function InstrumentModal({title, submit, open, setOpen, triggerNode, instrumentData}: any) {
+  const [img, setImg]:any = useState();
+  console.log(instrumentData?.[0])
+
+  useEffect(()=> {
+    if(instrumentData) {
+      setImg(instrumentData?.[0]?.url)
+      return;
+    }
+
+    setImg();
+  }, [open, instrumentData])
+
+  const uploadImage = async (e: any)=> {
+    if(setImg) {
+      const base64Img = await toBase64(e.target.files[0]);
+      setImg(base64Img);
+    }
+  }
+
 
   return (
     <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button style={{borderRadius:0}}>{title}</Button>}
-      size="mini"
+      trigger={triggerNode || <Button style={{borderRadius:0}}>{title}</Button>}
+      size="tiny"
     >
-      <Modal.Header>{title}</Modal.Header>
       <Modal.Content>
-        <Modal.Description>
-          {/* <Header>Введите название темы</Header> */}
-          {/* добавить поле для загрузки изображения */}
-          <Input style={{width:'100%'}} placeholder={`Введите название`} onChange={(e)=> setData(e.target.value)}/>
-        </Modal.Description>
+        <Form onSubmit={submit}>
+          <Form.Field>
+            <Modal.Header>{title}</Modal.Header>
+          </Form.Field>
+          <Form.Field>
+            <Input type='text' name='title' style={{width:'100%'}} placeholder={`Введите название`} required defaultValue={instrumentData?.[0]?.title}/>
+          </Form.Field>
+          <Form.Field>
+          <Image src={img}/>
+            <label className="input-file" 
+              onChange={uploadImage}
+              style={{
+                border: '1px solid #000',
+                height: '36px',
+                display:'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '4px'
+              }}
+            >
+              <input type="file" name="file" accept=".png, .jpg, .jpeg"/>		
+              <span>Загрузить изображение</span>
+            </label>
+          </Form.Field>
+          <Button
+              content="Сохранить"
+              labelPosition='right'
+              icon='checkmark'
+              type='submit'
+            />
+        </Form>
       </Modal.Content>
-      <Modal.Actions>
-        <Button
-          content="Сохранить"
-          labelPosition='right'
-          icon='checkmark'
-          onClick={() => {
-            setOpen(false);
-            if(id) {
-              save(id, data);
-              return;
-            }
 
-            save(data);
-          }}
-          // positive
-        />
-      </Modal.Actions>
     </Modal>
   )
 }

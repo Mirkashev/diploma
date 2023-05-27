@@ -9,6 +9,7 @@ import { AppConfig } from './config/config.types';
 import { ConfigService } from './config/config.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './api/auth/auth.constants';
+import { MinioClientModule } from './minio-client/minio-client.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { jwtConstants } from './api/auth/auth.constants';
       imports: [ConfigModule],
     }),
     DbModule,
+    MinioClientModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,

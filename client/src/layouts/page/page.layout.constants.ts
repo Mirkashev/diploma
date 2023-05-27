@@ -1,6 +1,7 @@
 export const adminButtons = [
   { title:'Редактировать пользователей', href:'/admin/users' },
   { title:'Редактировать темы', href:'/admin/topics' },
+  { title:'Редактировать инструменты', href:'/admin/instruments' },
   { title:'Статистика', href:'/admin/stats' },
   { title:'Выйти из админки', href:'/' },
 ]

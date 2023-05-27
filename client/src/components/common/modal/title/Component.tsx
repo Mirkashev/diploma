@@ -1,15 +1,15 @@
 import { Button, Form, Header, Image, Input, Modal } from 'semantic-ui-react'
 
-export default function AddModal({title, submit, open, setOpen}: any) {
+export default function AddModal({title, submit, open, setOpen, triggerNode}: any) {
   return (
     <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button style={{borderRadius:0}}>{title}</Button>}
+      trigger={triggerNode || <Button style={{borderRadius:0}}>{title ? 'Редактировать' : 'Добавить'}</Button>}
       size="mini"
     >
-      <Modal.Header>{title}</Modal.Header>
+      <Modal.Header>{title ? 'Редактировать' : 'Добавить'}</Modal.Header>
         <Modal.Content>
           <Form onSubmit={submit}> 
             <Form.Field>
@@ -17,6 +17,7 @@ export default function AddModal({title, submit, open, setOpen}: any) {
                 placeholder={`Введите название`}
                 name='title'
                 required
+                defaultValue={title}
                 />
             </Form.Field>
             <Form.Field>

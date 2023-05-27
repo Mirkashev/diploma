@@ -42,10 +42,10 @@ export class Exercise {
   @Column({select:false})
   themeId!: number;
  
-  @Column({length: 1024, default:''})
+  @Column('varchar', {length: 1024, default:''})
   url!: string;
 
-  @OneToMany(()=> ExerciseElCoordinates, x=> x.exercise)
+  @OneToMany(()=> ExerciseElCoordinates, x=> x.exercise, { cascade: true })
   exerciseElCoordinates!: ExerciseElCoordinates; 
 
   constructor(from: Partial<Exercise>) {

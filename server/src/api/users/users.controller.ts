@@ -17,17 +17,17 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Body() user: User) {
-    return this.usersService.save(user);
+  update(@Param('id') id: number, @Body() user: User) {
+    return this.usersService.update(id, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.usersService.remove(+id);
   }
 }

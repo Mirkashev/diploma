@@ -7,9 +7,8 @@ import { useRouter } from "next/router";
 
 const ConnectedTopics = () => {
   const {data, isError, isLoading} = useGetData('/themes');
-  const {user}:any = useContext(AuthContext);
+  const {user}: any = useContext(AuthContext);
   const router = useRouter();
-  console.log(user);
 
   if(isLoading) return <div>...Loading</div>
 

@@ -1,10 +1,19 @@
 import { Form, Input, Button, Container, Table, Icon, Menu, Segment, Grid, Item } from 'semantic-ui-react';
 import Link from 'next/link';
 import { TableInterface } from './table.interfaces';
+import DeleteComponent from '../deleteButton';
+import AddModal from '../modal';
 
 
 
-export default function TableComponent({array, pathname, toggleShowTest, setTestWindowData}: TableInterface) {
+export default function TableComponent({array, pathname, route, mutateRoute, modalType}: TableInterface) {
+  const setPageTitle = (itemName: string)=> {
+    if(pathname === '/admin/topics') {
+      localStorage.setItem('title', itemName)
+    }
+  }
+
+  const truePathname = (id:any)=> pathname === '/admin/topics' ? `${pathname}/${id}/theory` : `${pathname}/${id}`;
 
   return (
     <Table celled>
@@ -15,27 +24,39 @@ export default function TableComponent({array, pathname, toggleShowTest, setTest
         </Table.Row>
       </Table.Header>
         <Table.Body>
-        {
-          array?.map((el, i) => 
-            <Table.Row key={'themes_' + i}>
-              <Table.Cell>
-                {pathname 
-                  ? 
-                  <Link href={{pathname: pathname, query: {id: el.id}}}>{el.title}</Link> 
-                  : 
-                  <a onClick={()=>{
-                    toggleShowTest ? toggleShowTest(true) : null;
-                    setTestWindowData ? setTestWindowData(el) : null;
-                  }} style={{cursor:'pointer'}}>{el.title}</a>
-                }
-              </Table.Cell>
-              <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
-                <Icon name='pencil alternate' />
-                <Icon name='trash alternate'/>
-              </Table.Cell>
-            </Table.Row>
-          )
-        }
+        {array?.map((el, i) => 
+          <Table.Row key={el.title + i}>
+            <Table.Cell>
+              {pathname ? 
+              <Link href={{pathname: truePathname(el.id)}} 
+                onClick={()=> setPageTitle(el.title)}>
+                {el.title || el.login}
+              </Link> 
+              :
+              <AddModal 
+                modalType={modalType}
+                route={route+(el.id +'')}
+                mutateRoute={mutateRoute}
+                getRoute={route+(el.id +'')}
+                method='PATCH' 
+                title={el.title || el.login} 
+                triggerNode={<span onClick={(e:any)=> e.preventDefault()} style={{cursor:'pointer'}}>{el.title || el.login} </span>}
+              />
+              }
+            </Table.Cell>
+            <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
+              <AddModal 
+                modalType={modalType}
+                route={route+(el.id +'')}
+                getRoute={route+(el.id +'')}
+                mutateRoute={mutateRoute}
+                method='PATCH' 
+                title={el.title || el.login} 
+                triggerNode={<Icon onClick={(e:any)=> e.preventDefault()} style={{cursor:'pointer'}} name='pencil alternate' />}
+              />
+              <DeleteComponent route={route+el.id} mutateRoute={mutateRoute} />
+            </Table.Cell>
+          </Table.Row>)}
       </Table.Body>
     </Table>
   )

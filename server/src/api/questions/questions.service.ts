@@ -1,26 +1,57 @@
 import { Injectable } from '@nestjs/common';
-import { CreateQuestionDto } from './dto/create-question.dto';
-import { UpdateQuestionDto } from './dto/update-question.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Answer, Question } from 'src/db/entities';
 
 @Injectable()
 export class QuestionsService {
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
+  constructor(
+    @InjectRepository(Question) private readonly repo: Repository<Question>,
+    @InjectRepository(Answer) private readonly answersRepo: Repository<Answer>,
+  ){}
+
+  async create(testId: number, question: Question) {
+    question.testId = testId;
+    return await this.repo.save(question);
   }
 
-  findAll() {
-    return `This action returns all questions`;
+  // async findAll(testId: number) {
+  //   return await this.repo.find({
+  //     where:{ testId: testId }, 
+  //     relations: { test: true }, 
+  //     select:{ test: { title: true } }
+  //   })
+  // }
+
+  async update(questionId: number, question: Question) {
+    let loadedQuestion = await this.repo.preload(await this.repo.findOne({where: {id: questionId}}));
+
+    if(loadedQuestion) {
+      await this.answersRepo.remove(await this.answersRepo.find({where: {questionId: questionId}}));
+      
+      loadedQuestion = {
+        ...loadedQuestion,
+        title: question.title,
+        answers: question.answers,
+      }
+      return await this.repo.save(loadedQuestion);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  async remove(questionId: number) {
+    let loadedQuestion = await this.repo.preload(await this.repo.findOne({where: {id: questionId}}));
+
+    if(loadedQuestion) {
+      await this.answersRepo.remove(await this.answersRepo.find({where: {questionId: questionId}}));
+
+      return this.repo.remove(loadedQuestion);
+    }
+
+    return false;
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
+  async findOne(questionId: number) {
+    return await this.repo.find({where:{id: questionId}, relations: { answers:true }})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
-  }
 }

@@ -1,3 +1,3 @@
-import ConnectedTable from "./Connected";
+import TableComponent from "./Component";
 
-export default ConnectedTable;
+export default TableComponent;

@@ -12,14 +12,12 @@ export class ThemesController {
   }
   
   @Get()
-  async findAll() {
-    return (await this.themesService.findAll());
+  findAll() {
+    return this.themesService.findAll();
   }
 
-  @Get(':id')
+  @Get('/getone/:id')
   findOne(@Param('id') id: string) {
-    console.log(id);
-    // возвращать объект со всеми вложенностями (теория, тесты, упражнения)
     return this.themesService.findOne(+id);
   }
 

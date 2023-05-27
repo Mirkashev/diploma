@@ -6,25 +6,24 @@ import { Exercise } from 'src/db/entities';
 export class ExercisesController {
   constructor(private readonly exercisesService: ExercisesService) {}
 
-  @Post()
-  create(@Body() exercise: Exercise) {
-    console.log(exercise);
-    return this.exercisesService.create(exercise);
-  }
-
-  @Get()
-  findAll() {
-    return this.exercisesService.findAll();
+  @Post(':id')
+  create(@Body() exercise: Exercise, @Param('id') id: number) {
+    return this.exercisesService.create(id, exercise);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.exercisesService.findOne(+id);
+  findAll(@Param('id') id: number) {
+    return this.exercisesService.findByThemeId(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTestDto: any) {
-    return this.exercisesService.update(+id, updateTestDto);
+  @Get('/one/:id')
+  findOne(@Param('id') id: number) {
+    return this.exercisesService.findById(id);
+  }
+
+  @Patch('/one/:id')
+  update(@Param('id') id: string, @Body() exercise: Exercise) {
+    return this.exercisesService.update(+id, exercise);
   }
 
   @Delete(':id')

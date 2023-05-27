@@ -17,4 +17,13 @@ export type AppConfig = DeepReadonly<{
     pass: string;
     ca?: string;
   };
+  minio: {
+    endPoint: string,
+    port: number
+    useSSL: false, // If on localhost, keep it at false. If deployed on https, change to true
+    accessKey: string
+    secretKey: string
+  }
 }>;
+
+

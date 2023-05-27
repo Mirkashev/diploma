@@ -21,21 +21,21 @@ export class ExerciseElCoordinates {
   @PrimaryGeneratedColumn('increment')
   id?: number;
 
-  @Column('int')
+  @Column('varchar', { length: 256})
   @Index()
-  x!: number;
+  x!: string;
 
-  @Column('int')
+  @Column('varchar', { length: 256})
   @Index()
-  y!: number;
+  y!: string;
 
-  @Column('int')
+  @Column('varchar', { length: 64})
   @Index()
-  width!: number;
+  width!: string;
 
-  @Column('int')
+  @Column('varchar', { length: 64})
   @Index()
-  height!: number;
+  height!: string;
 
   @ManyToOne(()=> Exercise, x=> x.exerciseElCoordinates)
   exercise!: Exercise; 

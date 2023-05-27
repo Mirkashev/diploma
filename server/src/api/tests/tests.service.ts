@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTestDto } from './dto/create-test.dto';
-import { UpdateTestDto } from './dto/update-test.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Test } from '../../db/entities/test.entity';
 import { Repository } from 'typeorm';
@@ -10,23 +8,29 @@ export class TestsService {
   constructor(
     @InjectRepository(Test) private readonly repo: Repository<Test>,
   ){}
-  async create(test: Test) {
+  async create(id:number, test: Test) {
+    test.themeId = id;
     return await this.repo.save(test);
   }
 
-  findAll() {
-    return `This action returns all tests`;
+  async findAll(id:number) {
+    return await this.repo.find({ where:{themeId: id}, select:{ title: true, id: true } })
+  }
+  async update(id: number, test: Test) {
+    const preloaded = await this.repo.preload(await this.repo.findOne({where:{id:id}}));
+    preloaded.title = test.title;
+
+    return await this.repo.save(preloaded);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} test`;
+  async remove(id: number) {
+    return await this.repo.remove(await this.repo.find({where:{id: id}}))
   }
 
-  update(id: number, updateTestDto: UpdateTestDto) {
-    return `This action updates a #${id} test`;
+  async findOne(testId: number) {
+    return await this.repo.find({where:{id: testId}, relations: {
+      questions: true
+    }})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} test`;
-  }
 }

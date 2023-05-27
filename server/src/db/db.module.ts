@@ -1,13 +1,16 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User, Question, Test, Theme, Media, Theory, Exercise, ExerciseEl, ExerciseElCoordinates,  } from './entities';
+import { User, Question, Test, Theme, Media, Theory, Exercise, ExerciseEl, ExerciseElCoordinates, Group,  } from './entities';
+import { Answer } from './entities/answers.entity';
 
 @Global()
 @Module({
   exports: [
     TypeOrmModule.forFeature([
       User,
+      Group,
       Question,
+      Answer,
       Test,
       Theme,
       Media,
@@ -20,7 +23,9 @@ import { User, Question, Test, Theme, Media, Theory, Exercise, ExerciseEl, Exerc
   imports: [
     TypeOrmModule.forFeature([
       User,
+      Group,
       Question,
+      Answer,
       Test,
       Theme,
       Media,
