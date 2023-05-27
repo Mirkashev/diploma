@@ -20,12 +20,32 @@ export class ThemesService {
   }
 
   async findAll() {
-    // console.log('here');
     return await this.repo.find({ order:{id:'DESC'}});
   }
 
   async findOne(id: number) {
-    return await this.repo.find({relations:['theory', 'tests'], where:{ id: id }, select:{ theory: { content: true }}});
+    return await this.repo.find(
+      {
+        relations:{
+          theory: true,
+          tests: true,
+          exercises: true,
+        }, 
+        where:{ id: id }, 
+        select:{ 
+          theory: { 
+            content: true 
+          }, 
+          tests: {
+            id: true, 
+            title: true
+          }, 
+          exercises:{
+            id: true, 
+            title: true
+          }
+        }
+      });
   }
 
   async findByLogin(login: string) {

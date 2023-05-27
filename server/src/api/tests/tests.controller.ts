@@ -1,36 +1,33 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TestsService } from './tests.service';
-import { CreateTestDto } from './dto/create-test.dto';
-import { UpdateTestDto } from './dto/update-test.dto';
-import { Test } from './entities/test.entity';
+import { Test } from '../../db/entities/test.entity';
 
 @Controller('tests')
 export class TestsController {
   constructor(private readonly testsService: TestsService) {}
 
-  @Post()
-  create(@Body() test: Test) {
-    console.log(test);
-    return this.testsService.create(test);
+  @Post(':theme_id')
+  create(@Param('theme_id') id: number, @Body() test: Test) {
+    return this.testsService.create(id, test);
   }
 
-  @Get()
-  findAll() {
-    return this.testsService.findAll();
+  // @Get(':theme_id')
+  // findAll(@Param('theme_id') id: number) {
+  //   return this.testsService.findAll(id);
+  // }
+
+  @Patch(':test_id')
+  update(@Param('test_id') id: number, @Body() test: Test) {
+    return this.testsService.update(id, test);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.testsService.findOne(+id);
+  @Delete(':test_id')
+  remove(@Param('test_id') id: number) {
+    return this.testsService.remove(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTestDto: UpdateTestDto) {
-    return this.testsService.update(+id, updateTestDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.testsService.remove(+id);
+  @Get('/getone/:test_id')
+  findOne(@Param('test_id') id: number) {
+    return this.testsService.findOne(id);
   }
 }

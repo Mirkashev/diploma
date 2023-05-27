@@ -6,9 +6,6 @@ import { UsersService } from './users/users.service';
 import { TestsController } from './tests/tests.controller';
 import { TestsService } from './tests/tests.service';
 
-import { QuestionsController } from './questions/questions.controller';
-import { QuestionsService } from './questions/questions.service';
-
 import { ThemesController } from './themes/themes.controller';
 import { ThemesService } from './themes/themes.service';
 
@@ -25,18 +22,29 @@ import { AuthGuard } from 'src/guards/auth.guard';
 
 import { TheoriesController } from './theories/theories.controller';
 import { TheoriesService } from './theories/theories.service';
+import { ExercisesController } from './exercises/exercises.controller';
+import { ExercisesService } from './exercises/exercises.service';
+import { InstrumentsController } from './exercise-el/exercise-el.controller';
+import { InstrumentsService } from './exercise-el/exercise-el.service';
+import { MediaController } from './media/media.controller';
+import { MediaService } from './media/media.service';
+import { QuestionsController } from './questions/questions.controller';
+import { QuestionsService } from './questions/questions.service';
+import dayjs from 'dayjs';
 
 @Module({
   controllers: [
     UsersController, 
-    TestsController, 
-    QuestionsController,
+    TestsController,
+    QuestionsController, 
     ThemesController,
     ResultsController,
     GroupsController,
     TheoriesController,
     AuthController,
-
+    ExercisesController,
+    InstrumentsController,
+    MediaController,
   ],
   providers: [
     UsersService, 
@@ -47,6 +55,9 @@ import { TheoriesService } from './theories/theories.service';
     GroupsService,
     TheoriesService,
     AuthService,
+    ExercisesService,
+    InstrumentsService,
+    MediaService,
     {
       provide: 'APP_GUARD',
       useClass: AuthGuard
@@ -56,7 +67,7 @@ import { TheoriesService } from './theories/theories.service';
 })
 export class ApiModule implements OnModuleInit {
   constructor(
-    // private readonly usersService: UsersService,
+    private readonly usersService: UsersService,
     // private readonly themesService: ThemesService,
   ){}
   async onModuleInit(){
@@ -78,7 +89,7 @@ export class ApiModule implements OnModuleInit {
     //     password: 'dvzz3uwu',
     //     firstName: 'Ilnaz',
     //     lastName: 'Mirkashev',
-    //     createdAt: dayjs(),
+    //     // createdAt: dayjs(),
     //     role: 'admin',
     //   }
     // );

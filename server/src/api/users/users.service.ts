@@ -19,8 +19,8 @@ export class UsersService {
     return await this.repo.save(user);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.repo.find({ where: { role: 'student' || 'teacher'} })
   }
 
   async findOne(id: number) {
@@ -35,11 +35,25 @@ export class UsersService {
     return await this.repo.findBy({role: 'admin'});
   }
 
-  update(id: number, user: User) {
-    return `This action updates a #${id} user`;
+  async update(id: number, user: User) {
+    const preloaded = await this.repo.preload(await this.repo.findOne({where:{id:id}}));
+    console.log(preloaded)
+    preloaded.login = user.login;
+    preloaded.password = user.password;
+    preloaded.surname = user.surname;
+    preloaded.firstName = user.firstName;
+    preloaded.lastName = user.lastName;
+
+    // console.log(preloaded);  
+
+    console.log({...preloaded, ...user});  
+
+
+    return await this.repo.save(preloaded);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const preloaded = await this.repo.preload(await this.repo.findOne({where:{id:id}}));
+    return await this.repo.remove(preloaded);
   }
 }

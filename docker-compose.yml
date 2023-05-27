@@ -30,5 +30,37 @@ services:
       volumes:
         - postgres-data:/var/lib/postgresql/data/
 
+  minio:
+    image: minio/minio:RELEASE.2019-04-23T23-50-36Z
+    restart: unless-stopped
+    command: server /data
+    volumes:
+      - minio-data:/data
+    ports:
+      - '9000:9000'
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: 11111111
+      # MINIO_HTTP_TRACE: /dev/stdout
+
+  # Initialization Tasks
+
+  create-minio-buckets:
+    image: minio/mc:RELEASE.2019-04-24T00-09-41Z
+    depends_on:
+      - minio
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        sleep 3
+        mc config host add minio http://minio:9000 admin 11111111
+        mc ls minio
+        mc mb --ignore-existing minio/diploma
+        mc policy download minio/diploma
+
+  # Development Utils
+
 volumes:
   postgres-data: {}
+  minio-data: {}

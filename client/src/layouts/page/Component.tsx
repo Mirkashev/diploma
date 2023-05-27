@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AuthContext, AuthProvider } from '../../context/auth';
-import Nav from '@/components/common/nav';
+import Nav from '@/components/common/nav/top-layer1';
 import { adminButtons, userButtons } from './page.layout.constants';
 
 const Page = ({ title, children, tabs, isAdmin }:any) => {
