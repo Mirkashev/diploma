@@ -33,4 +33,35 @@ export class TestsService {
     }})
   }
 
+  async countPercent(testId: number, questions: Array<any>) {
+    const test = await this.repo.findOne({
+      where:{ id: testId }, 
+      relations:['questions.answers'], 
+      select:{
+        questions:{
+          id: true, 
+          answers:{ id: true, isTrue: true }
+        }
+      }});
+
+    let countOfTrue = 0;
+    test.questions.forEach(element => {
+      const questionGet = questions.find((el)=> el.questionId === element.id);
+      const questionDb = test.questions.find((el)=> el.id === element.id);
+
+      console.log(questionGet.questionId, questionDb.id);
+      countOfTrue +=1;
+
+      for(let i = 0; i < questionGet.answers.length; i +=1) {
+        if(!(questionGet.answers[i].isTrue === (questionDb.answers.find((el)=> el.id === questionGet.answers[i].id).isTrue))) {
+          countOfTrue -=1;
+          return;
+        }
+      }
+    });
+
+
+    return (countOfTrue / (test.questions.length) * 100);
+  }
+
 }

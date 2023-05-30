@@ -11,4 +11,5 @@ export interface TableInterface {
   route?: string,
   mutateRoute?:string,
   modalType?:string,
+  isAdmin?: boolean
 }

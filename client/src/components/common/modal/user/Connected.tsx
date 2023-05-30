@@ -4,6 +4,7 @@ import { useGetData, usePatchDataM, usePostData, useUpload } from "@/hooks/fetch
 
 const  ConnectedUserModal = ({method, route, mutateRoute, getRoute, triggerNode}: any)=> {
   const [open, setOpen] = useState(false);
+  const [role, setRole]: any = useState('');
   const send = method === 'POST' ? usePostData(route, mutateRoute) : usePatchDataM(route, mutateRoute);
   const uploadImage = useUpload('/media/upload');
   const { data, isLoading, isError } = useGetData(open ? getRoute : undefined);
@@ -33,6 +34,8 @@ const  ConnectedUserModal = ({method, route, mutateRoute, getRoute, triggerNode}
       reqBody.url = await (await uploadImage.trigger(formFile))?.json();
     }
 
+    reqBody.role = role || 'student';
+
     reqBody = JSON.stringify(reqBody);
     
     await send.trigger(reqBody);
@@ -43,6 +46,7 @@ const  ConnectedUserModal = ({method, route, mutateRoute, getRoute, triggerNode}
   return <UserModalComponent
     title={method === 'POST' ? 'Добавить пользователя' : 'Редактировать пользователя'}
     open={open}
+    setRole={setRole}
     submit={submit}
     setOpen={setOpen}
     triggerNode={triggerNode}

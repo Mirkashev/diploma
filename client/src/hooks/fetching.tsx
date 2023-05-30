@@ -30,7 +30,9 @@ const fetcher = async (route: string, method: string, { arg }: any) => {
 
   if(!resp.ok) return resp.ok;
 
-  return await resp.json();
+  // console.log( await resp.json())
+
+  return (await resp.json());
 }
 
 const fileFetcher = (route: string, { arg }: any) => {
@@ -53,7 +55,10 @@ export function useGetData (route: string) {
 
   if(!data) {
     return {
+      data,
+      isLoading,
       isError: true,
+      mutate,
     }
   }
 
@@ -85,8 +90,8 @@ export function usePostData(route: string, mutateRoute?: string) {
     }
 
     mutate(mutateRoute || route);
-
-    return true;
+    
+    return data;
   }
   
   return {

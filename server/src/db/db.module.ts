@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User, Question, Test, Theme, Media, Theory, Exercise, ExerciseEl, ExerciseElCoordinates, Group,  } from './entities';
+import { User, Question, Test, Theme, Media, Theory, Exercise, ExerciseEl, ExerciseElCoordinates, Group, Result,  } from './entities';
 import { Answer } from './entities/answers.entity';
 
 @Global()
@@ -17,7 +17,8 @@ import { Answer } from './entities/answers.entity';
       Theory,
       Exercise,
       ExerciseEl,
-      ExerciseElCoordinates
+      ExerciseElCoordinates,
+      Result,
     ]),
   ],
   imports: [
@@ -32,7 +33,8 @@ import { Answer } from './entities/answers.entity';
       Theory,
       Exercise,
       ExerciseEl,
-      ExerciseElCoordinates
+      ExerciseElCoordinates,
+      Result,
     ]),
   ]
 })

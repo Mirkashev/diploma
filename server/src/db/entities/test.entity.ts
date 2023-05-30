@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { Answer, Question, Theme } from "src/db/entities";
+import { Answer, Question, Result, Theme } from "src/db/entities";
 
 import {
   Column,
@@ -38,7 +38,10 @@ export class Test {
   themeId!: number;
 
   @OneToMany(()=> Question, x=> x.test)
-  questions!: Question; 
+  questions!: Question[]; 
+
+  @OneToMany(()=> Result, x=> x.test)
+  results!: Result; 
 
   constructor(from: Partial<Test>) {
     Object.assign(this, from);

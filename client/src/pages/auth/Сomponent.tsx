@@ -1,7 +1,5 @@
 import { Form, Input, Button, Container } from 'semantic-ui-react'
 import styles from './index.module.css'
-import Heads from '@/components/head/Сomponent'
-import Nav from '@/components/nav/Сomponent'
 
 interface authProps {
   authQuery: (e: any) => void,
@@ -14,7 +12,7 @@ export default function AuthorizationComponent({showPassword, authQuery, isShown
 
   return(
     <>
-      <Heads title={title}/>
+      {/* <Heads title={title}/> */}
       <Container as='main' className={styles.container} >
         <Form className={styles.form} onSubmit={authQuery} action=''>
           <Form.Field 

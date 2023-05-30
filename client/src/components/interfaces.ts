@@ -11,21 +11,21 @@ export interface AdminThemeInterface {
 
 export interface ChapterTheoryInterface {
   content: string,
-  setData: Dispatch<SetStateAction<string>>,
-  sendTheory: ()=> void,
+  setData?: Dispatch<SetStateAction<string>>,
+  sendTheory?: ()=> void,
   // theme: Theme,
 }
 
 export interface ChapterTestsInterface {
   tests: Array<Test>,
-  themeId: string,
+  themeId?: string,
   pathname?: string,
 }
 
 export interface ChapterExercisesInterface {
   exercises: Array<Exercise>,
   themeId: string,
-  pathname?: string,
+  pathname: string,
 }
 
 export interface TestInterface {
@@ -38,7 +38,8 @@ export interface TestInterface {
 export interface ExInterface {
   exercise: Exercise,
   dElements?: Array<ReactNode>,
-  changeDynamicElements?: (instrumentId:number)=> void,
+  sElements?:Array<ReactNode>,
+  changeDynamicElements?: (instrumentId:number, imgUrl?: string)=> void,
   instruments?: Array<any>
 }
 

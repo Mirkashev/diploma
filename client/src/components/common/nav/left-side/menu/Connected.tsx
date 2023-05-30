@@ -16,7 +16,7 @@ const ConnectedLNavMenu = ({pageType}: any)=> {
     )
   }
 
-  if(pageType === 'topics') {
+  if(router.isReady && router.pathname.match('/user')) {
     const handlePage = (e: any)=> {
       router.push('/user/topics/' + id + '/' + e.target.type);
     }

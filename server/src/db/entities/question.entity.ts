@@ -33,7 +33,7 @@ export class Question {
   createdAt!: Dayjs;
 
   @OneToMany(()=> Answer, x=> x.question, {cascade: true})
-  answers!: Answer; 
+  answers!: Answer[]; 
 
   @ManyToOne(()=> Test, x=> x.questions)
   test!: Test; 

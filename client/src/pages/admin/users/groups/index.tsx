@@ -1,10 +1,16 @@
 import { Container } from 'semantic-ui-react'
 import Page from '@/layouts/page'
 import SideNav from '@/components/common/nav/left-side'
+import AddGroupModal from '@/components/common/modal'
+import TableComponent from '@/components/common/table'
+import { useGetData } from '@/hooks/fetching'
 
-export default function UsersPage(){
+
+export default function UsersGroupPage(){
+  const { data, isLoading, isError } = useGetData('/groups/');
+
   return (
-    <Page title={'Редактировать группы'} isAdmin={true}>
+    <Page title={'Редактировать пользователей'} isAdmin={true}>
       <Container as='main' style={{
         flexGrow: 1,
         maxWidth: '720px',
@@ -15,7 +21,16 @@ export default function UsersPage(){
         position: 'relative'
       }} >
         <SideNav pageType='adminUsers'>
-          <div>группы</div>
+          <AddGroupModal
+            method='POST'
+            route='/groups/'
+          />
+          <TableComponent
+            array={data}
+            pathname='/admin/users/groups/'
+            route='/groups/'
+            mutateRoute='/groups/'
+          />
         </SideNav>
       </Container>
     </Page>

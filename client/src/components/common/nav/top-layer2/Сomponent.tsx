@@ -24,7 +24,7 @@ export default function NavTop2({ children }: any){
       marginTop: '60px'
     }}>
       <Container style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px'}}>
-        <Link href={user?.role === 'admin' ? '/admin/topics' : '/topics'}>К выбору тем</Link>
+        <Link href={user?.role === 'admin' ? '/admin/topics' : '/user/topics'}>К выбору тем</Link>
         <h1 style={{margin:0}}>{title}</h1>
         <div></div>
       </Container>

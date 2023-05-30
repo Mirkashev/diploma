@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
-import ChapterTheoryComponent from "./Component";
+import { useState, useEffect, useContext } from "react";
+import ChapterTheoryComponent from "./admin/Component";
 import { useGetData, usePatchDataM, usePostData } from "@/hooks/fetching";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/context/auth";
+import UserTheoryComponent from "./user/Component";
 
 const ConnectedChapterTheory = ()=> {
   const router = useRouter();
@@ -36,13 +38,19 @@ const ConnectedChapterTheory = ()=> {
 
   if(isError) return <div>There is some error, try to update page</div>
 
-  return (
-    <ChapterTheoryComponent 
-      sendTheory={sendTheory}
-      content={data?.[0]?.theory?.content}
-      setData={setContent}
-    />
-  )
+  if(!!router?.pathname?.match('/admin')) {
+    return (
+      <ChapterTheoryComponent 
+        sendTheory={sendTheory}
+        content={data?.[0]?.theory?.content}
+        setData={setContent}
+      />
+    )
+  }
+
+  return <UserTheoryComponent
+    content={data?.[0]?.theory?.content || '<div>...loading</div>'}
+  />
 }
 
 export default ConnectedChapterTheory;

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../db/entities';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -12,7 +12,11 @@ export class UsersService {
 
   async create(user: User) {
     console.log(user);
-    return await this.repo.save(user);
+    if(user.role === 'student' || user.role === 'teacher' || user.role === undefined) {
+      return await this.repo.save(user);
+    }
+
+    return new Error('bad role');
   }
 
   async save(user: User) {
@@ -20,8 +24,13 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.repo.find({ where: { role: 'student' || 'teacher'} })
+    return await this.repo.find({ where: { role: Raw(alias => `${alias} = 'student' or ${alias} = 'teacher'`)}, relations:{group:true} })
   }
+
+  async findWithoutGroup() {
+    return await this.repo.find({ where: { role: Raw(alias => `${alias} = 'student'`), groupId: Raw(()=> '"groupId" IS NULL')} })
+  }
+
 
   async findOne(id: number) {
     return await this.repo.findBy({id: id});
@@ -37,19 +46,12 @@ export class UsersService {
 
   async update(id: number, user: User) {
     const preloaded = await this.repo.preload(await this.repo.findOne({where:{id:id}}));
-    console.log(preloaded)
-    preloaded.login = user.login;
-    preloaded.password = user.password;
-    preloaded.surname = user.surname;
-    preloaded.firstName = user.firstName;
-    preloaded.lastName = user.lastName;
 
-    // console.log(preloaded);  
+    if(user.role === 'student' || user.role === 'teacher' || user.role === undefined) {
+      return await this.repo.save(this.repo.create({...preloaded, ...user}));
+    }
 
-    console.log({...preloaded, ...user});  
-
-
-    return await this.repo.save(preloaded);
+    return new Error('bad role');
   }
 
   async remove(id: number) {

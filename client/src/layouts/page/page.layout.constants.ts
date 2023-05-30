@@ -7,7 +7,7 @@ export const adminButtons = [
 ]
 
 export const userButtons = [
-  { title:'Главная', href:'/' },
+  // { title:'Главная', href:'/user/topics' },
   { title:'Темы', href:'/user/topics' },
   { title:'Личный кабинет', href:'/user/profile' },
   { title:'Статистика', href:'/user/stats' },

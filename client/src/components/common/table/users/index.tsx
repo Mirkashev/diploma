@@ -14,6 +14,7 @@ export default function UsersTable({array, pathname, route}: any) {
           <Table.HeaderCell>Имя</Table.HeaderCell>
           <Table.HeaderCell>Отчество</Table.HeaderCell>
           <Table.HeaderCell>Группа</Table.HeaderCell>
+          <Table.HeaderCell>Роль</Table.HeaderCell>
           <Table.HeaderCell style={{width:'5%'}}>Настройки</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
@@ -32,7 +33,8 @@ export default function UsersTable({array, pathname, route}: any) {
             <Table.Cell>{el?.surname || 'не указана'}</Table.Cell>
             <Table.Cell>{el?.firstName || 'не указано'}</Table.Cell>
             <Table.Cell>{el?.lastName || 'не указано'}</Table.Cell>
-            <Table.Cell>{'не указана'}</Table.Cell>
+            <Table.Cell>{el?.group?.title || 'не указана'}</Table.Cell>
+            <Table.Cell>{el?.role || 'не указана'}</Table.Cell>
             <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
               <EditUserModal 
                 route={route+(el.id +'')}

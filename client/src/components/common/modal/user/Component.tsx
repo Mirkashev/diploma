@@ -1,6 +1,6 @@
 import toBase64 from "@/utils/fileToBase64";
 import { useEffect, useState } from "react";
-import { Button, Dropdown, Form, Header, Image, Input, Modal } from "semantic-ui-react";
+import { Button, Dropdown, Header, Image, Input, Modal } from "semantic-ui-react";
 
 export default function UserModalComponent({
   title, 
@@ -8,7 +8,8 @@ export default function UserModalComponent({
   open, 
   setOpen, 
   triggerNode, 
-  userData
+  userData,
+  setRole
 }: any) {
   const [img, setImg]: any = useState();
 
@@ -103,12 +104,14 @@ export default function UserModalComponent({
                 placeholder={`Введите отчество`} 
                 defaultValue={userData?.lastName}
               />
-              <Dropdown placeholder="Выберите роль"
+              <Dropdown 
+                placeholder="Выберите роль"
+                id="role"
                 name='role'
                 type='text'
                 selection 
                 defaultValue={userData?.role === 'teacher' ? 'teacher' : 'student'}
-                options={[{key:'student', text:'Студент', value:'student'}, {key:'teacher', text:'Преподаватель', value:'teacher'}]} 
+                options={[{key:'student', text:'Студент', value:'student', onClick:()=> setRole('student')}, {key:'teacher', text:'Преподаватель', value:'teacher', onClick:()=> setRole('teacher')}]} 
               />
             </Modal.Description>
           </Modal.Content>

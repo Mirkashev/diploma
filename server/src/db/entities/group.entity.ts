@@ -22,7 +22,7 @@ export class Group {
   title!: string;
 
   @OneToMany(()=> User, x=> x.group)
-  users?: User; 
+  users?: User[]; 
 
   @Column('timestamptz', {
     default: () => 'CURRENT_TIMESTAMP',

@@ -6,10 +6,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Group } from './group.entity';
+import { Result } from './result.entity';
 
 @Entity('users')
 export class User {
@@ -36,11 +38,11 @@ export class User {
   @Column('text', { default:'' })
   url?: string;
 
-  @ManyToOne(()=> Group, x=> x.users)
+  @ManyToOne(()=> Group, x=> x.users, {cascade:true})
   group?: Group; 
   // возможно тут возникнут проблемы
-  @Column({unique: true, nullable:true})
-  groupId?: number;
+  @Column({ nullable:true})
+  groupId?: number | null;
 
   @Column('timestamptz', {
     default: () => 'CURRENT_TIMESTAMP', 
@@ -54,6 +56,9 @@ export class User {
   })
   @Index()
   role?: string;
+
+  @OneToMany(()=> Result, x=> x.test)
+  results!: Result; 
 
   constructor(from: Partial<User>) {
     Object.assign(this, from);

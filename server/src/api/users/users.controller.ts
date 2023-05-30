@@ -16,10 +16,17 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('nogroup')
+  findWithNoGroup() {
+    return this.usersService.findWithoutGroup();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number) {
+    console.log('here')
     return this.usersService.findOne(+id);
   }
+
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() user: User) {

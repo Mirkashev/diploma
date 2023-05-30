@@ -25,7 +25,7 @@ export default function TableComponent({array, pathname, route, mutateRoute, mod
       </Table.Header>
         <Table.Body>
         {array?.map((el, i) => 
-          <Table.Row key={el.title + i}>
+          <Table.Row key={i + Math.random()}>
             <Table.Cell>
               {pathname ? 
               <Link href={{pathname: truePathname(el.id)}} 

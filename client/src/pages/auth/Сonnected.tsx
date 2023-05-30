@@ -41,7 +41,7 @@ const ConnectedAuthorization = () => {
         const data = await response.json();
         login(data.access_token);
 
-        router.push('/');
+        router.push('/user/topics');
       } catch (error) {
         console.log(error);
       }
