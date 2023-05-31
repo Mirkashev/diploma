@@ -83,12 +83,13 @@ export class ApiModule implements OnModuleInit {
     //   return;
     // }
 
-    // this.usersService.create( 
+    // this.usersService.createAdmin( 
     //   {
     //     login: 'Admin', 
     //     password: 'dvzz3uwu',
+    //     surname: 'Mirkashev',
     //     firstName: 'Ilnaz',
-    //     lastName: 'Mirkashev',
+    //     lastName: 'Lenarovich',
     //     // createdAt: dayjs(),
     //     role: 'admin',
     //   }

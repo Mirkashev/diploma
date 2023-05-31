@@ -52,7 +52,17 @@ export default function UserExerciseComponent({exercise, dElements, changeDynami
           <Segment style={{width:'605px', height:'450px'}} className="dynamic-container">
             {sElements}
             {dElements}
-            <Image src={exercise?.url} style={{maxWidth:'400px', maxHeight: '800px', userSelect:'none', drag:'none'}} fluid centered/>
+            <div
+              style={{
+                width:'100%',
+                height:'100%',
+                display:'flex',
+                alignItems:'center',
+                justifyContent: 'center'
+              }}
+            >
+             <Image src={exercise?.url} style={{ userSelect:'none', drag:'none'}} fluid centered verticalAlign="middle"/>
+            </div>
           </Segment>
         </GridColumn>
         <GridColumn width={4} style={{paddingLeft:0, overflow:'hidden'}} stretched>

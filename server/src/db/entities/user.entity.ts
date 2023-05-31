@@ -58,7 +58,7 @@ export class User {
   role?: string;
 
   @OneToMany(()=> Result, x=> x.test)
-  results!: Result; 
+  results?: Result; 
 
   constructor(from: Partial<User>) {
     Object.assign(this, from);

@@ -19,6 +19,10 @@ export class UsersService {
     return new Error('bad role');
   }
 
+  async createAdmin(user: User) {
+    return await this.repo.save(user);
+  }
+
   async save(user: User) {
     return await this.repo.save(user);
   }

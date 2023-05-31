@@ -112,7 +112,17 @@ export default function ExerciseComponent({exercise, dElements, changeDynamicEle
           </Segment>
           <Segment style={{width:'605px', height:'450px'}} className="dynamic-container">
             {dElements}
-            <Image src={img} style={{maxWidth:'400px', maxHeight: '800px', userSelect:'none', drag:'none'}} fluid centered/>
+            <div
+              style={{
+                width:'100%',
+                height:'100%',
+                display:'flex',
+                alignItems:'center',
+                justifyContent: 'center'
+              }}
+            >
+             <Image src={img} style={{ userSelect:'none', drag:'none'}} fluid centered verticalAlign="middle"/>
+            </div>
           </Segment>
         </GridColumn>
         <GridColumn width={4} style={{paddingLeft:0, overflow:'hidden'}} stretched>
@@ -126,7 +136,7 @@ export default function ExerciseComponent({exercise, dElements, changeDynamicEle
             <p>Панель инструментов:</p> 
             {instruments?.map((el:any, i:number)=> 
             <Button key={'instrument_' + i * Math.random()}
-              onClick={()=> changeDynamicElements ? changeDynamicElements(el?.id) : null} 
+              onClick={()=> changeDynamicElements ? changeDynamicElements(el?.id, el?.url) : null} 
               style={{padding:0, borderRadius:'100px', border:'1px solid #000'}}>
                 <Image fluid style={{width:'32px', height:'32px',borderRadius:'100px'}} src={el.url}/>
             </Button>)}

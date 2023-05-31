@@ -35,6 +35,7 @@ const ConnectedTest = ()=> {
           height={'75px'} 
           instrumentId={instrumentId} 
           remove={removeElement} 
+          imgUrl={imgUrl}
           key={key} 
           keyP={key} 
           dElements={dElements} 
@@ -76,9 +77,9 @@ const ConnectedTest = ()=> {
       setDElements([...tempArr.map((el: any)=> ({...el, props: {...el?.props, dElements: tempArr}}))]);
     }
 
-    if(router.isReady && !router.pathname.match('/admin')) {
-      console.log('here')
-      const tempArr = exercise?.data[0]?.exerciseElCoordinates?.map((el: any, i: number)=>{
+    if(!!exercise?.data && router.isReady && !router.pathname.match('/admin')) {
+      console.log('here', exercise?.data?.[0]?.exerciseElCoordinates)
+      const tempArr = exercise?.data?.[0]?.exerciseElCoordinates?.map((el: any, i: number)=>{
         const key = (Math.random() * Math.random() * 100)+'';
 
         return <StaticElement
