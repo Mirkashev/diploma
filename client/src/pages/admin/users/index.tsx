@@ -14,7 +14,7 @@ export default function UsersPage(){
   if(isError) return <div>There is some error, try to update page</div>
 
   return (
-    <Page title={'Редактировать пользователей'} isAdmin={true}>
+    <Page title={'Редактировать пользователей'}>
       <Container as='main' style={{
         flexGrow: 1,
         maxWidth: '720px',

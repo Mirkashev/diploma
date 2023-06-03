@@ -1,14 +1,12 @@
-import { useContext } from "react";
 import AdminTopicsComponent from "./admin/Сomponent";
 import UserTopicsComponent from "./user/Сomponent";
 
 import { useGetData } from "@/hooks/fetching";
-import { AuthContext } from "@/context/auth";
 import { useRouter } from "next/router";
 
 
 const ConnectedTopics = () => {
-  const {data, isError, isLoading} = useGetData('/themes');
+  const {data, isError, isLoading} = useGetData('/topics/');
   const router = useRouter();
 
   if(isLoading) return <div>...Loading</div>
@@ -17,12 +15,12 @@ const ConnectedTopics = () => {
 
   if(!!router?.pathname?.match('/admin')) {
     return (
-      <AdminTopicsComponent themes={data}/>
+      <AdminTopicsComponent topics={data}/>
     )
   }
 
   return(
-    <UserTopicsComponent themes={data}/>
+    <UserTopicsComponent topics={data}/>
   )
 }
 export default ConnectedTopics;

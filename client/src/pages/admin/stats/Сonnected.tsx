@@ -3,7 +3,7 @@ import AdminStatsComponent from "./Сomponent";
 
 const ConnectedAdminStats = () => {
   return (
-    <Page title={'Статистика'} isAdmin={true}>
+    <Page title={'Статистика'}>
       <AdminStatsComponent/>
     </Page>
 

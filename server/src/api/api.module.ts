@@ -6,8 +6,8 @@ import { UsersService } from './users/users.service';
 import { TestsController } from './tests/tests.controller';
 import { TestsService } from './tests/tests.service';
 
-import { ThemesController } from './themes/themes.controller';
-import { ThemesService } from './themes/themes.service';
+import { TopicsController } from './topics/topics.controller';
+import { TopicsService } from './topics/topics.service';
 
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
@@ -37,7 +37,7 @@ import dayjs from 'dayjs';
     UsersController, 
     TestsController,
     QuestionsController, 
-    ThemesController,
+    TopicsController,
     ResultsController,
     GroupsController,
     TheoriesController,
@@ -50,7 +50,7 @@ import dayjs from 'dayjs';
     UsersService, 
     TestsService, 
     QuestionsService,
-    ThemesService,
+    TopicsService,
     ResultsService,
     GroupsService,
     TheoriesService,
@@ -68,7 +68,7 @@ import dayjs from 'dayjs';
 export class ApiModule implements OnModuleInit {
   constructor(
     private readonly usersService: UsersService,
-    // private readonly themesService: ThemesService,
+    // private readonly themesService: TopicsService,
   ){}
   async onModuleInit(){
     // const themes = await this.themesService.findAll();

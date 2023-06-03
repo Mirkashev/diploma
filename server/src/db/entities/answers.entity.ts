@@ -35,7 +35,7 @@ export class Answer {
   @Index()
   createdAt!: Dayjs;
 
-  @ManyToOne(()=> Question, x=> x.answers)
+  @ManyToOne(()=> Question, x=> x.answers, {onDelete: 'CASCADE'})
   question!: Question; 
 
   @Column()

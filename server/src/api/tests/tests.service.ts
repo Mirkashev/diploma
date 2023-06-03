@@ -28,9 +28,7 @@ export class TestsService {
   }
 
   async findOne(testId: number) {
-    return await this.repo.find({where:{id: testId}, relations: {
-      questions: true
-    }})
+    return await this.repo.findOne({where:{id: testId}, relations: ['questions.answers', 'theme']})
   }
 
   async countPercent(testId: number, questions: Array<any>) {

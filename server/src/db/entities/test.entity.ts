@@ -31,7 +31,7 @@ export class Test {
   @Index()
   createdAt!: Dayjs;
 
-  @ManyToOne(()=> Theme, x=> x.tests)
+  @ManyToOne(()=> Theme, x=> x.tests, {onDelete: 'CASCADE'})
   theme!: Theme; 
 
   @Column({select:false})

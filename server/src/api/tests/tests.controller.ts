@@ -11,10 +11,10 @@ export class TestsController {
     return this.testsService.create(id, test);
   }
 
-  // @Get(':theme_id')
-  // findAll(@Param('theme_id') id: number) {
-  //   return this.testsService.findAll(id);
-  // }
+  @Get(':test_id')
+  findAll(@Param('test_id') id: number) {
+    return this.testsService.findOne(id);
+  }
 
   @Patch(':test_id')
   update(@Param('test_id') id: number, @Body() test: Test) {
@@ -24,10 +24,5 @@ export class TestsController {
   @Delete(':test_id')
   remove(@Param('test_id') id: number) {
     return this.testsService.remove(id);
-  }
-
-  @Get('/getone/:test_id')
-  findOne(@Param('test_id') id: number) {
-    return this.testsService.findOne(id);
   }
 }

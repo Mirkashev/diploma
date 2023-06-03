@@ -2,37 +2,28 @@ import { useState, useEffect, useContext } from "react";
 import ChapterTheoryComponent from "./admin/Component";
 import { useGetData, usePatchDataM, usePostData } from "@/hooks/fetching";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/context/auth";
 import UserTheoryComponent from "./user/Component";
 
 const ConnectedChapterTheory = ()=> {
   const router = useRouter();
   const { id }: any = router.query;
 
-  const { data, isError, isLoading } = useGetData('/themes/getone/'+id);
+  const { data, isError, isLoading } = useGetData('/topics/'+id);
 
-  const post = usePostData('/theories/'+id, '/themes/getone/'+id);
-  const patch = usePatchDataM('/theories/'+id, '/themes/getone/'+id);
+  const post = usePostData('/theories/'+id);
+  const patch = usePatchDataM('/theories/'+id);
 
   const [content, setContent] = useState('');
 
-  const sendTheory = ()=> {
+  const setData = (data: string) => setContent(data);
+
+  const sendTheory = async ()=> {
     const sendingData: any = JSON.stringify({content: content});
 
-    if(!!data?.[0]?.theory?.content) {
-      patch.trigger(sendingData);
-      return;
-    }
+    const resp = data?.theory?.content ? await patch.trigger(sendingData) : await post.trigger(sendingData);
 
-    post.trigger(sendingData);
+    alert(resp);
   }
-
-  useEffect(()=> {
-    if(data) {
-      setContent(data?.[0]?.content);
-    }
-  }, [data])
-
 
   if(isLoading || !id) return <div>...Loading</div>;
 
@@ -42,14 +33,16 @@ const ConnectedChapterTheory = ()=> {
     return (
       <ChapterTheoryComponent 
         sendTheory={sendTheory}
-        content={data?.[0]?.theory?.content}
-        setData={setContent}
+        content={data?.theory?.content || ''}
+        setData={setData}
+        title={data?.title}
       />
     )
   }
 
   return <UserTheoryComponent
-    content={data?.[0]?.theory?.content || '<div>...loading</div>'}
+    content={data?.theory?.content || '<div>...loading</div>'}
+    title={data?.title}
   />
 }
 

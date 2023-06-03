@@ -31,13 +31,13 @@ export class Theme {
   @Index()
   createdAt!: Dayjs;
 
-  @OneToOne(()=> Theory, x=> x.theme, {cascade: true})
+  @OneToOne(()=> Theory, x=> x.theme, {cascade: true, onDelete:'CASCADE'})
   theory?: Theory;
 
-  @OneToMany(()=> Test, x=> x.theme, {cascade: true})
+  @OneToMany(()=> Test, x=> x.theme, {cascade: true, onDelete:'CASCADE'})
   tests?: Test;
 
-  @OneToMany(()=> Exercise, x=> x.theme, {cascade: true})
+  @OneToMany(()=> Exercise, x=> x.theme, {cascade: true, onDelete:'CASCADE'})
   exercises?: Exercise;
 
   constructor(from: Partial<Theme>) {

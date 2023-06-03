@@ -11,17 +11,17 @@ export class ExercisesController {
     return this.exercisesService.create(id, exercise);
   }
 
-  @Get(':id')
-  findAll(@Param('id') id: number) {
-    return this.exercisesService.findByThemeId(id);
-  }
+  // @Get(':id')
+  // findAll(@Param('id') id: number) {
+  //   return this.exercisesService.findByThemeId(id);
+  // }
 
-  @Get('/one/:id')
+  @Get(':id')
   findOne(@Param('id') id: number) {
     return this.exercisesService.findById(id);
   }
 
-  @Patch('/one/:id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() exercise: Exercise) {
     return this.exercisesService.update(+id, exercise);
   }

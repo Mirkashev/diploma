@@ -1,17 +1,13 @@
 import ChapterTestComponent from "./admin/Component";
 import { useGetData } from "@/hooks/fetching";
 import { useRouter } from "next/router";
-import parsePathName from "@/utils/parsePathname";
-import { GET_TOPIC_WITH_RELATIONS } from "@/constants";
 import UserTestComponent from "./user/Component";
 
 // todo: refactor garbage component
 const ConnectedChapterTest = ()=> {
   const router = useRouter();
   const { id } = router.query;
-  const { data, isLoading, isError } = useGetData(GET_TOPIC_WITH_RELATIONS + id);
-
-  const pathname = parsePathName(router.pathname, router.query);
+  const { data, isLoading, isError } = useGetData('/topics/' + id);
 
   if(isLoading || !id) return <div>...Loading</div>;
 
@@ -21,20 +17,19 @@ const ConnectedChapterTest = ()=> {
     return (
       <ChapterTestComponent
         themeId={id+''}
-        tests={data?.[0]?.tests}
-        pathname={pathname}
+        tests={data?.tests}
+        title={data?.title}
       />
     )
   }
 
   return (
     <UserTestComponent
-      tests={data?.[0]?.tests}
+      tests={data?.tests}
       themeId={id+''}
+      title={data?.title}
     />
   )
-
-
 }
 
 export default ConnectedChapterTest;

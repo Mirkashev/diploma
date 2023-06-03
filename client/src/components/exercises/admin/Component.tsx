@@ -1,21 +1,55 @@
-import AddModal from "@/components/common/modal";
-import Table from "@/components/common/table/Component";
 import { ChapterExercisesInterface } from "../../interfaces";
-import { GET_TOPIC_WITH_RELATIONS } from "@/constants";
+import TitleModal from "@/components/common/modal/titleNew";
+import { Button, Icon, Table } from "semantic-ui-react";
+import Link from "next/link";
+import DeleteComponent from "@/components/common/deleteButton";
+import NavTop2 from "@/components/common/nav/top-layer2/Сomponent";
+import SideNav from "@/components/common/nav/left-side";
 
-export default function ChapterExComponent({ exercises, themeId, pathname}: ChapterExercisesInterface) {
-  console.log(GET_TOPIC_WITH_RELATIONS + themeId)
+export default function ChapterExComponent({ exercises, themeId, title}: ChapterExercisesInterface) {
   return(
     <>
-      <AddModal
-        route={'/exercises/' + themeId}
-        method='POST'
-        mutateRoute={GET_TOPIC_WITH_RELATIONS + themeId}
-      />
-      <Table 
-        array={exercises}
-        pathname={pathname}
-      />
+      <NavTop2 title={title} activeButton={
+        <TitleModal
+          route={'/exercises/'+ themeId}
+          method='POST'
+          mutateRoute={'/topics/' + themeId}
+          triggerNode={<Button
+            style={{background:'rgba(255,255,255,.85)', color:'#000'}}
+          >Добавить</Button>}
+        />
+      }/>
+      <SideNav>
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Название</Table.HeaderCell>
+              <Table.HeaderCell style={{width:'5%'}}>Настройки</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+            <Table.Body>
+            {exercises?.map((el, i) => 
+              <Table.Row key={i + Math.random()}>
+                <Table.Cell>
+                  <Link href={{pathname: `/admin/topics/${themeId}/exercises/${el.id}`}}>
+                    {el.title}
+                  </Link> 
+                </Table.Cell>
+                <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
+                  <TitleModal
+                    route={'/exercises/' + el.id}
+                    method='PATCH'
+                    mutateRoute={'/topics/' + themeId}
+                    triggerNode={<Icon style={{cursor:'pointer'}} name='pencil alternate' />}
+                    title={el.title}
+                  />
+                  <DeleteComponent route={'/exercises/' + el.id} mutateRoute={'/topics/' + themeId} />
+                </Table.Cell>
+              </Table.Row>)}
+          </Table.Body>
+        </Table>
+      </SideNav>
+
     </>
   )
 }
