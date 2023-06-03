@@ -4,7 +4,7 @@ import ExercisesView from "@/views/exercises";
 
 export default function ExercisesPage(){
   return (
-    <Page title={'Редактор темы'} isAdmin={true} >
+    <Page title={'Редактор темы'} >
       <ExercisesView/>
     </Page>
   )

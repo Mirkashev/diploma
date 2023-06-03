@@ -1,9 +1,8 @@
 import DeleteComponent from "@/components/common/deleteButton";
-import TableComponent from "@/components/common/table";
 import { useGetData } from "@/hooks/fetching"
 import Page from "@/layouts/page";
 import { Container, Icon, Table } from "semantic-ui-react";
-import EditInstrumentModal from "@/components/common/modal";
+import EditInstrumentModal from "@/components/common/modal/instrument/index";
 
 
 export default function InstrumentPage(){
@@ -15,7 +14,7 @@ export default function InstrumentPage(){
   if(isError) return <div>There is some error, try to update page</div>
 
   return (
-    <Page title='Инструменты' isAdmin={true}>
+    <Page title='Инструменты'>
       <Container as='main' style={{
         flexGrow: 1,
         maxWidth: '720px',
@@ -25,7 +24,7 @@ export default function InstrumentPage(){
         marginTop: '72px',
         position: 'relative'
       }}>
-        <Table celled>
+        <Table celled> 
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Название</Table.HeaderCell>
@@ -36,15 +35,7 @@ export default function InstrumentPage(){
             {data?.map((el:any, i:number) => 
               <Table.Row key={el.title + i}>
                 <Table.Cell>
-                  <EditInstrumentModal 
-                    route={'/instruments/'+el.id} 
-                    getRoute={'/instruments/'+el.id}
-                    mutateRoute={'/instruments'}
-                    method='PATCH' 
-                    modalType='instrument' 
-                    title={el.title} 
-                    triggerNode={<span style={{cursor:'pointer'}}>{el.title}</span>}
-                  />
+                  {el.title}
                 </Table.Cell>
                 <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
                   <EditInstrumentModal 
@@ -53,7 +44,7 @@ export default function InstrumentPage(){
                     mutateRoute={'/instruments'}
                     method='PATCH' 
                     modalType='instrument' 
-                    title={el.title} 
+                    instrument={el}
                     triggerNode={<Icon style={{cursor:'pointer'}} name='pencil alternate' />}
                   />
                   <DeleteComponent route={'/instruments/'+el.id} mutateRoute={'/instruments'}/>

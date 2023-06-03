@@ -1,6 +1,4 @@
-import DeleteComponent from "@/components/common/deleteButton";
 import SideNav from "@/components/common/nav/left-side";
-import TableComponent from "@/components/common/table";
 import { useGetData, usePatchDataM } from "@/hooks/fetching";
 import Page from "@/layouts/page";
 import { useRouter } from "next/router";
@@ -94,7 +92,7 @@ export default function PageGroup(){
   if(isError) return <div>There is some error, try to update page</div>
 
   return (
-    <Page title={'Редактировать пользователей'} isAdmin={true}>
+    <Page title={'Редактировать пользователей'}>
       <Container as='main' style={{
         flexGrow: 1,
         maxWidth: '720px',

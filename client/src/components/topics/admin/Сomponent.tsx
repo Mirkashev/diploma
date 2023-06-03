@@ -1,13 +1,11 @@
-import { Form, Input, Button, Container, Icon, Menu, Popup } from 'semantic-ui-react'
-import AddModal from '@/components/common/modal'
-import  Table  from  '@/components/common/table'
+import { Form, Input, Button, Container, Icon, Menu, Popup, Table } from 'semantic-ui-react'
+import { TopicsInterface } from '../interfaces'
+import Link from 'next/link'
+import DeleteComponent from '@/components/common/deleteButton'
+import TitleModal from '@/components/common/modal/titleNew'
 
-interface TopicsInterface {
-  themes: Array<any>,
-  isAdmin?: boolean,
-}
 
-export default function TopicsComponent({ themes }: TopicsInterface){
+const AdminTopicsComponent = ({ topics }: TopicsInterface)=> {
 
   return(
     <Container as='main' style={{
@@ -20,17 +18,44 @@ export default function TopicsComponent({ themes }: TopicsInterface){
       position: 'relative'
     }} >
       <Menu style={{width:'100%', marginBottom: '0'}}>
-        <AddModal route={'/themes'} method='POST'/>
+        <TitleModal route={'/topics/'} method='POST'/>
         <Menu.Menu position='right'>
           <Menu.Item>
             <Input disabled icon='search' placeholder='Search...' />
           </Menu.Item>
         </Menu.Menu>
       </Menu>
-      <Table
-        pathname='/admin/topics'
-        array={themes}
-      />
+      <Table celled>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>Тема</Table.HeaderCell>
+            <Table.HeaderCell style={{width:'5%'}}>Настройки</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {topics?.map((el, i) => 
+            <Table.Row key={i + Math.random()}>
+              <Table.Cell>
+                <Link href={{pathname: `/admin/topics/${el.id}/theory`}}>
+                  {el.title}
+                </Link> 
+              </Table.Cell>
+              <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
+                <TitleModal 
+                  route={'/topics/'+el.id}
+                  getRoute={'/topics/'+el.id}
+                  mutateRoute={'/topics/'}
+                  method='PATCH' 
+                  title={el.title} 
+                  triggerNode={<Icon style={{cursor:'pointer'}} name='pencil alternate' />}
+                />
+                <DeleteComponent route={'/topics/'+el.id} mutateRoute={'/topics/'} />
+              </Table.Cell>
+            </Table.Row>)}
+        </Table.Body>
+      </Table>
     </Container>
   )
 }
+
+export default AdminTopicsComponent;

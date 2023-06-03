@@ -7,13 +7,15 @@ import { useRouter } from "next/router";
 import { useGetData } from "@/hooks/fetching";
 import UserExerciseComponent from "./user/Component";
 import StaticElement from "./user/staticElement";
+import NavTop2 from "../common/nav/top-layer2/Сomponent";
+import SideNav from "../common/nav/left-side";
 
 const ConnectedTest = ()=> {
   const router = useRouter();
 
   const { id, exercise_id } = router.query;
   // 
-  const exercise = useGetData('/exercises/one/' + exercise_id);
+  const { data, isLoading, isError } = useGetData('/exercises/' + exercise_id);
   const instruments = useGetData('/instruments/');
   // when rendering always getting data from swr hooks
   const [dElements, setDElements]:any = useState([]);
@@ -57,8 +59,8 @@ const ConnectedTest = ()=> {
 
 
   useEffect(()=> {
-    if(!!exercise?.data && router.isReady && !!router.pathname.match('/admin')) {
-      const tempArr = exercise?.data[0]?.exerciseElCoordinates?.map((el: any, i: number)=>{
+    if(!!data && router.isReady && !!router.pathname.match('/admin')) {
+      const tempArr = data?.exerciseElCoordinates?.map((el: any, i: number)=>{
         const key = (Math.random() * Math.random() * 100)+'';
 
         return <DynamicElement 
@@ -77,9 +79,8 @@ const ConnectedTest = ()=> {
       setDElements([...tempArr.map((el: any)=> ({...el, props: {...el?.props, dElements: tempArr}}))]);
     }
 
-    if(!!exercise?.data && router.isReady && !router.pathname.match('/admin')) {
-      console.log('here', exercise?.data?.[0]?.exerciseElCoordinates)
-      const tempArr = exercise?.data?.[0]?.exerciseElCoordinates?.map((el: any, i: number)=>{
+    if(!!data && router.isReady && !router.pathname.match('/admin')) {
+      const tempArr = data?.exerciseElCoordinates?.map((el: any, i: number)=>{
         const key = (Math.random() * Math.random() * 100)+'';
 
         return <StaticElement
@@ -93,26 +94,30 @@ const ConnectedTest = ()=> {
       setSElements([...tempArr]);
     }
 
-  }, [exercise?.data])
+  }, [data])
 
-  if(router.isReady && !!router.pathname.match('/admin')) {
-    return (
-      <ExerciseComponent 
-        exercise={exercise.data?.[0]} 
-        dElements={dElements} 
-        changeDynamicElements={changeDynamicElements} 
-        instruments={instruments.data}/>
-    )
-  }
 
   return(
-    <UserExerciseComponent
-      exercise={exercise.data?.[0]} 
-      dElements={dElements}
-      sElements={sElements} 
-      changeDynamicElements={changeDynamicElements} 
-      instruments={instruments.data}/>
-  )
+    <>
+      <NavTop2/>
+      <SideNav>
+      {router.isReady && !!router.pathname.match('/admin') 
+        ? 
+          <ExerciseComponent 
+          exercise={data} 
+          dElements={dElements} 
+          changeDynamicElements={changeDynamicElements} 
+          instruments={instruments.data}/>
+        :
+          <UserExerciseComponent
+          exercise={data} 
+          dElements={dElements}
+          sElements={sElements} 
+          changeDynamicElements={changeDynamicElements} 
+          instruments={instruments.data}/>
+      }
+      </SideNav>
+    </>)
 
 
 }

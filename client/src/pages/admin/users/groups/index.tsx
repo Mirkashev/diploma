@@ -1,16 +1,19 @@
-import { Container } from 'semantic-ui-react'
+import { Container, Icon, Table } from 'semantic-ui-react'
 import Page from '@/layouts/page'
 import SideNav from '@/components/common/nav/left-side'
-import AddGroupModal from '@/components/common/modal'
-import TableComponent from '@/components/common/table'
+// import AddGroupModal from '@/components/common/modal'
+// import TableComponent from '@/components/common/table'
 import { useGetData } from '@/hooks/fetching'
+import AddTitle from '../../../../components/common/modal/titleNew';
+import DeleteComponent from '@/components/common/deleteButton';
+import Link from 'next/link';
 
 
 export default function UsersGroupPage(){
   const { data, isLoading, isError } = useGetData('/groups/');
 
   return (
-    <Page title={'Редактировать пользователей'} isAdmin={true}>
+    <Page title={'Редактировать пользователей'}>
       <Container as='main' style={{
         flexGrow: 1,
         maxWidth: '720px',
@@ -21,16 +24,36 @@ export default function UsersGroupPage(){
         position: 'relative'
       }} >
         <SideNav pageType='adminUsers'>
-          <AddGroupModal
+          <AddTitle
             method='POST'
             route='/groups/'
           />
-          <TableComponent
-            array={data}
-            pathname='/admin/users/groups/'
-            route='/groups/'
-            mutateRoute='/groups/'
-          />
+          <Table celled> 
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Название</Table.HeaderCell>
+                <Table.HeaderCell style={{width:'5%'}}>Настройки</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+              <Table.Body>
+              {data?.map((el:any, i:number) => 
+                <Table.Row key={el.title + i}>
+                  <Table.Cell>
+                    <Link href={{pathname: `/admin/users/groups/${el.id}`}}>{el.title}</Link>
+                  </Table.Cell>
+                  <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
+                    <AddTitle
+                      method='PATCH'
+                      route={'/groups/'+ el.id}
+                      mutateRoute={'/groups/'}
+                      title={el.title}
+                      triggerNode={<Icon style={{cursor:'pointer'}} name='pencil alternate' />}
+                    />
+                    <DeleteComponent route={'/groups/'+ el.id} mutateRoute={'/groups/'}/>
+                  </Table.Cell>
+                </Table.Row>)}
+            </Table.Body>
+          </Table>
         </SideNav>
       </Container>
     </Page>

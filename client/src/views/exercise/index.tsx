@@ -3,14 +3,5 @@ import SideNav from "@/components/common/nav/left-side";
 import ExerciseComponent from "@/components/exercise";
 
 export default function ExerciseView(){
-
-  return(
-    <>
-    <NavTop2/>
-    <SideNav>
-      <ExerciseComponent/>
-    </SideNav>
-    </>
-
-  )
+  return <ExerciseComponent/>;
 }

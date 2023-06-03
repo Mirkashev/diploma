@@ -3,12 +3,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Theme, Theory, User } from '../../db/entities';
 import { Repository } from 'typeorm';
 import dayjs from 'dayjs';
+import { TheoriesService } from '../theories/theories.service';
+import { TestsService } from '../tests/tests.service';
+import { ExercisesService } from '../exercises/exercises.service';
 // import { TheoriesService } from '../theories/theories.service';
 
 @Injectable()
-export class ThemesService {
+export class TopicsService {
   constructor(
     @InjectRepository(Theme) private readonly repo: Repository<Theme>,
+    private readonly theoriesService: TheoriesService,
+    private readonly testsService: TestsService,
+    private readonly exercisesService: ExercisesService,
   ){}
 
   async create(theme: Theme) {
@@ -24,7 +30,7 @@ export class ThemesService {
   }
 
   async findOne(id: number) {
-    return await this.repo.find(
+    return await this.repo.findOne(
       {
         relations:{
           theory: true,
@@ -55,13 +61,14 @@ export class ThemesService {
   async findAdmin() {
   }
 
-  async update(id: number, theory: Theory) {
-    const theme = await this.repo.find({where:{id: id}});
+  async update(id: number, theme: Theme) {
+    const theme2 = await this.repo.findOne({where:{id: id}});
+    theme2.title = theme.title
 
-    return await this.repo.save({theory: theory, ...theme[0]});
+    return await this.repo.save(theme2);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} theme`;
+  async remove(id: number) {
+    return await this.repo.remove(await this.repo.find({where:{id:id}}))
   }
 }

@@ -31,8 +31,12 @@ const fetcher = async (route: string, method: string, { arg }: any) => {
   if(!resp.ok) return resp.ok;
 
   // console.log( await resp.json())
+  try {
+    return (await resp.json());
+  } catch (error) {
+    return false;
+  }
 
-  return (await resp.json());
 }
 
 const fileFetcher = (route: string, { arg }: any) => {
@@ -53,7 +57,7 @@ export function useGetData (route: string) {
   const { data, isLoading, mutate} = useSWR(route, 
     (route)=> fetcher(route, 'GET', { undefined }));
 
-  if(!data) {
+  if(data === false) {
     return {
       data,
       isLoading,
@@ -130,6 +134,7 @@ export function usePatchData(route: string) {
 
 export function useDeleteData(route: string, mutateRoute?: string) {
   const trigger = async()=> {
+    console.log(route)
     const data = await fetcher(route, 'DELETE', {undefined});
 
     if(!data) {

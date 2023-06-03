@@ -11,8 +11,9 @@ export interface AdminThemeInterface {
 
 export interface ChapterTheoryInterface {
   content: string,
-  setData?: Dispatch<SetStateAction<string>>,
-  sendTheory?: ()=> void,
+  setData: (data: string)=> void,
+  sendTheory: ()=> void,
+  title: string
   // theme: Theme,
 }
 
@@ -20,19 +21,23 @@ export interface ChapterTestsInterface {
   tests: Array<Test>,
   themeId?: string,
   pathname?: string,
+  title: string
 }
 
 export interface ChapterExercisesInterface {
   exercises: Array<Exercise>,
-  themeId: string,
-  pathname: string,
+  themeId?: string,
+  pathname?: string,
+  title:string
 }
 
 export interface TestInterface {
   questions: Array<any>,
-  test_id: number,
+  test_id?: number,
   title: string,
   deleteQ?: any,
+  mainTitle?: string,
+  submit?:(e: any)=> void,
 }
 
 export interface ExInterface {

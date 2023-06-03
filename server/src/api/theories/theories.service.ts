@@ -16,6 +16,9 @@ export class TheoriesService {
   ){}
 
   async create(id: number, theory: Theory) {
+    if(!theory.content) {
+      return;
+    }
     theory.themeId = id;
     return await this.repo.save(theory);
   }
@@ -25,10 +28,13 @@ export class TheoriesService {
   }
 
   async findOne(id: number) {
-    return await this.repo.find({ select: { content: true }, where:{themeId: id} })
+    return await this.repo.find({where: { themeId: id }, relations: { theme:true }})
   }
 
   async update(id: number, theory: Theory) {
+    if(!theory.content) {
+      return;
+    }
     const property = await this.repo.preload(await this.repo.findOne({where: {themeId: id}}));
 
     if(property) {

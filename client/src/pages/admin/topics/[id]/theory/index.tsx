@@ -4,7 +4,7 @@ import TheoryView from "@/views/theory";
 
 export default function TopicPage(){
   return (
-    <Page title={'Редактор темы'} isAdmin={true} >
+    <Page title={'Редактор темы'}>
       <TheoryView/>
     </Page>
   )

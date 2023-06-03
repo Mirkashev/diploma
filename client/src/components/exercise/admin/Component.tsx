@@ -2,17 +2,17 @@ import { Button, Dropdown, Form, Grid, GridColumn, Header, Icon, Image, Menu, Se
 import { ExInterface } from "../../interfaces";
 import DynamicElement from "./dynamicElement";
 import { ReactNode, useEffect, useState } from "react";
-import AddInstrumentModal from "@/components/common/modal";
+import AddInstrumentModal from "@/components/common/modal/instrument";
 import { useRouter } from "next/router";
 import NavTop3 from "../../common/nav/top-layer3";
-import { usePatchData, useUpload } from "@/hooks/fetching";
+import { usePatchData, usePatchDataM, useUpload } from "@/hooks/fetching";
 import toBase64, { dataURLtoFile } from "@/utils/fileToBase64";
 import Link from "next/link";
 
 export default function ExerciseComponent({exercise, dElements, changeDynamicElements, instruments}: ExInterface){
   const [descriptionV, setDescriptionV] = useState(exercise?.description);
   // console.log(exercise);
-  const { trigger } = usePatchData('/exercises/one/'+exercise?.id);
+  const { trigger } = usePatchDataM('/exercises/'+exercise?.id);
   const imageSender = useUpload('/media/upload');
 
   const [img, setImg]:any = useState();
@@ -121,7 +121,7 @@ export default function ExerciseComponent({exercise, dElements, changeDynamicEle
                 justifyContent: 'center'
               }}
             >
-             <Image src={img} style={{ userSelect:'none', drag:'none'}} fluid centered verticalAlign="middle"/>
+             <Image src={img} style={{ userSelect:'none', drag:'none', maxWidth:'100%', maxHeight:'100%'}} fluid centered verticalAlign="middle"/>
             </div>
           </Segment>
         </GridColumn>

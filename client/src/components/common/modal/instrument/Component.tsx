@@ -1,44 +1,22 @@
-import toBase64 from "@/utils/fileToBase64";
-import { useEffect, useState } from "react"
 import { Button, Form, Image, Input, Modal } from 'semantic-ui-react'
 
-//TODO: create + edit variations
-export default function InstrumentModal({title, submit, open, setOpen, triggerNode, instrumentData}: any) {
-  const [img, setImg]:any = useState();
-  console.log(instrumentData?.[0])
 
-  useEffect(()=> {
-    if(instrumentData) {
-      setImg(instrumentData?.[0]?.url)
-      return;
-    }
-
-    setImg();
-  }, [open, instrumentData])
-
-  const uploadImage = async (e: any)=> {
-    if(setImg) {
-      const base64Img = await toBase64(e.target.files[0]);
-      setImg(base64Img);
-    }
-  }
-
-
+const InstrumentModalComponent = ({title, triggerNode, img, uploadImage, isOpen, toggleIsOpen, submit}: any)=> {
   return (
     <Modal
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
+      onClose={toggleIsOpen}
+      onOpen={toggleIsOpen}
+      open={isOpen}
       trigger={triggerNode || <Button style={{borderRadius:0}}>{title}</Button>}
       size="tiny"
     >
       <Modal.Content>
         <Form onSubmit={submit}>
           <Form.Field>
-            <Modal.Header>{title}</Modal.Header>
+            <Modal.Header>{title ? 'Редактировать инструмент' : 'Добавить инструмент'}</Modal.Header>
           </Form.Field>
           <Form.Field>
-            <Input type='text' name='title' style={{width:'100%'}} placeholder={`Введите название`} required defaultValue={instrumentData?.[0]?.title}/>
+            <Input type='text' name='title' style={{width:'100%'}} placeholder={`Введите название`} required defaultValue={title}/>
           </Form.Field>
           <Form.Field>
           <Image src={img}/>
@@ -69,3 +47,5 @@ export default function InstrumentModal({title, submit, open, setOpen, triggerNo
     </Modal>
   )
 }
+
+export default InstrumentModalComponent;

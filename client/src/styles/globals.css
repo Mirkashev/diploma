@@ -80,3 +80,11 @@ img {
 	-webkit-user-select: none;
 	-ms-user-select: none;
 }
+
+.react-flow__panel {
+	display: none !important;
+}
+
+.ck-content {
+	max-height: 65vh;
+}

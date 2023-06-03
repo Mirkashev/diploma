@@ -19,7 +19,7 @@ export class Theory {
   @PrimaryColumn({select:false})
   themeId!: number;
 
-  @Column('text')
+  @Column('text', {default:''})
   // @Index()
   content!: string;
 
@@ -30,7 +30,7 @@ export class Theory {
   @Index()
   createdAt!: Dayjs;
 
-  @OneToOne(()=> Theme, x=> x.theory)
+  @OneToOne(()=> Theme, x=> x.theory, {onDelete: 'CASCADE'})
   @JoinColumn()
   theme!: Theme;
 

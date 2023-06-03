@@ -19,7 +19,7 @@ export class ExercisesService {
   }
 
   async findById(id: number) {
-    return await this.repo.find({where:{id: id}, relations: {
+    return await this.repo.findOne({where:{id: id}, relations: {
       exerciseElCoordinates: true,
       theme: true
     }})
@@ -48,11 +48,12 @@ export class ExercisesService {
       return await this.repo.save(property);
 
     }
-    console.log(id, exercise);
+
+    return false;
     // return `This action updates a #${id} exercise`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} exercise`;
+  async remove(id: number) {
+    return await this.repo.remove(await this.repo.findOne({where:{id: id}}));
   }
 }

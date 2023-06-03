@@ -3,7 +3,7 @@ import TestView from "@/views/test";
 
 export default function TestPage(){
   return (
-    <Page title={'Редактор темы'} isAdmin={true}>
+    <Page title={'Редактор темы'}>
       <TestView/>
     </Page>
   );

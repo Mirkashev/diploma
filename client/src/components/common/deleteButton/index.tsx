@@ -6,6 +6,7 @@ export default function DeleteComponent({route, mutateRoute}: any){
   
 
   const remove = async ()=> {
+    console.log('here')
     deleteQ.trigger()
   }
 

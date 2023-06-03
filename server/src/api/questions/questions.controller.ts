@@ -26,7 +26,7 @@ export class QuestionsController {
     return this.questionsService.remove(questionId);
   }
 
-  @Get('/getone/:question_id')
+  @Get('/answers/:question_id')
   findOneQuestion(@Param('question_id') questionId: number) {
     return this.questionsService.findOne(questionId);
   }

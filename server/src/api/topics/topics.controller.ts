@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ThemesService } from './themes.service';
+import { TopicsService } from './topics.service';
 import { Theme } from '../../db/entities/theme.entity';
 
-@Controller('themes')
-export class ThemesController {
-  constructor(private readonly themesService: ThemesService) {}
+@Controller('topics')
+export class TopicsController {
+  constructor(private readonly themesService: TopicsService) {}
 
   @Post()
   create(@Body() theme: Theme) {
@@ -16,14 +16,14 @@ export class ThemesController {
     return this.themesService.findAll();
   }
 
-  @Get('/getone/:id')
+  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.themesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateThemeDto: any) {
-    return this.themesService.update(+id, updateThemeDto);
+  update(@Param('id') id: string, @Body() theme: Theme) {
+    return this.themesService.update(+id, theme);
   }
 
   @Delete(':id')

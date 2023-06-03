@@ -35,7 +35,7 @@ export class Question {
   @OneToMany(()=> Answer, x=> x.question, {cascade: true})
   answers!: Answer[]; 
 
-  @ManyToOne(()=> Test, x=> x.questions)
+  @ManyToOne(()=> Test, x=> x.questions, {onDelete: 'CASCADE'})
   test!: Test; 
 
   @Column()

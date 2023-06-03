@@ -27,7 +27,7 @@ export class Result {
   @Index()
   createdAt!: Dayjs;
 
-  @ManyToOne(()=> Test, x=> x.results)
+  @ManyToOne(()=> Test, x=> x.results, {onDelete: 'CASCADE'})
   test!: Test; 
 
   @Column()
