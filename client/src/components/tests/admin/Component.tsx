@@ -7,60 +7,98 @@ import Link from "next/link";
 import DeleteComponent from "@/components/common/deleteButton";
 import TitleModal from "@/components/common/modal/titleNew";
 
-const AdminTestComponent =({
+const AdminTestComponent = ({
   themeId,
   tests,
-  title
-}: ChapterTestsInterface)=> {
-  return(
+  title,
+}: ChapterTestsInterface) => {
+  return (
     <>
-      <NavTop2 title={title} activeButton={
-        <TitleModal 
-            route={'/tests/' + themeId}
-            method='POST'
-            mutateRoute={'/topics/' + themeId}
-            triggerNode={<Button
-              style={{background:'rgba(255,255,255,.85)', color:'#000'}}
-            >Добавить</Button>}
+      <NavTop2
+        title={title}
+        activeButton={
+          <TitleModal
+            route={"/tests/" + themeId}
+            method="POST"
+            mutateRoute={"/topics/" + themeId}
+            triggerNode={
+              <Button
+                style={{ background: "rgba(255,255,255,.85)", color: "#000" }}
+              >
+                Добавить тест
+              </Button>
+            }
           />
-        }/>
+        }
+      />
       <SideNav>
-
-        <Table celled>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Название теста</Table.HeaderCell>
-              <Table.HeaderCell style={{width:'5%'}}>Настройки</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-          {tests?.map((el, i) => 
-            <Table.Row key={i + Math.random()}>
-              <Table.Cell style={{padding:0}}>
-                <Link 
-                  href={{pathname: `/admin/topics/${themeId}/tests/${el.id}`}}
-                  style={{display:'block', width:'100%', padding:'10px'}}
+        <div
+          style={{
+            height: "65vh",
+            overflowY: "scroll",
+            border: "1px solid rgba(34,36,38,.15)",
+            borderRadius: "4px",
+          }}
+        >
+          <Table celled style={{ border: "none" }}>
+            <Table.Header
+              style={{
+                position: "sticky",
+                top: "0px",
+              }}
+            >
+              <Table.Row>
+                <Table.HeaderCell>Название теста</Table.HeaderCell>
+                <Table.HeaderCell style={{ width: "5%" }}>
+                  Настройки
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {tests?.map((el, i) => (
+                <Table.Row key={i + Math.random()}>
+                  <Table.Cell style={{ padding: 0 }}>
+                    <Link
+                      href={{
+                        pathname: `/admin/topics/${themeId}/tests/${el.id}`,
+                      }}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        padding: "10px",
+                      }}
+                    >
+                      {el.title}
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell
+                    style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                  {el.title}
-                </Link> 
-              </Table.Cell>
-              <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
-                <TitleModal 
-                  route={'/tests/' + el.id}
-                  mutateRoute={'/topics/' + themeId}
-                  method='PATCH' 
-                  title={el.title} 
-                  triggerNode={<Icon style={{cursor:'pointer'}} name='pencil alternate' />}
-                />
-                <DeleteComponent route={'/tests/' + el.id} mutateRoute={'/topics/' + themeId} />
-              </Table.Cell>
-            </Table.Row>)}
-          </Table.Body>
-        </Table>
+                    <TitleModal
+                      route={"/tests/" + el.id}
+                      mutateRoute={"/topics/" + themeId}
+                      method="PATCH"
+                      title={el.title}
+                      triggerNode={
+                        <Icon
+                          style={{ cursor: "pointer" }}
+                          name="pencil alternate"
+                        />
+                      }
+                    />
+                    <DeleteComponent
+                      route={"/tests/" + el.id}
+                      mutateRoute={"/topics/" + themeId}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
       </SideNav>
-
     </>
-  )
-}
+  );
+};
 
 export default AdminTestComponent;

@@ -4,32 +4,32 @@ import { useRouter } from "next/router";
 import UserTestComponent from "./user/Component";
 
 // todo: refactor garbage component
-const ConnectedChapterTest = ()=> {
+const ConnectedChapterTest = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { data, isLoading, isError } = useGetData('/topics/' + id);
+  const { data, isLoading, isError } = useGetData("/topics/" + id);
 
-  if(isLoading || !id) return <div>...Loading</div>;
+  if (isLoading || !id) return <div>...Loading</div>;
 
-  if(isError) return <div>There is some error, try to update page</div>
+  if (isError) return <div>There is some error, try to update page</div>;
 
-  if(router.isReady && !!router.pathname.match('/admin')) {
+  if (router.isReady && !!router.pathname.match("/admin")) {
     return (
       <ChapterTestComponent
-        themeId={id+''}
+        themeId={id + ""}
         tests={data?.tests}
         title={data?.title}
       />
-    )
+    );
   }
 
   return (
     <UserTestComponent
       tests={data?.tests}
-      themeId={id+''}
+      themeId={id + ""}
       title={data?.title}
     />
-  )
-}
+  );
+};
 
 export default ConnectedChapterTest;

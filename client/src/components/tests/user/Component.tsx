@@ -7,12 +7,11 @@ import SideNav from "@/components/common/nav/left-side";
 export default function UserTestComponent({
   tests,
   themeId,
-  title
+  title,
 }: ChapterTestsInterface) {
-  
-  return(
+  return (
     <>
-      <NavTop2 title={title}/>
+      <NavTop2 title={title} />
       <SideNav>
         <Table celled>
           <Table.Header>
@@ -20,27 +19,28 @@ export default function UserTestComponent({
               <Table.HeaderCell>Название теста</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-            <Table.Body>
-            {tests?.map((el, i) => 
+          <Table.Body>
+            {tests?.map((el, i) => (
               <Table.Row key={i + Math.random()}>
-                <Table.Cell 
-                  style={{padding:0}}
-                  >
-                  <Link 
+                <Table.Cell style={{ padding: 0 }}>
+                  <Link
                     style={{
-                      width:'100%',
-                      display:'block',
-                      padding:'10px'
-                    }} 
-                    href={{pathname: `/user/topics/${themeId}/tests/${el.id}`}}>
+                      width: "100%",
+                      display: "block",
+                      padding: "10px",
+                    }}
+                    href={{
+                      pathname: `/user/topics/${themeId}/tests/${el.id}`,
+                    }}
+                  >
                     Начать тест: {el.title}
-                  </Link> 
+                  </Link>
                 </Table.Cell>
-              </Table.Row>)}
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </SideNav>
     </>
-
-  )
+  );
 }

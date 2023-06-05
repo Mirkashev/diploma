@@ -4,10 +4,14 @@ import Link from "next/link";
 import SideNav from "@/components/common/nav/left-side";
 import NavTop2 from "@/components/common/nav/top-layer2/Сomponent";
 
-export default function UserExComponent({ exercises, pathname, title }: ChapterExercisesInterface) {
-  return(
+export default function UserExComponent({
+  exercises,
+  pathname,
+  title,
+}: ChapterExercisesInterface) {
+  return (
     <>
-      <NavTop2 title={title}/>
+      <NavTop2 title={title} />
       <SideNav>
         <Table celled>
           <Table.Header>
@@ -15,20 +19,19 @@ export default function UserExComponent({ exercises, pathname, title }: ChapterE
               <Table.HeaderCell>Название</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-            <Table.Body>
-            {exercises?.map((el, i) => 
+          <Table.Body>
+            {exercises?.map((el, i) => (
               <Table.Row key={i + Math.random()}>
                 <Table.Cell>
-                  <Link href={{pathname: pathname + '/' + el?.id}} >
+                  <Link href={{ pathname: pathname + "/" + el?.id }}>
                     Начать упражнение: {el.title}
-                  </Link> 
+                  </Link>
                 </Table.Cell>
-              </Table.Row>)}
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </SideNav>
     </>
-
-
-  )
+  );
 }

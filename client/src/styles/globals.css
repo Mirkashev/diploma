@@ -81,10 +81,10 @@ img {
 	-ms-user-select: none;
 }
 
-.react-flow__panel {
+/* .react-flow__panel {
 	display: none !important;
-}
+} */
 
 .ck-content {
-	max-height: 65vh;
+	max-height: 60vh;
 }
