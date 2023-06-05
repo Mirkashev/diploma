@@ -33,8 +33,8 @@ export default function ChapterExComponent({
       <SideNav>
         <div
           style={{
-            height: "65vh",
-            overflowY: "scroll",
+            maxHeight: "65vh",
+            overflowY: "auto",
             border: "1px solid rgba(34,36,38,.15)",
             borderRadius: "4px",
           }}

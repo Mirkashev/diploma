@@ -10,8 +10,8 @@ export default function UserTheoryComponent({ content, title }: any) {
       <SideNav>
         <div
           style={{
-            height: "75vh",
-            overflowY: "scroll",
+            maxHeight: "75vh",
+            overflowY: "auto",
             borderTop: "1px solid #d4d4d5",
             borderBottom: "1px solid #d4d4d5",
             padding: "20px 0",
