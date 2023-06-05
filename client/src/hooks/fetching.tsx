@@ -4,7 +4,7 @@ import useSWRMutation from "swr/mutation";
 //TODO: set api end point by env REFACTOR THIS ELEMENT
 const fetchConfig: RequestInit = {
   method: "GET", // *GET, POST, PUT, DELETE, etc.
-  mode: "no-cors", // no-cors, *cors, same-origin
+  mode: "cors", // no-cors, *cors, same-origin
   cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
   credentials: "same-origin", // include, *same-origin, omit
   redirect: "follow", // manual, *follow, error
