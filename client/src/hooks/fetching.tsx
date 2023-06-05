@@ -1,7 +1,6 @@
-
-import { useEffect, useState } from 'react';
-import useSWR, { mutate } from 'swr';
-import useSWRMutation from 'swr/mutation';
+import { useEffect, useState } from "react";
+import useSWR, { mutate } from "swr";
+import useSWRMutation from "swr/mutation";
 //TODO: set api end point by env REFACTOR THIS ELEMENT
 const fetchConfig: RequestInit = {
   method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -9,61 +8,61 @@ const fetchConfig: RequestInit = {
   cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
   credentials: "same-origin", // include, *same-origin, omit
   redirect: "follow", // manual, *follow, error
-  referrerPolicy: "no-referrer", 
-}
+  referrerPolicy: "no-referrer",
+};
 
 const fetcher = async (route: string, method: string, { arg }: any) => {
-  if(route.match('undefined')) return;
+  if (route.match("undefined")) return;
 
   let config = {
-    ...fetchConfig, 
+    ...fetchConfig,
     headers: {
       "Content-Type": "application/json",
-      "Authorization" : `Bearer ${localStorage.getItem('token')}`
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     method: method,
-  }
+  };
 
-  if(arg) config.body = arg;
+  if (arg) config.body = arg;
 
-  const resp = await fetch('http://localhost:3030' + route, config);
+  const resp = await fetch("http://localhost:3030" + route, config);
 
-  if(!resp.ok) return resp.ok;
+  if (!resp.ok) return resp.ok;
 
   // console.log( await resp.json())
   try {
-    return (await resp.json());
+    return await resp.json();
   } catch (error) {
     return false;
   }
-
-}
+};
 
 const fileFetcher = (route: string, { arg }: any) => {
-  if(route.match('undefined')) return;
+  if (route.match("undefined")) return;
 
-  return fetch('http://localhost:3030' + route, {
-  ...fetchConfig, 
-  headers: {
-    // "Content-Type": "application/json",
-    "Authorization" : `Bearer ${localStorage.getItem('token')}`
-  }, 
-  method:'POST', 
-  body: arg})
-}
+  return fetch("http://localhost:3030" + route, {
+    ...fetchConfig,
+    headers: {
+      // "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    method: "POST",
+    body: arg,
+  });
+};
 
+export function useGetData(route: string) {
+  const { data, isLoading, mutate } = useSWR(route, (route) =>
+    fetcher(route, "GET", { undefined })
+  );
 
-export function useGetData (route: string) {
-  const { data, isLoading, mutate} = useSWR(route, 
-    (route)=> fetcher(route, 'GET', { undefined }));
-
-  if(data === false) {
+  if (data === false) {
     return {
       data,
       isLoading,
       isError: true,
       mutate,
-    }
+    };
   }
 
   return {
@@ -71,11 +70,11 @@ export function useGetData (route: string) {
     isLoading,
     isError: false,
     mutate,
-  }
+  };
 }
 
 // export function usePostData(route: string) {
-//   const { trigger, isMutating, error } = useSWRMutation(route, 
+//   const { trigger, isMutating, error } = useSWRMutation(route,
 //     (route, { arg }) => fetcher(route, 'POST', { arg }))
 
 //   return {
@@ -86,77 +85,79 @@ export function useGetData (route: string) {
 // }
 
 export function usePostData(route: string, mutateRoute?: string) {
-  const trigger = async(arg: any)=> {
-    const data = await fetcher(route, 'POST', {arg});
+  const trigger = async (arg: any) => {
+    const data = await fetcher(route, "POST", { arg });
 
-    if(!data) {
+    if (!data) {
       return false;
     }
 
     mutate(mutateRoute || route);
-    
+
     return data;
-  }
-  
+  };
+
   return {
-    trigger
-  }
+    trigger,
+  };
 }
 
-export function usePatchDataM(route: string, mutateRoute?: string){
-  const trigger = async(arg: any)=> {
-    const data = await fetcher(route, 'PATCH', {arg});
+export function usePatchDataM(route: string, mutateRoute?: string) {
+  const trigger = async (arg: any) => {
+    const data = await fetcher(route, "PATCH", { arg });
 
-    if(!data) {
+    if (!data) {
       return false;
     }
 
     mutate(mutateRoute || route);
 
     return true;
-  }
-  
+  };
+
   return {
-    trigger
-  }
+    trigger,
+  };
 }
 
 export function usePatchData(route: string) {
-  const { trigger, isMutating, error } = useSWRMutation(route, 
-    (route, { arg }) => fetcher(route, 'PATCH', { arg }))
+  const { trigger, isMutating, error } = useSWRMutation(
+    route,
+    (route, { arg }) => fetcher(route, "PATCH", { arg })
+  );
 
   return {
     trigger,
     isMutating,
-    error
-  }
+    error,
+  };
 }
 
 export function useDeleteData(route: string, mutateRoute?: string) {
-  const trigger = async()=> {
-    console.log(route)
-    const data = await fetcher(route, 'DELETE', {undefined});
+  const trigger = async () => {
+    console.log(route);
+    const data = await fetcher(route, "DELETE", { undefined });
 
-    if(!data) {
+    if (!data) {
       return false;
     }
 
     mutate(mutateRoute || route);
 
     return true;
-  }
-  
+  };
+
   return {
-    trigger
-  }
+    trigger,
+  };
 }
 
 export function useUpload(route: string) {
-  const { trigger, isMutating, error } = useSWRMutation(route, fileFetcher)
+  const { trigger, isMutating, error } = useSWRMutation(route, fileFetcher);
 
   return {
     trigger,
     isMutating,
-    error
-  }
+    error,
+  };
 }

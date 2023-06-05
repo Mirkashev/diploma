@@ -11,6 +11,8 @@ export class UsersService {
   ){}
 
   async create(user: User) {
+    return await this.repo.save(user);
+
     console.log(user);
     if(user.role === 'student' || user.role === 'teacher' || user.role === undefined) {
       return await this.repo.save(user);

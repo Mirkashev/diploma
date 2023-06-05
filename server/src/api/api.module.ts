@@ -85,8 +85,8 @@ export class ApiModule implements OnModuleInit {
 
     // this.usersService.createAdmin( 
     //   {
-    //     login: 'Admin', 
-    //     password: 'dvzz3uwu',
+    //     login: 'Andrey', 
+    //     password: '12345',
     //     surname: 'Mirkashev',
     //     firstName: 'Ilnaz',
     //     lastName: 'Lenarovich',
