@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import {useCallback, useEffect} from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -11,6 +11,9 @@ import ReactFlow, {
 
 import "reactflow/dist/style.css";
 import { Container, Dropdown, Icon, Menu } from "semantic-ui-react";
+import ArrowNode from "../nodes/arrowNode/arrowNode";
+import CircleNode from "@/components/nodes/CircleNode";
+import SquareNode from "@/components/nodes/SquareNode";
 
 const initialNodes = [
   // {
@@ -43,29 +46,74 @@ const initialNodes = [
   },
 ];
 
+const nodeTypes = {
+  arrowNode: ArrowNode,
+  circleNode: CircleNode,
+  squareNode: SquareNode
+};
+
 const initialEdges = [{ id: "e1-2", source: "2", target: "3" }];
 
 const Exercise = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const addNode = () => {
+
+
+  const updateNode = (id, data) => {
+    setNodes((nodes) => {
+      return nodes.map((node) => {
+        if(node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              ...data,
+            }
+          }
+        } else {
+          return node
+        }
+      })
+    })
+  }
+
+  const addCircleNode = () => {
+    setNodes((nodes) => [...nodes, {
+      id: `${nodes.length + 1}`,
+      position: { x: 0, y: 100 },
+      type: 'circleNode',
+      data: { label: `0`, update: updateNode, onConnect },
+    }])
+  }
+
+  const addSquareNode = () => {
+    setNodes((nodes) => [...nodes, {
+      id: `${nodes.length + 1}`,
+      position: { x: 0, y: 100 },
+      type: 'squareNode',
+      data: { label: `0`, update: updateNode, onConnect },
+    }])
+  }
+
+  const addArrowNode = () => {
     setNodes([
       ...nodes,
       {
         id: `${nodes.length + 1}`,
         position: { x: 0, y: 100 },
-        data: { label: `${nodes.length + 1}` },
+        type: 'arrowNode',
+        data: { label: `Текст`, update: updateNode, onConnect },
         // expandParent: false,
         // parentNode: "1",
         // extent: "parent",
-        style: { width: "100px", height: "100px" },
+        // style: { width: "100px", height: "100px" },
       },
     ]);
   };
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
+    (params: any) => setEdges((eds) => addEdge({...params, type: 'step', }, eds)),
     [setEdges]
   );
 
@@ -88,6 +136,7 @@ const Exercise = () => {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          nodeTypes={nodeTypes}
           // translateExtent={[
           //   [-0, -0],
           //   [1125, 795],
@@ -108,10 +157,20 @@ const Exercise = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item>
                     <Icon name="dropdown" />
+                    <span className="text">Приборы </span>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={addCircleNode}>
+                        Полевой прибор
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Icon name="dropdown" />
                     <span className="text">Тело схемы</span>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={addNode}>
+                      <Dropdown.Item onClick={addSquareNode}>
                         Синий квадрат
                       </Dropdown.Item>
                       <Dropdown.Item>Желтый квадрат</Dropdown.Item>
@@ -122,7 +181,7 @@ const Exercise = () => {
                     <span className="text">Вход и выход</span>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item>Синяя линия</Dropdown.Item>
+                      <Dropdown.Item onClick={addArrowNode}>Синяя линия</Dropdown.Item>
                       <Dropdown.Item>Желтая линия</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown.Item>
