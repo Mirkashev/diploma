@@ -5,7 +5,7 @@ import useSWRMutation from 'swr/mutation';
 //TODO: set api end point by env REFACTOR THIS ELEMENT
 const fetchConfig: RequestInit = {
   method: "GET", // *GET, POST, PUT, DELETE, etc.
-  mode: "cors", // no-cors, *cors, same-origin
+  mode: "no-cors", // no-cors, *cors, same-origin
   cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
   credentials: "same-origin", // include, *same-origin, omit
   redirect: "follow", // manual, *follow, error
@@ -26,7 +26,7 @@ const fetcher = async (route: string, method: string, { arg }: any) => {
 
   if(arg) config.body = arg;
 
-  const resp = await fetch('http://localhost:3030' + route, config);
+  const resp = await fetch('https://561c-2a02-2698-2807-25e7-b1ae-8bc3-f05b-ea96.eu.ngrok.io/' + route, config);
 
   if(!resp.ok) return resp.ok;
 
@@ -42,7 +42,7 @@ const fetcher = async (route: string, method: string, { arg }: any) => {
 const fileFetcher = (route: string, { arg }: any) => {
   if(route.match('undefined')) return;
 
-  return fetch('http://localhost:3030' + route, {
+  return fetch('https://561c-2a02-2698-2807-25e7-b1ae-8bc3-f05b-ea96.eu.ngrok.io/' + route, {
   ...fetchConfig, 
   headers: {
     // "Content-Type": "application/json",

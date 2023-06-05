@@ -22,9 +22,9 @@ const ConnectedAuthorization = () => {
 
     console.log(reqBody);
     // TODO: send encrypted body
-    const response = await fetch('http://localhost:3030/auth/login', {
+    const response = await fetch('https://561c-2a02-2698-2807-25e7-b1ae-8bc3-f05b-ea96.eu.ngrok.io/auth/login', {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
+      mode: "no-cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, *same-origin, omit
       headers: {
