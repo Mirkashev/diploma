@@ -9,5 +9,6 @@ export { Result } from './result.entity';
 export { Group } from './group.entity';
 export { Exercise } from './exercise.entity';
 export { ExerciseEl } from './exercise-el.entity';
-export { ExerciseElCoordinates } from './exercise-el-coordinates';
+// export { ExerciseElCoordinates } from './exercise-el-coordinates';
 export { Answer } from './answers.entity';
+export { ExerciseShema } from './exercise-schema.entity';
