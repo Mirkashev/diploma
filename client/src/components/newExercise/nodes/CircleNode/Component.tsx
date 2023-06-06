@@ -108,8 +108,6 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
           defaultValue={data.label}
           label={'Прибор'}
           onChange={(event) => onChange('label', event.target.value)}
-          st
-
         />
           <div style={{marginTop: '8px'}}>
               <Form.Select
