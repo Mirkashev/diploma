@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react";
+import { useCallback, useEffect, useState } from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -10,224 +10,258 @@ import ReactFlow, {
 } from "reactflow";
 
 import "reactflow/dist/style.css";
-import { Container, Dropdown, Icon, Menu } from "semantic-ui-react";
-import ArrowNode from "../nodes/arrowNode/arrowNode";
-import CircleNode from "@/components/nodes/CircleNode";
-import SquareNode from "@/components/nodes/SquareNode";
-
-const initialNodes = [
-  // {
-  //   id: "1",
-  //   position: { x: 0, y: 0 },
-  //   data: { label: "1" },
-  //   style: { width: "calc(100% - 1px)", height: "calc(100% - 1px)" },
-  //   draggable: false,
-  //   selectable: false,
-  // },
-  {
-    id: "2",
-    position: { x: 0, y: 0 },
-    data: { label: "2" },
-    // expandParent: false,
-    // parentNode: "1",
-    // extent: "parent",
-    // width: "100px",
-    style: { width: "100px", height: "100px" },
-  },
-  {
-    id: "3",
-    position: { x: 0, y: 100 },
-    data: { label: "3" },
-    // expandParent: false,
-    // parentNode: "1",
-    // extent: "parent",
-    // width: "100px",
-    style: { width: "100px", height: "100px" },
-  },
-];
+import {
+  Button,
+  Container,
+  Dropdown,
+  Form,
+  Icon,
+  Menu,
+  TextArea,
+} from "semantic-ui-react";
+import ArrowNode from "./nodes/arrowNode";
+import CircleNode from "./nodes/CircleNode";
+import SquareNode from "./nodes/SquareNode";
+import NavTop2 from "../common/nav/top-layer2/Сomponent";
+import SideNav from "../common/nav/left-side";
+import NavTop3 from "../common/nav/top-layer3/Сomponent";
 
 const nodeTypes = {
   arrowNode: ArrowNode,
   circleNode: CircleNode,
-  squareNode: SquareNode
+  squareNode: SquareNode,
 };
 
-const initialEdges = [{ id: "e1-2", source: "2", target: "3" }];
-
 const Exercise = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [rfInstance, setRfInstance]: any = useState(
+    '{"nodes":[{"width":180,"height":120,"id":"1","position":{"x":0,"y":100},"type":"squareNode","data":{"label":"0"},"positionAbsolute":{"x":0,"y":100}}],"edges":[],"viewport":{"x":241.5,"y":-16.5,"zoom":2}}'
+  );
 
-
-
-  const updateNode = (id, data) => {
+  const updateNode = (id: any, data: any) => {
     setNodes((nodes) => {
       return nodes.map((node) => {
-        if(node.id === id) {
+        if (node.id === id) {
           return {
             ...node,
             data: {
               ...node.data,
               ...data,
-            }
-          }
+            },
+          };
         } else {
-          return node
+          return node;
         }
-      })
-    })
-  }
+      });
+    });
+  };
 
   const addCircleNode = () => {
-    setNodes((nodes) => [...nodes, {
-      id: `${nodes.length + 1}`,
-      position: { x: 0, y: 100 },
-      type: 'circleNode',
-      data: { label: `0`, update: updateNode, onConnect },
-    }])
-  }
-
-  const addSquareNode = () => {
-    setNodes((nodes) => [...nodes, {
-      id: `${nodes.length + 1}`,
-      position: { x: 0, y: 100 },
-      type: 'squareNode',
-      data: { label: `0`, update: updateNode, onConnect },
-    }])
-  }
-
-  const addArrowNode = () => {
-    setNodes([
+    setNodes((nodes) => [
       ...nodes,
       {
         id: `${nodes.length + 1}`,
         position: { x: 0, y: 100 },
-        type: 'arrowNode',
-        data: { label: `Текст`, update: updateNode, onConnect },
-        // expandParent: false,
-        // parentNode: "1",
-        // extent: "parent",
-        // style: { width: "100px", height: "100px" },
+        type: "circleNode",
+        data: { label: `0`, update: updateNode, onConnect },
+      },
+    ]);
+  };
+
+  const addSquareNode = () => {
+    setNodes((nodes) => [
+      ...nodes,
+      {
+        id: `${nodes.length + 1}`,
+        position: { x: 0, y: 100 },
+        type: "squareNode",
+        data: { label: `0`, update: updateNode, onConnect },
+      },
+    ]);
+  };
+
+  const addArrowNode = (e: any) => {
+    return setNodes((nodes) => [
+      ...nodes,
+      {
+        id: `${nodes.length + 1}`,
+        position: { x: 0, y: 100 },
+        type: "arrowNode",
+        data: {
+          label: `Текст`,
+          update: updateNode,
+          onConnect,
+          arrowType: e.target.getAttribute("type"),
+        },
       },
     ]);
   };
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge({...params, type: 'step', }, eds)),
+    (params: any) =>
+      setEdges((eds) => addEdge({ ...params, type: "step" }, eds)),
     [setEdges]
   );
 
+  const onSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      console.log(JSON.stringify(flow));
+      // localStorage.setItem('tempFlow', JSON.stringify(flow));
+    }
+  }, [rfInstance]);
+
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     const flow = JSON.parse(rfInstance);
+
+  //     if (flow) {
+  //       // const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+  //       setNodes(flow.nodes || []);
+  //       setEdges(flow.edges || []);
+  //       // setViewport({ x, y, zoom });
+  //     }
+  //   }
+  // }, []);
+
   return (
-    <Container style={{ height: "calc(100vh - 140px)", marginTop: "60px" }}>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          border: "1px solid #000",
-          borderRadius: "4px",
-        }}
-      >
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          // panOnDrag={false}
-          maxZoom={2}
-          minZoom={0.5}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          nodeTypes={nodeTypes}
-          // translateExtent={[
-          //   [-0, -0],
-          //   [1125, 795],
-          // ]}
-          // nodeExtent={[
-          //   [-0, -0],
-          //   [1025, 695],
-          // ]}
-          defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
-          fitView
-          // fitView={true}
-        >
-          <Background variant={BackgroundVariant.Dots} gap={10} size={1} />
-          <Controls />
-          <Panel position="top-left">
-            <Menu style={{ width: "100%" }}>
-              <Dropdown item text="Строительные блоки схемы" simple>
-                <Dropdown.Menu>
-                  <Dropdown.Item>
-                    <Icon name="dropdown" />
-                    <span className="text">Приборы </span>
+    <>
+      <NavTop2 />
+      <SideNav>
+        <Container style={{ height: "55vh" }}>
+          <NavTop3 title={"загрузка..."}>
+            <Button onClick={onSave} style={{ borderRadius: 0, margin: 0 }}>
+              Сохранить схему
+            </Button>
+          </NavTop3>
+          <TextArea
+            placeholder="Введите описание задачи"
+            style={{
+              width: "100%",
+              heigh: "10vh",
+              resize: "none",
+              borderRadius: "0 0 4px 4px",
+              border: "1px solid #d4d4d5",
+              padding: "10px",
+              marginBottom: "8px",
+            }}
+          ></TextArea>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              border: "1px solid #d4d4d5",
+              borderRadius: "4px",
+            }}
+          >
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              // panOnDrag={false}
+              maxZoom={2}
+              minZoom={0.5}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              nodeTypes={nodeTypes}
+              onInit={setRfInstance}
+              // translateExtent={[
+              //   [-0, -0],
+              //   [1125, 795],
+              // ]}
+              // nodeExtent={[
+              //   [-0, -0],
+              //   [1025, 695],
+              // ]}
+              defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
+              fitView
+              // fitView={true}
+            >
+              <Background variant={BackgroundVariant.Dots} gap={10} size={1} />
+              <Controls />
+              <Panel position="top-left">
+                <Menu style={{ width: "100%" }}>
+                  <Dropdown item text="Строительные блоки схемы" simple>
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={addCircleNode}>
-                        Полевой прибор
+                      <Dropdown.Item>
+                        <Icon name="dropdown" />
+                        <span className="text">Приборы </span>
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={addCircleNode}>
+                            Полевой прибор
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
                       </Dropdown.Item>
-                    </Dropdown.Menu>
+                      <Dropdown.Item>
+                        <Icon name="dropdown" />
+                        <span className="text">Тело схемы</span>
 
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Icon name="dropdown" />
-                    <span className="text">Тело схемы</span>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={addSquareNode}>
-                        Синий квадрат
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={addSquareNode}>
+                            Синий прямоугольник
+                          </Dropdown.Item>
+                          {/* <Dropdown.Item>Желтый квадрат</Dropdown.Item> */}
+                        </Dropdown.Menu>
                       </Dropdown.Item>
-                      <Dropdown.Item>Желтый квадрат</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Icon name="dropdown" />
-                    <span className="text">Вход и выход</span>
+                      <Dropdown.Item>
+                        <Icon name="dropdown" />
+                        <span className="text">Линии</span>
 
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={addArrowNode}>Синяя линия</Dropdown.Item>
-                      <Dropdown.Item>Желтая линия</Dropdown.Item>
+                        <Dropdown.Menu>
+                          <Dropdown.Item type="default" onClick={addArrowNode}>
+                            Горизонтальная линия
+                          </Dropdown.Item>
+                          <Dropdown.Item
+                            type="default-vertical"
+                            onClick={addArrowNode}
+                          >
+                            Вертикальная линия
+                          </Dropdown.Item>
+                          <Dropdown.Item type="right" onClick={addArrowNode}>
+                            Горизонтальная линия вправо
+                          </Dropdown.Item>
+                          <Dropdown.Item type="left" onClick={addArrowNode}>
+                            Горизонтальная линия влево
+                          </Dropdown.Item>
+                          <Dropdown.Item type="up" onClick={addArrowNode}>
+                            Вертикальная линия вверх
+                          </Dropdown.Item>
+                          <Dropdown.Item type="down" onClick={addArrowNode}>
+                            Вертикальная линия вниз
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <Icon name="dropdown" />
+                        <span className="text">Элементы схемы</span>
+                        <Dropdown.Menu>
+                          <Dropdown.Item>Регулирующий клапан</Dropdown.Item>
+                          <Dropdown.Item>Отсекатель</Dropdown.Item>
+                          <Dropdown.Item>Задвижка</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown.Item>
+                      {/* <Dropdown.Item>
+                        <Icon name="dropdown" />
+                        <span className="text">Примитивы</span>
+                        <Dropdown.Menu>
+                          <Dropdown.Item>Прямоугольник</Dropdown.Item>
+                          <Dropdown.Item>Треугольник</Dropdown.Item>
+                          <Dropdown.Item>Ромб</Dropdown.Item>
+                          <Dropdown.Item>Трапеция</Dropdown.Item>
+                          <Dropdown.Item>Овал</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown.Item> */}
                     </Dropdown.Menu>
-                  </Dropdown.Item>
-                  {/* <Dropdown.Item>Open</Dropdown.Item>
-                  <Dropdown.Item>Save...</Dropdown.Item>
-                  <Dropdown.Item>Edit Permissions</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Header>Export</Dropdown.Header>
-                  <Dropdown.Item>Share</Dropdown.Item> */}
-                </Dropdown.Menu>
-              </Dropdown>
-              <Menu.Item
-                name="reviews"
-                // active={activeItem === 'reviews'}
-                // onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="upcomingEvents"
-                // active={activeItem === 'upcomingEvents'}
-                // onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="upcomingEvents"
-                // active={activeItem === 'upcomingEvents'}
-                // onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="upcomingEvents"
-                // active={activeItem === 'upcomingEvents'}
-                // onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="upcomingEvents"
-                // active={activeItem === 'upcomingEvents'}
-                // onClick={this.handleItemClick}
-              />
-              <Menu.Item
-                name="upcomingEvents"
-                // active={activeItem === 'upcomingEvents'}
-                // onClick={this.handleItemClick}
-              />
-            </Menu>
-          </Panel>
-        </ReactFlow>
-      </div>
-    </Container>
+                  </Dropdown>
+                  {/* <Menu.Item>Cписок приборов задания(пока общие)</Menu.Item> */}
+                </Menu>
+              </Panel>
+            </ReactFlow>
+          </div>
+        </Container>
+      </SideNav>
+    </>
   );
 };
 export default Exercise;
