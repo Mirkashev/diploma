@@ -107,7 +107,6 @@ const Exercise = () => {
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      console.log(JSON.stringify(flow));
       // localStorage.setItem('tempFlow', JSON.stringify(flow));
     }
   }, [rfInstance]);
