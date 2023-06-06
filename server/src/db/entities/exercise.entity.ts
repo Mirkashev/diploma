@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { Theme, ExerciseEl, ExerciseElCoordinates } from "src/db/entities";
+import { Theme, ExerciseEl} from "src/db/entities";
 
 import {
   Column,
@@ -14,6 +14,7 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ExerciseShema } from "./exercise-schema.entity";
 
 
 @Entity('exercises')
@@ -28,7 +29,6 @@ export class Exercise {
   @Column('varchar', { length: 1024, default:'' })
   // @Index()
   description!: string;
-
 
   @Column('timestamptz', {
     default: () => 'CURRENT_TIMESTAMP',
@@ -45,8 +45,12 @@ export class Exercise {
   @Column('varchar', {length: 1024, default:''})
   url!: string;
 
-  @OneToMany(()=> ExerciseElCoordinates, x=> x.exercise, { cascade: true })
-  exerciseElCoordinates!: ExerciseElCoordinates; 
+  @OneToOne(()=> ExerciseShema, x=> x.exercise, {onDelete: 'CASCADE'})
+  @JoinColumn()
+  exerciseSchema!: ExerciseShema;
+
+  // @OneToMany(()=> ExerciseElCoordinates, x=> x.exercise, { cascade: true })
+  // exerciseElCoordinates!: ExerciseElCoordinates; 
 
   constructor(from: Partial<Exercise>) {
     Object.assign(this, from);
