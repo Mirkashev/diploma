@@ -37,20 +37,20 @@ const Exercise = () => {
   const onCheck = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      console.log(flow);
+      console.log(flow.edges);
       // localStorage.setItem('tempFlow', JSON.stringify( flow));
-      const interElems = flow.nodes.filter(
-        (el: any) => el.data.checked === "true"
-      );
-      const srcIds = flow.edges
-        .map((el: any) => {
-          if (!!interElems.find((elem: any) => elem.id === el.target)) {
-            return { sId: el.source, tId: el.target, eType: el.data.edgeType };
-          }
-        })
-        .filter((el: any) => el != undefined);
+      // const interElems = flow.nodes.filter(
+      //   (el: any) => el.data.checked === "true"
+      // );
+      // const srcIds = flow.edges
+      //   .map((el: any) => {
+      //     if (!!interElems.find((elem: any) => elem.id === el.target)) {
+      //       return { sId: el.source, tId: el.target, eType: el.data.edgeType };
+      //     }
+      //   })
+      //   .filter((el: any) => el != undefined);
 
-      console.log(srcIds);
+      // console.log(srcIds);
 
       // далее удалить из content элементы по id и их связи
       // сгенерировать инструменты и в нужные инструменты засунуть ids, в остальные зарандомить числа по дате

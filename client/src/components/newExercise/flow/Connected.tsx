@@ -54,6 +54,8 @@ const deviceSymbols = [
   ["I", "R", "C", "S", "A", "E", "T", "K", "Y", "V"],
 ];
 
+const deviceTypes = ["field", "rsu", "paz", "panel", "add_panel"];
+
 const generateCircleLabel = (schemaNumber: string) => {
   let generatedCircleLable = "";
   deviceSymbols.forEach((el) => {
@@ -167,6 +169,7 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
   };
 
   const createCircle = (id: string, data: any) => {
+    console.log(id);
     setNodes((nodes) => [
       ...nodes,
       {
@@ -202,33 +205,70 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
 
     const generatedNames = [];
 
+    flow.nodes.forEach((el: any) => {
+      if (el.data.checked === "true") {
+        generatedNames.push(
+          <Dropdown.Item
+            key={Math.random() * 100 + "rndmkey"}
+            onClick={() =>
+              createCircle(el.id, {
+                ...el.data,
+                label: el.data.label,
+              })
+            }
+          >
+            <span>{el.data.label}</span>
+          </Dropdown.Item>
+        );
+      }
+    });
+
     for (let i = 0; i < 20; i += 1) {
-      generatedNames.push(generateCircleLabel("1"));
+      const generatedName = generateCircleLabel("1");
+      generatedNames.push(
+        <Dropdown.Item
+          key={i}
+          onClick={() =>
+            createCircle("fakeCircle" + i, {
+              label: generatedName,
+              type: deviceTypes[getRandomInt(0, deviceTypes.length - 1)],
+            })
+          }
+        >
+          <span>{generatedName}</span>
+        </Dropdown.Item>
+      );
     }
 
     setGeneratedCircles(generatedNames);
 
-    const interElems = flow.nodes.filter(
+    const staticElems = flow.nodes.filter(
       (el: any) => el.data.checked !== "true"
     );
-    console.log(interElems);
+
     const srcIds = flow.edges
       .map((el: any) => {
-        if (!!interElems.find((elem: any) => elem.id === el.target)) {
-          return { sId: el.source, tId: el.target, eType: el.data.edgeType };
+        if (
+          !!flow.nodes
+            .filter((element: any) => element.data.checked !== "true")
+            .find((elem: any) => elem.id === el.target)
+        ) {
+          return el;
         }
       })
       .filter((el: any) => el != undefined);
 
     console.log(srcIds);
 
+    console.log(flow.edges);
+
     setNodes(
-      interElems.map(
+      staticElems.map(
         (el: any) =>
           ({ ...el, data: { ...el.data, update: updateNode, onConnect } } || [])
       )
     );
-    setEdges(flow.edges || []);
+    setEdges(srcIds || []);
     // setViewport({ x, y, zoom });
     console.log(generatedCircles);
 
@@ -262,22 +302,7 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
     >
       <Background variant={BackgroundVariant.Dots} gap={10} size={1} />
       {isUser ? (
-        <FlowControls>
-          {generatedCircles
-            ? generatedCircles?.map((el: any, i: number) => {
-                return (
-                  <Dropdown.Item
-                    key={i}
-                    onClick={() =>
-                      createCircle("fakeCircle" + i, { label: el })
-                    }
-                  >
-                    <span>{el}</span>
-                  </Dropdown.Item>
-                );
-              })
-            : ""}
-        </FlowControls>
+        <FlowControls>{generatedCircles || ""}</FlowControls>
       ) : (
         <FlowControlsAdmin
           addCircleNode={addCircleNode}
