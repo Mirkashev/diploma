@@ -45,9 +45,9 @@ export class Exercise {
   @Column('varchar', {length: 1024, default:''})
   url!: string;
 
-  @OneToOne(()=> ExerciseShema, x=> x.exercise, {onDelete: 'CASCADE'})
+  @OneToOne(()=> ExerciseShema, x=> x.exercise, {cascade: true, onUpdate:'CASCADE', onDelete: 'CASCADE'})
   @JoinColumn()
-  exerciseSchema!: ExerciseShema;
+  exerciseSchema?: ExerciseShema;
 
   // @OneToMany(()=> ExerciseElCoordinates, x=> x.exercise, { cascade: true })
   // exerciseElCoordinates!: ExerciseElCoordinates; 

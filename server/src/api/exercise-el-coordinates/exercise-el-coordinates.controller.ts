@@ -1,17 +1,17 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { InstrumentsService } from './exercise-el-coordinates.service';
-import { ExerciseElCoordinates } from 'src/db/entities';
+// import { ExerciseElCoordinates } from 'src/db/entities';
 
 @Controller('coordinates')
 export class InstrumentsController {
   constructor(private readonly instrumentServices: InstrumentsService) {}
 
-  @Post()
-  create(@Body() exerciseEl: ExerciseElCoordinates) {
-    // console.log('here')
-    console.log(exerciseEl);
-    // return this.instrumentServices.create(exerciseEl);
-  }
+  // @Post()
+  // create(@Body() exerciseEl: ExerciseElCoordinates) {
+  //   // console.log('here')
+  //   console.log(exerciseEl);
+  //   // return this.instrumentServices.create(exerciseEl);
+  // }
 
   @Get()
   findAll() {

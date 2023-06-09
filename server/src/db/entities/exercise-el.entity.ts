@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { Exercise, Theme, ExerciseElCoordinates } from "src/db/entities";
+import { Exercise, Theme } from "src/db/entities";
 
 import {
   Column,
@@ -34,8 +34,8 @@ export class ExerciseEl {
   @Column({length: 1024, default:'https://img1.freepng.ru/20180219/gvw/kisspng-ammeter-ampere-symbol-voltmeter-clip-art-eye-of-kanaloa-5a8b0268b34329.9502828215190595607343.jpg'})
   url!: string;
 
-  @OneToMany(()=> ExerciseElCoordinates, x=> x.exerciseEl)
-  exerciseElCoordinates!: ExerciseElCoordinates; 
+  // @OneToMany(()=> ExerciseElCoordinates, x=> x.exerciseEl)
+  // exerciseElCoordinates!: ExerciseElCoordinates; 
 
   constructor(from: Partial<ExerciseEl>) {
     Object.assign(this, from);

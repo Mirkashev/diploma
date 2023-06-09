@@ -30,7 +30,7 @@ export class ExerciseShema {
   @Index()
   createdAt!: Dayjs;
 
-  @OneToOne(()=> Exercise, x=> x.exerciseSchema, {cascade: true, onDelete: 'CASCADE'})
+  @OneToOne(()=> Exercise, x=> x.exerciseSchema)
   exercise!: Exercise;
 
   constructor(from: Partial<ExerciseShema>) {

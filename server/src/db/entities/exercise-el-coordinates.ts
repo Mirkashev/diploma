@@ -37,14 +37,14 @@ export class ExerciseElCoordinates {
   @Index()
   height!: string;
 
-  @ManyToOne(()=> Exercise, x=> x.exerciseElCoordinates)
-  exercise!: Exercise; 
+  // @ManyToOne(()=> Exercise, x=> x.exerciseElCoordinates)
+  // exercise!: Exercise; 
 
   @Column()
   exerciseId!: number;
 
-  @ManyToOne(()=> ExerciseEl, x=> x.exerciseElCoordinates)
-  exerciseEl!: ExerciseEl; 
+  // @ManyToOne(()=> ExerciseEl, x=> x.exerciseElCoordinates)
+  // exerciseEl!: ExerciseEl; 
 
   @Column()
   exerciseElId!: number;

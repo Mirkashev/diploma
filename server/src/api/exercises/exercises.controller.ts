@@ -8,6 +8,7 @@ export class ExercisesController {
 
   @Post(':id')
   create(@Body() exercise: Exercise, @Param('id') id: number) {
+    console.log(id, exercise);
     return this.exercisesService.create(id, exercise);
   }
 

@@ -1,16 +1,11 @@
-
-.paz {
-
-}
-
 .paz:after {
     content: '';
     display: block;
     position: absolute;
-    top: 7px;
-    left: 6.5px;
-    width: 34.5px;
-    height: 34.5px;
+    top: 7.5px;
+    left: 7.25px;
+    width: 33.25px;
+    height: 33.25px;
     border: 1px solid black;
     transform: rotate( 45deg);
     pointer-events: none;

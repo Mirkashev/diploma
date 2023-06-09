@@ -1,0 +1,20 @@
+.instrumental-edge {
+  background-color: #000;
+}
+
+.electrical-edge {
+  stroke: #000;
+  stroke-dasharray: 5
+}
+
+.pneumatic-edge {
+  background-color: #399cd6;
+}
+
+.gidravlic-edge {
+  background-color: #3ed639;
+}
+
+.programm-edge {
+  background-color: #eb9a22;
+}

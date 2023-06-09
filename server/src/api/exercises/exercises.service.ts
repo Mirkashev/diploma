@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Exercise } from 'src/db/entities';
+import { Exercise, ExerciseShema } from 'src/db/entities';
 
 @Injectable()
 export class ExercisesService {
   constructor(
     @InjectRepository(Exercise) private readonly repo: Repository<Exercise>,
+    @InjectRepository(ExerciseShema) private readonly schemaRepo: Repository<ExerciseShema>,
   ){}
   async create(id: number, exercise: Exercise) {
     exercise.themeId = id;
@@ -30,11 +31,27 @@ export class ExercisesService {
 
   async update(id: number, exercise: Exercise) {
 
-    let property: Exercise = await this.repo.preload(await this.repo.findOne({where: {id: id}}));
+    let property: Exercise = await this.repo.preload(await this.repo.findOne({where: {id: id}, relations:{exerciseSchema:true}}));
 
-    // console.log(exercise.exerciseElCoordinates)
     if(property) {
-      // property.content = theory.content;
+      if(property.exerciseSchema) {
+        const schema = await this.schemaRepo.findOne({where:{exerciseId: id}})
+        schema.content = exercise.exerciseSchema.content;
+        await this.schemaRepo.save(schema);
+
+        property = {
+          ...property,
+          title: exercise.title,
+          description: exercise.description,
+          url: exercise.url,
+          exerciseSchema: {
+            ...(await this.schemaRepo.save(schema))
+          }
+        }
+
+        return await this.repo.save(property);
+      }
+
       property = {
         ...property,
         title: exercise.title,
@@ -45,6 +62,7 @@ export class ExercisesService {
           ...exercise.exerciseSchema,
         }
       }
+      
       return await this.repo.save(property);
 
     }
