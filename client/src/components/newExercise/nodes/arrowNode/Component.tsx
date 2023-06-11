@@ -14,22 +14,77 @@ const ArrowNode = ({ id, data, isConnectable }: any) => {
 
   return (
     <>
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        style={{
-          // background: "rgb(99, 212, 84)",
-          width: "10px",
-          height: "10px",
-          zIndex: 1,
-        }}
-        // onConnect={(params) => console.log('handle onConnect', params)}
-        isConnectable={isConnectable}
-        id="top"
-      />
+      {data.arrowType === "left" ||
+      data.arrowType === "right" ||
+      data.arrowType === "default" ? (
+        <>
+          <Handle
+            type="target"
+            position={Position.Top}
+            style={{
+              background: "#000",
+
+              width: "10px",
+              height: "10px",
+              zIndex: 1,
+            }}
+            // onConnect={(params) => console.log('handle onConnect', params)}
+            isConnectable={isConnectable}
+            id="top"
+          />
+          <Handle
+            type="source"
+            position={Position.Bottom}
+            style={{
+              background: "#fff",
+              border: "1px solid #000",
+              width: "10px",
+              height: "10px",
+              zIndex: 1,
+            }}
+            // onConnect={(params) => console.log('handle onConnect', params)}
+            isConnectable={isConnectable}
+            id="bottom"
+          />
+        </>
+      ) : (
+        <>
+          <Handle
+            type="source"
+            position={Position.Right}
+            style={{
+              background: "#fff",
+              border: "1px solid #000",
+              width: "10px",
+              height: "10px",
+              zIndex: 1,
+              marginLeft: "56px",
+            }}
+            // onConnect={(params) => console.log('handle onConnect', params)}
+            isConnectable={isConnectable}
+            id="right"
+          />
+          <Handle
+            type="target"
+            position={Position.Left}
+            style={{
+              background: "#000",
+              width: "10px",
+              height: "10px",
+              zIndex: 1,
+              marginLeft: "96px",
+            }}
+            // onConnect={(params) => console.log('handle onConnect', params)}
+            isConnectable={isConnectable}
+            id="left"
+          />
+        </>
+      )}
+
       <Popup
         on="click"
         // content='I will not flip!'
+        disabled={data.static}
         pinned
         style={{
           marginLeft: "8px",

@@ -66,20 +66,28 @@ export default function CustomEdge({
             onClose={() => setClosePopup(false)}
             open={closePopup}
             trigger={
-              <Button
-                style={{
-                  width: "25px",
-                  height: "25px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                icon="setting"
-              />
+              !data.static ? (
+                <Button
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background:
+                      data.isWrong === true
+                        ? "red"
+                        : data.isWrong === false
+                        ? "green"
+                        : "#e0e1e2",
+                  }}
+                  icon="setting"
+                />
+              ) : null
             }
           >
             <Form.Select
-              defaultValue={"instrumental"}
+              defaultValue={data.edgeType}
               onChange={(event, { value }: any) => onChange(value)}
               options={[
                 {

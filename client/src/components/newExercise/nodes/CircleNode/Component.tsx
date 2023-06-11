@@ -4,7 +4,7 @@ import { Handle, Position } from "reactflow";
 import styles from "./index.module.css";
 
 const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
-  const { label, update, onConnect, type } = data;
+  const { label, update, onConnect, type, isWrong } = data;
 
   // console.log(data);
 
@@ -20,6 +20,7 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
     <Popup
       on="click"
       // content='I will not flip!'
+      disabled={data.static}
       pinned
       style={{
         marginLeft: "8px",
@@ -30,6 +31,8 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
             border: ["rsu", "paz"].includes(type)
               ? "1px solid black"
               : undefined,
+            background:
+              isWrong === true ? "red" : isWrong === false ? "green" : "none",
           }}
         >
           <div
@@ -48,7 +51,7 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
               type="target"
               position={Position.Top}
               style={{
-                // background: "rgb(99, 212, 84)",
+                background: "#000",
                 width: "10px",
                 height: "10px",
               }}
@@ -60,9 +63,11 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
               type="source"
               position={Position.Bottom}
               style={{
-                // background: "rgb(99, 212, 84)",
+                background: "#fff",
+                border: "1px solid #000",
                 width: "10px",
                 height: "10px",
+                zIndex: 1,
               }}
               // onConnect={(params) => console.log('handle onConnect', params)}
               isConnectable={isConnectable}
@@ -72,7 +77,8 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
               type="target"
               position={Position.Left}
               style={{
-                // background: "rgb(99, 212, 84)",
+                background: "#000",
+
                 width: "10px",
                 height: "10px",
               }}
@@ -84,9 +90,11 @@ const CircleNode = ({ data, id, isConnectable, ...props }: any) => {
               type="source"
               position={Position.Right}
               style={{
-                // background: "rgb(99, 212, 84)",
+                background: "#fff",
+                border: "1px solid #000",
                 width: "10px",
                 height: "10px",
+                zIndex: 1,
               }}
               // onConnect={(params) => console.log('handle onConnect', params)}
               isConnectable={isConnectable}

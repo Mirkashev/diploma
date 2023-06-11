@@ -6,8 +6,7 @@ import {
   useEdgesState,
   useNodesState,
 } from "reactflow";
-import FlowComponent from "./Component";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import ArrowNode from "../nodes/arrowNode";
 import CircleNode from "../nodes/CircleNode";
 import SquareNode from "../nodes/SquareNode";
@@ -16,11 +15,13 @@ import FlowControlsAdmin from "./flowControls/adminControls";
 import FlowControls from "./flowControls/userControls";
 import { getRandomInt } from "@/utils/generateNumber";
 import { Dropdown } from "semantic-ui-react";
+import ShemaNode from "../nodes/schemaNode";
 
 const nodeTypes = {
   arrowNode: ArrowNode,
   circleNode: CircleNode,
   squareNode: SquareNode,
+  schemaNode: ShemaNode,
 };
 
 const edgeTypes = {
@@ -65,7 +66,7 @@ const generateCircleLabel = (schemaNumber: string) => {
   return generatedCircleLable + schemaNumber;
 };
 
-const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
+const ConnectedFlow = ({ data, setRfInstance, isUser, rfInstance }: any) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [generatedCircles, setGeneratedCircles]: any = useState([]);
@@ -128,34 +129,51 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
   };
 
   const addCircleNode = () => {
+    const id = (elementsCounter.current += 1);
     setNodes((nodes) => [
       ...nodes,
       {
-        id: `${(elementsCounter.current += 1)}`,
+        id: `${id}`,
         position: { x: 0, y: 100 },
         type: "circleNode",
-        data: { label: `0`, update: updateNode, onConnect, checked: "false" },
+        data: {
+          label: `0`,
+          update: updateNode,
+          onConnect,
+          checked: "false",
+          trueId: `${id}`,
+        },
       },
     ]);
   };
 
   const addSquareNode = () => {
+    const id = (elementsCounter.current += 1);
+
     setNodes((nodes) => [
       ...nodes,
       {
-        id: `${(elementsCounter.current += 1)}`,
+        id: `${id}`,
         position: { x: 0, y: 100 },
         type: "squareNode",
-        data: { label: `0`, update: updateNode, onConnect },
+        data: {
+          label: `0`,
+          color: "#618aef",
+          update: updateNode,
+          onConnect,
+          trueId: `${id}`,
+        },
       },
     ]);
   };
 
   const addArrowNode = (e: any) => {
+    const id = (elementsCounter.current += 1);
+
     return setNodes((nodes) => [
       ...nodes,
       {
-        id: `${(elementsCounter.current += 1)}`,
+        id: `${id}`,
         position: { x: 0, y: 100 },
         type: "arrowNode",
         data: {
@@ -163,23 +181,47 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
           update: updateNode,
           onConnect,
           arrowType: e.target.getAttribute("type"),
+          trueId: `${id}`,
         },
       },
     ]);
   };
 
-  const createCircle = (id: string, data: any) => {
-    console.log(id);
+  const addSchemaNode = (e: any) => {
+    // console.log(e.target.getAttribute("type"));
+    const id = (elementsCounter.current += 1);
+
+    return setNodes((nodes) => [
+      ...nodes,
+      {
+        id: `${id}`,
+        position: { x: 0, y: 100 },
+        type: "schemaNode",
+        data: {
+          label: "Введите текст",
+          update: updateNode,
+          color: "#618aef",
+          rotate: 0,
+          onConnect,
+          shemaNodeType: e.target.getAttribute("type"),
+          trueId: `${id}`,
+        },
+      },
+    ]);
+  };
+
+  const createCircle = (data: any) => {
     setNodes((nodes) => [
       ...nodes,
       {
-        id: id,
+        id: (elementsCounter.current += 1) + "interactivePart",
         position: { x: 0, y: 100 },
         type: "circleNode",
         data: { ...data, update: updateNode, onConnect },
       },
     ]);
   };
+
   // todo: убрать юзлесс эффект
   useEffect(() => {
     if (!data?.exerciseSchema) return;
@@ -187,8 +229,9 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
 
     if (!flow) return;
 
+    console.log(flow);
+
     if (!isUser) {
-      console.log(flow);
       setNodes(
         flow.nodes.map(
           (el: any) =>
@@ -196,12 +239,18 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
             [])
         )
       );
-      setEdges(flow.edges || []);
+      setEdges(
+        flow.edges.map((el: any) => ({
+          ...el,
+          data: { ...el.data, updateEdge: updateEdge },
+        })) || []
+      );
       // setViewport({ x, y, zoom });
+      elementsCounter.current = Math.max(
+        ...flow.nodes.map((node: any) => +node.id)
+      );
       return;
     }
-
-    console.log(flow);
 
     const generatedNames = [];
 
@@ -209,13 +258,11 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
       if (el.data.checked === "true") {
         generatedNames.push(
           <Dropdown.Item
+            // todo: fix bad keys and ids
             key={Math.random() * 100 + "rndmkey"}
-            onClick={() =>
-              createCircle(el.id, {
-                ...el.data,
-                label: el.data.label,
-              })
-            }
+            onClick={() => {
+              createCircle(el.data);
+            }}
           >
             <span>{el.data.label}</span>
           </Dropdown.Item>
@@ -229,7 +276,7 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
         <Dropdown.Item
           key={i}
           onClick={() =>
-            createCircle("fakeCircle" + i, {
+            createCircle({
               label: generatedName,
               type: deviceTypes[getRandomInt(0, deviceTypes.length - 1)],
             })
@@ -247,39 +294,48 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
     );
 
     const srcIds = flow.edges
-      .map((el: any) => {
-        if (
-          !!flow.nodes
-            .filter((element: any) => element.data.checked !== "true")
-            .find((elem: any) => elem.id === el.target)
-        ) {
-          return el;
-        }
-      })
-      .filter((el: any) => el != undefined);
-
-    console.log(srcIds);
-
-    console.log(flow.edges);
+      .filter(
+        (el: any) =>
+          !!flow.nodes.find(
+            (elem: any) => elem.id === el.target && elem.data.checked !== "true"
+          )
+      )
+      .filter((el: any) =>
+        flow.nodes.find(
+          (elem: any) => elem.id == el.source && elem.data.checked != "true"
+        )
+      );
 
     setNodes(
       staticElems.map(
         (el: any) =>
-          ({ ...el, data: { ...el.data, update: updateNode, onConnect } } || [])
+          ({
+            ...el,
+            draggable: false,
+            deletable: false,
+            data: { ...el.data, static: true, update: updateNode, onConnect },
+          } || [])
       )
     );
-    setEdges(srcIds || []);
+    setEdges(
+      srcIds.map((el: any) => ({
+        ...el,
+        deletable: false,
+        data: { ...el.data, static: true },
+      })) || []
+    );
     // setViewport({ x, y, zoom });
-    console.log(generatedCircles);
 
-    elementsCounter.current = flow.nodes.length + flow.edges.length;
+    // elementsCounter.current = Math.max(...flow.nodes.id)
+    elementsCounter.current = Math.max(
+      ...flow.nodes.map((node: any) => +node.id)
+    );
   }, [data]);
 
   return (
     <ReactFlow
       nodes={nodes}
       edges={edges}
-      // panOnDrag={false}
       maxZoom={2}
       minZoom={0.5}
       onNodesChange={onNodesChange}
@@ -288,17 +344,8 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       onInit={setRfInstance}
-      // translateExtent={[
-      //   [-0, -0],
-      //   [1125, 795],
-      // ]}
-      // nodeExtent={[
-      //   [-0, -0],
-      //   [1025, 695],
-      // ]}
       defaultViewport={{ x: 0, y: 0, zoom: 0.5 }}
       fitView
-      // fitView={true}
     >
       <Background variant={BackgroundVariant.Dots} gap={10} size={1} />
       {isUser ? (
@@ -308,6 +355,7 @@ const ConnectedFlow = ({ data, setRfInstance, isUser }: any) => {
           addCircleNode={addCircleNode}
           addSquareNode={addSquareNode}
           addArrowNode={addArrowNode}
+          addSchemaNode={addSchemaNode}
         />
       )}
     </ReactFlow>

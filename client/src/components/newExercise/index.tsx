@@ -35,27 +35,73 @@ const Exercise = () => {
   }, [rfInstance, data]);
 
   const onCheck = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      console.log(flow.edges);
-      // localStorage.setItem('tempFlow', JSON.stringify( flow));
-      // const interElems = flow.nodes.filter(
-      //   (el: any) => el.data.checked === "true"
-      // );
-      // const srcIds = flow.edges
-      //   .map((el: any) => {
-      //     if (!!interElems.find((elem: any) => elem.id === el.target)) {
-      //       return { sId: el.source, tId: el.target, eType: el.data.edgeType };
-      //     }
-      //   })
-      //   .filter((el: any) => el != undefined);
+    if (!rfInstance) return;
 
-      // console.log(srcIds);
+    const flow = rfInstance.toObject();
 
-      // далее удалить из content элементы по id и их связи
-      // сгенерировать инструменты и в нужные инструменты засунуть ids, в остальные зарандомить числа по дате
-    }
-  }, [rfInstance]);
+    const defaultFlow = JSON.parse(data?.exerciseSchema?.content);
+
+    console.log(flow.edges, defaultFlow.edges);
+
+    const trueEdges = flow.edges.filter((edge: any) => {
+      const nodeByTarget = rfInstance.getNode(edge.target);
+      const nodeBySource = rfInstance.getNode(edge.source);
+      if (
+        (nodeByTarget.draggable !== false ||
+          nodeBySource.draggable !== false) &&
+        defaultFlow.edges.find(
+          (el: any) =>
+            ((nodeBySource.data.trueId === el.source &&
+              nodeByTarget.data.trueId === el.target) ||
+              (nodeBySource.data.trueId === el.target &&
+                nodeByTarget.data.trueId === el.source)) &&
+            edge.data.edgeType === el.data.edgeType
+        )
+      ) {
+        return edge;
+      }
+    });
+
+    console.log(trueEdges);
+
+    rfInstance.setEdges((edges: any) => {
+      return edges.map((edge: any) => {
+        const condition = !trueEdges.find(
+          (el: any) =>
+            edge.source === el.source &&
+            edge.target === el.target &&
+            edge.data.edgeType === el.data.edgeType
+        );
+        return {
+          ...edge,
+          data: {
+            ...edge.data,
+            isWrong: condition,
+          },
+        };
+      });
+    });
+
+    rfInstance.setNodes((nodes: any) => {
+      return nodes.map((node: any) => {
+        if (node.draggable === false) return node;
+
+        const isWrong =
+          !(
+            trueEdges.find((el: any) => el.target == node.id) ||
+            trueEdges.find((el: any) => el.source == node.id)
+          ) || !trueEdges.length;
+
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            isWrong: isWrong,
+          },
+        };
+      });
+    });
+  }, [rfInstance, data]);
 
   if (isLoading) return <div>...Loading</div>;
 

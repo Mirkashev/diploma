@@ -5,6 +5,7 @@ const FlowControlsAdmin = ({
   addCircleNode,
   addSquareNode,
   addArrowNode,
+  addSchemaNode,
 }: any) => {
   return (
     <>
@@ -62,9 +63,24 @@ const FlowControlsAdmin = ({
                 <Icon name="dropdown" />
                 <span className="text">Элементы схемы</span>
                 <Dropdown.Menu>
-                  <Dropdown.Item>Регулирующий клапан</Dropdown.Item>
-                  <Dropdown.Item>Отсекатель</Dropdown.Item>
-                  <Dropdown.Item>Задвижка</Dropdown.Item>
+                  <Dropdown.Item type="clapan" onClick={addSchemaNode}>
+                    Регулирующий клапан
+                  </Dropdown.Item>
+                  <Dropdown.Item type="rele" onClick={addSchemaNode}>
+                    Привод реле температуры
+                  </Dropdown.Item>
+                  <Dropdown.Item type="ovalve" onClick={addSchemaNode}>
+                    Отсекатель
+                  </Dropdown.Item>
+                  <Dropdown.Item type="flowmeter" onClick={addSchemaNode}>
+                    Чувствительный элемент Кориолисового расходомера
+                  </Dropdown.Item>
+                  <Dropdown.Item type="diafragm" onClick={addSchemaNode}>
+                    Диафрагма
+                  </Dropdown.Item>
+                  <Dropdown.Item type="custom" onClick={addSchemaNode}>
+                    Кастомный блок
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown.Item>
             </Dropdown.Menu>
