@@ -11,16 +11,15 @@ const Page = ({ title, children, tabs}:any) => {
   const { user }: any= useContext(AuthContext);
 
   useEffect(()=> {
-    setButtons(user?.role === 'admin' ? 
-    [...buttons, { title:'Перейти в админку', href:'/admin/users' }] : 
+    setButtons(user?.role === 'admin' ?
+    [...buttons, { title:'Перейти в админку', href:'/admin/users' }] :
     buttons.filter(el => el.href !== '/admin'));
 
-    if(user != undefined 
-      && router.isReady 
-      && !!router.pathname.match('/admin') 
+    if(user != undefined
+      && router.isReady
+      && !!router.pathname.match('/admin')
       && user?.role !== 'admin') {
-        
-      console.log(user)
+
       router.push('/user/topics');
     }
 
