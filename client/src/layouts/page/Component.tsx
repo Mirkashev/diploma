@@ -4,17 +4,13 @@ import { useRouter } from 'next/router';
 import { AuthContext, AuthProvider } from '../../context/auth';
 import Nav from '@/components/common/nav/top-layer1';
 import { adminButtons, userButtons } from './page.layout.constants';
+import SideBar from "@/components/common/nav/SideBar";
 
 const Page = ({ title, children, tabs}:any) => {
   const router = useRouter();
-  const [buttons, setButtons] = useState(userButtons);
   const { user }: any= useContext(AuthContext);
 
   useEffect(()=> {
-    setButtons(user?.role === 'admin' ?
-    [...buttons, { title:'Перейти в админку', href:'/admin/users' }] :
-    buttons.filter(el => el.href !== '/admin'));
-
     if(user != undefined
       && router.isReady
       && !!router.pathname.match('/admin')
@@ -33,9 +29,19 @@ const Page = ({ title, children, tabs}:any) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {!!router.pathname.match('/admin') ? <Nav buttons={adminButtons}/> : <Nav buttons={buttons}/>}
-      {children}
-      <div style={{marginTop:"60px", width:'100%', height:"20px"}}></div>
+        <div style={{
+            margin: 'auto',
+            maxWidth: '1920px',
+            width: '100%'
+        }}>
+            <SideBar>
+                {children}
+            </SideBar>
+        </div>
+
+      {/*{!!router.pathname.match('/admin') ? <Nav buttons={adminButtons}/> : <Nav buttons={buttons}/>}*/}
+
+      {/*<div style={{marginTop:"60px", width:'100%', height:"20px"}}></div>*/}
     </>
   );
 };

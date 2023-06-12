@@ -12,3 +12,8 @@ export const userButtons = [
   { title:'Личный кабинет', href:'/user/profile' },
   { title:'Статистика', href:'/user/stats' },
 ]
+
+export const teacherButtons = [
+    ...userButtons,
+  {title:'Редактировать пользователей', href: '/teacher/users'}
+]
