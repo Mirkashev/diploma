@@ -34,9 +34,9 @@ import dayjs from 'dayjs';
 
 @Module({
   controllers: [
-    UsersController, 
+    UsersController,
     TestsController,
-    QuestionsController, 
+    QuestionsController,
     TopicsController,
     ResultsController,
     GroupsController,
@@ -47,8 +47,8 @@ import dayjs from 'dayjs';
     MediaController,
   ],
   providers: [
-    UsersService, 
-    TestsService, 
+    UsersService,
+    TestsService,
     QuestionsService,
     TopicsService,
     ResultsService,
@@ -58,10 +58,10 @@ import dayjs from 'dayjs';
     ExercisesService,
     InstrumentsService,
     MediaService,
-    {
-      provide: 'APP_GUARD',
-      useClass: AuthGuard
-    },
+    // {
+    //   provide: 'APP_GUARD',
+    //   useClass: AuthGuard
+    // },
 
   ]
 })
@@ -77,15 +77,15 @@ export class ApiModule implements OnModuleInit {
     // const admin = (await this.usersService.findAdmin())[0];
 
     // await this.themeTextsService.create('1', {title:'Глава 0', content: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?', createdAt: dayjs()})
-  
+
     // if(admin) {
     //   console.log(admin);
     //   return;
     // }
 
-    // this.usersService.createAdmin( 
+    // this.usersService.createAdmin(
     //   {
-    //     login: 'Andrey', 
+    //     login: 'admin',
     //     password: '12345',
     //     surname: 'Mirkashev',
     //     firstName: 'Ilnaz',

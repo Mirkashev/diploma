@@ -10,6 +10,7 @@ import { ConfigService } from './config/config.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './api/auth/auth.constants';
 import { MinioClientModule } from './minio-client/minio-client.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MinioClientModule } from './minio-client/minio-client.module';
           password: config.db.pass,
           synchronize: true, // do not set it to "true" in production code
           entities: Object.values(entities),
+          autoLoadEntities: true,
           // migrationsTableName: 'migrations',
           // migrations: ['dist/db/migrations/*.js'],
           // migrationsRun: true,
@@ -49,6 +51,7 @@ import { MinioClientModule } from './minio-client/minio-client.module';
       signOptions: { expiresIn: '30d'}
     }),
     ApiModule,
+    CourseModule,
   ],
 })
 export class AppModule {}

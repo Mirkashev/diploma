@@ -33,21 +33,21 @@ export class User {
   lastName?: string;
 
   @Column('varchar', { length: 64, default:'' })
-  surname?: string; 
+  surname?: string;
 
   @Column('text', { default:'' })
   url?: string;
 
   @ManyToOne(()=> Group, x=> x.users, {cascade:true})
-  group?: Group; 
+  group?: Group;
   // возможно тут возникнут проблемы
   @Column({ nullable:true})
   groupId?: number | null;
 
-  @Column('timestamptz', {
-    default: () => 'CURRENT_TIMESTAMP', 
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP',
     select: false,
-  }) 
+  })
   @Index()
   createdAt?: Dayjs;
 
@@ -58,7 +58,7 @@ export class User {
   role?: string;
 
   @OneToMany(()=> Result, x=> x.test)
-  results?: Result; 
+  results?: Result;
 
   constructor(from: Partial<User>) {
     Object.assign(this, from);
