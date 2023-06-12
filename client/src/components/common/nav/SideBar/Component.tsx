@@ -8,7 +8,7 @@ const SideBar = ({children}) => {
 
     const router = useRouter();
 
-    const {user} = useContext(AuthContext);
+    const {user, logout} = useContext(AuthContext);
 
     const onRoute = (path) => {
         router.push(path)
@@ -79,7 +79,7 @@ const SideBar = ({children}) => {
                             </Menu.Item>
                         </>
                     ) : undefined}
-                    <Menu.Item>
+                    <Menu.Item onClick={logout}>
                         Выход
                     </Menu.Item>
                 </Menu>
