@@ -1,6 +1,5 @@
 import { Button, Dropdown, Form, Icon, Table } from "semantic-ui-react";
 import { TestInterface } from "../../interfaces";
-import NavTop3 from "../../common/nav/top-layer3/Сomponent";
 import UserTestQuestionComponent from "./question/Component";
 import TabsNavComponent from "@/components/common/nav/tabs";
 import { useRouter } from "next/router";
