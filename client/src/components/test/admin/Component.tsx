@@ -1,11 +1,10 @@
 import { Button, Dropdown, Icon, Table } from "semantic-ui-react";
 import { TestInterface } from "../../interfaces";
-import NavTop3 from "../../common/nav/top-layer3/Сomponent";
 import DeleteComponent from "../../common/deleteButton";
 // import { '/questions/', '/tests/', '/questions/' } from "@/constants";
 import QuestionModal from "@/components/common/modal/question";
-import NavTop2 from "@/components/common/nav/top-layer2/Сomponent";
-import SideNav from "@/components/common/nav/left-side";
+import TabsNavComponent from "@/components/common/nav/tabs";
+import { useRouter } from "next/router";
 
 export default function TestComponent({
   questions,
@@ -13,24 +12,50 @@ export default function TestComponent({
   title,
   mainTitle,
 }: TestInterface) {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <>
-      <NavTop2 title={mainTitle} />
-      <SideNav>
-        <NavTop3 title={title}>
-          <QuestionModal
-            route={"/questions/" + test_id}
-            mutateRoute={"/tests/" + test_id}
-            method="POST"
-            modalType="question"
-          />
-        </NavTop3>
+      {/* <NavTop3 title={title}>
+        <QuestionModal
+          route={"/questions/" + test_id}
+          mutateRoute={"/tests/" + test_id}
+          method="POST"
+          modalType="question"
+        />
+      </NavTop3> */}
+      <TabsNavComponent
+        links={[
+          {
+            key: "topics",
+            name: "Назад",
+            onClick: () => router.push(`/admin/topics`),
+          },
+          {
+            key: "theory",
+            name: "Теория",
+            active: !!router.pathname.match("/theory"),
+            onClick: () => router.push(`/admin/topics/${id}/theory`),
+          },
+          {
+            key: "tests",
+            name: "Тесты",
+            active: false,
+            onClick: () => router.push(`/admin/topics/${id}/tests`),
+          },
+          {
+            key: "exercises",
+            name: "Упражнения",
+            active: !!router.pathname.match("/exercises"),
+            onClick: () => router.push(`/admin/topics/${id}/exercises`),
+          },
+        ]}
+      >
         <div
           style={{
-            maxHeight: "65vh",
+            maxHeight: "75vh",
             overflowY: "auto",
             border: "1px solid rgba(34,36,38,.15)",
-            borderRadius: "4px",
           }}
         >
           <Table celled style={{ border: "none" }}>
@@ -41,9 +66,17 @@ export default function TestComponent({
               }}
             >
               <Table.Row>
-                <Table.HeaderCell>Вопрос теста</Table.HeaderCell>
-                <Table.HeaderCell style={{ width: "5%" }}>
-                  Настройки
+                <Table.HeaderCell>Список вопросов:</Table.HeaderCell>
+                <Table.HeaderCell style={{ width: "5%", padding: 0 }}>
+                  <QuestionModal
+                    route={"/questions/" + test_id}
+                    mutateRoute={"/tests/" + test_id}
+                    method="POST"
+                    modalType="question"
+                    triggerNode={
+                      <Button icon="plus" style={{ marginLeft: "12.5px" }} />
+                    }
+                  />
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -79,7 +112,7 @@ export default function TestComponent({
             </Table.Body>
           </Table>
         </div>
-      </SideNav>
+      </TabsNavComponent>
     </>
   );
 }

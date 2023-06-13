@@ -1,50 +1,49 @@
-import SideNav from "@/components/common/nav/left-side";
-import NavTop2 from "@/components/common/nav/top-layer2/Сomponent";
-import NavTop3 from "@/components/common/nav/top-layer3/Сomponent";
-import {
-  Button,
-  Container,
-  Dropdown,
-  Icon,
-  Menu,
-  TextArea,
-} from "semantic-ui-react";
+import TabsNavComponent from "@/components/common/nav/tabs";
+
+import { useRouter } from "next/router";
 
 const ExerciseAdminComponent = ({ data, onSave, children }: any) => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <>
-      <NavTop2 title={data?.theme?.title} />
-      <SideNav>
-        <Container style={{ height: "55vh" }}>
-          <NavTop3 title={data?.title || "загрузка..."}>
-            <Button onClick={onSave} style={{ borderRadius: 0, margin: 0 }}>
-              Сохранить схему
-            </Button>
-          </NavTop3>
-          <TextArea
-            placeholder="Введите описание задачи"
-            style={{
-              width: "100%",
-              heigh: "10vh",
-              resize: "none",
-              borderRadius: "0 0 4px 4px",
-              border: "1px solid #d4d4d5",
-              padding: "10px",
-              marginBottom: "8px",
-            }}
-          ></TextArea>
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "1px solid #d4d4d5",
-              borderRadius: "4px",
-            }}
-          >
-            {children}
-          </div>
-        </Container>
-      </SideNav>
+      <TabsNavComponent
+        links={[
+          {
+            key: "topics",
+            name: "Назад",
+            onClick: () => router.push(`/admin/topics`),
+          },
+          {
+            key: "theory",
+            name: "Теория",
+            active: !!router.pathname.match("/theory"),
+            onClick: () => router.push(`/admin/topics/${id}/theory`),
+          },
+          {
+            key: "tests",
+            name: "Тесты",
+            active: !!router.pathname.match("/tests"),
+            onClick: () => router.push(`/admin/topics/${id}/tests`),
+          },
+          {
+            key: "exercises",
+            name: "Упражнения",
+            active: false,
+            onClick: () => router.push(`/admin/topics/${id}/exercises`),
+          },
+        ]}
+      >
+        <div
+          style={{
+            width: "100%",
+            height: "75vh",
+            border: "1px solid #d4d4d5",
+          }}
+        >
+          {children}
+        </div>
+      </TabsNavComponent>
     </>
   );
 };

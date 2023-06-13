@@ -1,11 +1,12 @@
 import { Controls, Panel } from "reactflow";
-import { Dropdown, Icon, Menu } from "semantic-ui-react";
+import { Button, Dropdown, Icon, Menu } from "semantic-ui-react";
 
 const FlowControlsAdmin = ({
   addCircleNode,
   addSquareNode,
   addArrowNode,
   addSchemaNode,
+  onSave,
 }: any) => {
   return (
     <>
@@ -85,6 +86,12 @@ const FlowControlsAdmin = ({
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          <Menu.Item
+            onClick={onSave}
+            style={{ borderRadius: 0, margin: 0, cursor: "pointer" }}
+          >
+            Сохранить схему
+          </Menu.Item>
         </Menu>
       </Panel>
     </>

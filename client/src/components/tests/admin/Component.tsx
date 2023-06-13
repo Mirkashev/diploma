@@ -1,43 +1,52 @@
-import AddModal from "@/components/common/modal/titleNew";
 import { ChapterTestsInterface } from "../../interfaces";
-import SideNav from "@/components/common/nav/left-side";
-import NavTop2 from "@/components/common/nav/top-layer2/Сomponent";
 import { Button, Icon, Table } from "semantic-ui-react";
 import Link from "next/link";
 import DeleteComponent from "@/components/common/deleteButton";
 import TitleModal from "@/components/common/modal/titleNew";
+import TabsNavComponent from "@/components/common/nav/tabs";
+import { useRouter } from "next/router";
 
 const AdminTestComponent = ({
   themeId,
   tests,
   title,
 }: ChapterTestsInterface) => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <>
-      <NavTop2
-        title={title}
-        activeButton={
-          <TitleModal
-            route={"/tests/" + themeId}
-            method="POST"
-            mutateRoute={"/topics/" + themeId}
-            triggerNode={
-              <Button
-                style={{ background: "rgba(255,255,255,.85)", color: "#000" }}
-              >
-                Добавить тест
-              </Button>
-            }
-          />
-        }
-      />
-      <SideNav>
+      <TabsNavComponent
+        links={[
+          {
+            key: "topics",
+            name: "Назад",
+            onClick: () => router.push("/admin/topics"),
+          },
+          {
+            key: "theory",
+            name: "Теория",
+            active: !!router.pathname.match("/theory"),
+            onClick: () => router.push(`/admin/topics/${id}/theory`),
+          },
+          {
+            key: "tests",
+            name: "Тесты",
+            active: !!router.pathname.match("/tests"),
+            onClick: () => router.push(`/admin/topics/${id}/tests`),
+          },
+          {
+            key: "exercises",
+            name: "Упражнения",
+            active: !!router.pathname.match("/exercises"),
+            onClick: () => router.push(`/admin/topics/${id}/exercises`),
+          },
+        ]}
+      >
         <div
           style={{
-            maxHeight: "65vh",
+            maxHeight: "75vh",
             overflowY: "auto",
             border: "1px solid rgba(34,36,38,.15)",
-            borderRadius: "4px",
           }}
         >
           <Table celled style={{ border: "none" }}>
@@ -49,8 +58,15 @@ const AdminTestComponent = ({
             >
               <Table.Row>
                 <Table.HeaderCell>Название теста</Table.HeaderCell>
-                <Table.HeaderCell style={{ width: "5%" }}>
-                  Настройки
+                <Table.HeaderCell style={{ width: "5%", padding: 0 }}>
+                  <TitleModal
+                    route={"/tests/" + themeId}
+                    method="POST"
+                    mutateRoute={"/topics/" + themeId}
+                    triggerNode={
+                      <Button icon="plus" style={{ marginLeft: "12.5px" }} />
+                    }
+                  />
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -96,7 +112,7 @@ const AdminTestComponent = ({
             </Table.Body>
           </Table>
         </div>
-      </SideNav>
+      </TabsNavComponent>
     </>
   );
 };

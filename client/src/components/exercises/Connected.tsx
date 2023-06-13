@@ -4,14 +4,20 @@ import { useGetData } from "@/hooks/fetching";
 import parsePathName from "@/utils/parsePathname";
 import { useRouter } from "next/router";
 import UserExComponent from "./user/Component";
-import NavTop2 from "../common/nav/top-layer2/Сomponent";
-import SideNav from "../common/nav/left-side";
+import { useContext, useEffect } from "react";
+import { TitlesContext } from "@/context/titles";
 
 const ConnectChapterEx = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data, isLoading, isError } = useGetData("/topics/" + id);
   const pathname = parsePathName(router.pathname, router.query);
+
+  const { setTopicTitle } = useContext(TitlesContext);
+
+  useEffect(() => {
+    setTopicTitle(data?.title);
+  }, [data]);
 
   if (isLoading || !id) return <div>...Loading</div>;
 

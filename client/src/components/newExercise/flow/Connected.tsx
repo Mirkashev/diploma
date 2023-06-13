@@ -66,7 +66,13 @@ const generateCircleLabel = (schemaNumber: string) => {
   return generatedCircleLable + schemaNumber;
 };
 
-const ConnectedFlow = ({ data, setRfInstance, isUser, rfInstance }: any) => {
+const ConnectedFlow = ({
+  data,
+  setRfInstance,
+  isUser,
+  rfInstance,
+  onSave,
+}: any) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [generatedCircles, setGeneratedCircles]: any = useState([]);
@@ -349,9 +355,10 @@ const ConnectedFlow = ({ data, setRfInstance, isUser, rfInstance }: any) => {
     >
       <Background variant={BackgroundVariant.Dots} gap={10} size={1} />
       {isUser ? (
-        <FlowControls>{generatedCircles || ""}</FlowControls>
+        <FlowControls onCheck={onSave}>{generatedCircles || ""}</FlowControls>
       ) : (
         <FlowControlsAdmin
+          onSave={onSave}
           addCircleNode={addCircleNode}
           addSquareNode={addSquareNode}
           addArrowNode={addArrowNode}

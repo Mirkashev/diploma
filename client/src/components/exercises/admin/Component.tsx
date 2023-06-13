@@ -3,40 +3,53 @@ import TitleModal from "@/components/common/modal/titleNew";
 import { Button, Icon, Table } from "semantic-ui-react";
 import Link from "next/link";
 import DeleteComponent from "@/components/common/deleteButton";
-import NavTop2 from "@/components/common/nav/top-layer2/Сomponent";
-import SideNav from "@/components/common/nav/left-side";
+import TabsNavComponent from "@/components/common/nav/tabs";
+import { useRouter } from "next/router";
 
 export default function ChapterExComponent({
   exercises,
   themeId,
   title,
 }: ChapterExercisesInterface) {
+  const router = useRouter();
+
+  const { id } = router.query;
+
   return (
     <>
-      <NavTop2
-        title={title}
-        activeButton={
-          <TitleModal
-            route={"/exercises/" + themeId}
-            method="POST"
-            mutateRoute={"/topics/" + themeId}
-            triggerNode={
-              <Button
-                style={{ background: "rgba(255,255,255,.85)", color: "#000" }}
-              >
-                Добавить задание
-              </Button>
-            }
-          />
-        }
-      />
-      <SideNav>
+      <TabsNavComponent
+        links={[
+          {
+            key: "topics",
+            name: "Назад",
+            onClick: () => router.push(`/admin/topics`),
+          },
+          {
+            key: "theory",
+            name: "Теория",
+            active: !!router.pathname.match("/theory"),
+            onClick: () => router.push(`/admin/topics/${id}/theory`),
+          },
+          {
+            key: "tests",
+            name: "Тесты",
+            active: false,
+            onClick: () => router.push(`/admin/topics/${id}/tests`),
+          },
+          {
+            key: "exercises",
+            name: "Упражнения",
+            active: !!router.pathname.match("/exercises"),
+            onClick: () => router.push(`/admin/topics/${id}/exercises`),
+          },
+        ]}
+      >
         <div
           style={{
-            maxHeight: "65vh",
+            maxHeight: "75vh",
             overflowY: "auto",
             border: "1px solid rgba(34,36,38,.15)",
-            borderRadius: "4px",
+            // borderRadius: "4px",
           }}
         >
           <Table celled style={{ border: "none" }}>
@@ -48,8 +61,15 @@ export default function ChapterExComponent({
             >
               <Table.Row>
                 <Table.HeaderCell>Название</Table.HeaderCell>
-                <Table.HeaderCell style={{ width: "5%" }}>
-                  Настройки
+                <Table.HeaderCell style={{ width: "5%", padding: 0 }}>
+                  <TitleModal
+                    route={"/exercises/" + themeId}
+                    method="POST"
+                    mutateRoute={"/topics/" + themeId}
+                    triggerNode={
+                      <Button icon="plus" style={{ marginLeft: 12.5 }} />
+                    }
+                  />
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
@@ -90,7 +110,9 @@ export default function ChapterExComponent({
             </Table.Body>
           </Table>
         </div>
-      </SideNav>
+      </TabsNavComponent>
+
+      {/* </SideNav> */}
     </>
   );
 }

@@ -1,17 +1,16 @@
-import { Icon, Table } from "semantic-ui-react";
+import { Button, Icon, Table } from "semantic-ui-react";
 import EditUserModal from "@/components/common/modal/user/";
 import DeleteComponent from "../../deleteButton";
 import Link from "next/link";
+import AddUserModal from "@/components/common/modal/user/";
 
 export default function UsersTable({ array, pathname, route }: any) {
   return (
     <div
       style={{
-        maxHeight: "65vh",
+        maxHeight: "85vh",
         overflowY: "auto",
         border: "1px solid rgba(34,36,38,.15)",
-        borderRadius: "4px",
-        marginTop: "10px",
       }}
     >
       <Table celled style={{ border: "none" }}>
@@ -28,8 +27,14 @@ export default function UsersTable({ array, pathname, route }: any) {
             <Table.HeaderCell>Отчество</Table.HeaderCell>
             <Table.HeaderCell>Группа</Table.HeaderCell>
             <Table.HeaderCell>Роль</Table.HeaderCell>
-            <Table.HeaderCell style={{ width: "5%" }}>
-              Настройки
+            <Table.HeaderCell style={{ width: "5%", padding: 0 }}>
+              <AddUserModal
+                method="POST"
+                route="/users/"
+                triggerNode={
+                  <Button icon="plus" style={{ margin: "0 0 0 12.5px" }} />
+                }
+              />
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>

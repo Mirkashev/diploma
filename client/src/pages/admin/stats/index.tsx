@@ -1,3 +1,11 @@
-import ConnectedAdminStats from './Сonnected.tsx'
+import Page from "@/layouts/page";
+import StatsView from "@/views/stats";
 
-export default ConnectedAdminStats;
+const StatsPage = () => {
+  return (
+    <Page title={"Статистика"}>
+      <StatsView />
+    </Page>
+  );
+};
+export default StatsPage;

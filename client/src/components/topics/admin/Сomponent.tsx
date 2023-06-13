@@ -15,37 +15,16 @@ import TitleModal from "@/components/common/modal/titleNew";
 
 const AdminTopicsComponent = ({ topics }: TopicsInterface) => {
   return (
-    <Container
-      as="main"
-      style={{
-        flexGrow: 1,
-        maxWidth: "720px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        marginTop: "72px",
-        position: "relative",
-      }}
-    >
-      <Menu style={{ width: "100%", marginBottom: "0" }}>
-        <TitleModal route={"/topics/"} method="POST" />
-        <Menu.Menu position="right">
-          <Menu.Item>
-            <Input disabled icon="search" placeholder="Search..." />
-          </Menu.Item>
-        </Menu.Menu>
-      </Menu>
+    <>
       <div
         style={{
-          maxHeight: "65vh",
+          maxHeight: "85vh",
           width: "100%",
           overflowY: "auto",
           border: "1px solid rgba(34,36,38,.15)",
-          borderRadius: "4px",
-          marginTop: "10px",
         }}
       >
-        <Table celled style={{ border: "none" }}>
+        <Table celled style={{ border: "none", borderRadius: 0 }}>
           <Table.Header
             style={{
               position: "sticky",
@@ -53,13 +32,19 @@ const AdminTopicsComponent = ({ topics }: TopicsInterface) => {
             }}
           >
             <Table.Row>
-              <Table.HeaderCell>Тема</Table.HeaderCell>
-              <Table.HeaderCell style={{ width: "5%" }}>
-                Настройки
+              <Table.HeaderCell>Список тем</Table.HeaderCell>
+              <Table.HeaderCell style={{ width: "5%", padding: 0 }}>
+                <TitleModal
+                  route={"/topics/"}
+                  method="POST"
+                  triggerNode={
+                    <Button icon="plus" style={{ margin: "0 0 0 12.5px" }} />
+                  }
+                />
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>
+          <Table.Body style={{ borderRadius: 0 }}>
             {topics?.map((el, i) => (
               <Table.Row key={i + Math.random()}>
                 <Table.Cell>
@@ -93,7 +78,7 @@ const AdminTopicsComponent = ({ topics }: TopicsInterface) => {
           </Table.Body>
         </Table>
       </div>
-    </Container>
+    </>
   );
 };
 

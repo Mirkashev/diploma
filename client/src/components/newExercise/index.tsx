@@ -1,16 +1,12 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import "reactflow/dist/style.css";
-import {
-  useGetData,
-  usePatchData,
-  usePatchDataM,
-  usePostData,
-} from "@/hooks/fetching";
+import { useGetData, patchData, postData } from "@/hooks/fetching";
 import { useRouter } from "next/router";
 import ExerciseAdminComponent from "./admin/Component";
 import FlowComponent from "./flow";
 import ExerciseComponent from "./user/Component";
+import { TitlesContext } from "@/context/titles";
 
 const Exercise = () => {
   const router = useRouter();
@@ -19,7 +15,14 @@ const Exercise = () => {
 
   const { data, isLoading, isError } = useGetData("/exercises/" + exercise_id);
 
-  const send = usePatchDataM("/exercises/" + exercise_id);
+  const { setTopicTitle, setExerciseTitle } = useContext(TitlesContext);
+
+  useEffect(() => {
+    setTopicTitle(data?.theme?.title);
+    setExerciseTitle(data?.title);
+  }, [data]);
+
+  const send = patchData("/exercises/" + exercise_id);
 
   const onSave = useCallback(() => {
     if (rfInstance) {
@@ -114,6 +117,7 @@ const Exercise = () => {
           data={data}
           setRfInstance={setRfInstance}
           rfInstance={rfInstance}
+          onSave={onSave}
         />
       </ExerciseAdminComponent>
     );
@@ -126,6 +130,7 @@ const Exercise = () => {
         setRfInstance={setRfInstance}
         isUser={true}
         rfInstance={rfInstance}
+        onSave={onCheck}
       />
     </ExerciseComponent>
   );

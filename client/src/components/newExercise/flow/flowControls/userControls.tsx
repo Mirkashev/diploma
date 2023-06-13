@@ -1,7 +1,7 @@
 import { Controls, Panel } from "reactflow";
 import { Dropdown, Icon, Menu } from "semantic-ui-react";
 
-const FlowControls = ({ children }: any) => {
+const FlowControls = ({ children, onCheck }: any) => {
   return (
     <>
       <Controls />
@@ -18,6 +18,9 @@ const FlowControls = ({ children }: any) => {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
+          <Menu.Item onClick={onCheck} style={{ cursor: "pointer" }}>
+            Проверить
+          </Menu.Item>
         </Menu>
       </Panel>
     </>

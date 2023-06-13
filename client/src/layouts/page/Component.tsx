@@ -1,25 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { AuthContext, AuthProvider } from '../../context/auth';
-import Nav from '@/components/common/nav/top-layer1';
-import { adminButtons, userButtons } from './page.layout.constants';
-import SideBar from "@/components/common/nav/SideBar";
+import React, { useContext, useEffect, useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { AuthContext, AuthProvider } from "../../context/auth";
+import Nav from "@/components/common/nav/top-layer1";
+import buttons from "./page.layout.constants";
+import { Container } from "semantic-ui-react";
+import SideNav from "@/components/common/nav/sideNav";
+import { TitlesProvider } from "@/context/titles";
 
-const Page = ({ title, children, tabs}:any) => {
+const Page = ({ title, children, tabs }: any) => {
   const router = useRouter();
-  const { user }: any= useContext(AuthContext);
+  const { user }: any = useContext(AuthContext);
 
-  useEffect(()=> {
-    if(user != undefined
-      && router.isReady
-      && !!router.pathname.match('/admin')
-      && user?.role !== 'admin') {
-
-      router.push('/user/topics');
+  useEffect(() => {
+    if (
+      user != undefined &&
+      router.isReady &&
+      !!router.pathname.match("/admin") &&
+      user?.role !== "admin"
+    ) {
+      router.push("/user/topics");
     }
+  }, [user?.role]);
 
-  },[user?.role])
+  if (!user?.role) return <div>...loading</div>;
 
   return (
     <>
@@ -29,19 +33,26 @@ const Page = ({ title, children, tabs}:any) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-        <div style={{
-            margin: 'auto',
-            maxWidth: '1920px',
-            width: '100%'
-        }}>
-            <SideBar>
-                {children}
-            </SideBar>
-        </div>
+      <Nav />
 
-      {/*{!!router.pathname.match('/admin') ? <Nav buttons={adminButtons}/> : <Nav buttons={buttons}/>}*/}
+      <Container
+        as="main"
+        style={{
+          flexGrow: 1,
+          maxWidth: "720px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          marginTop: "72px",
+          position: "relative",
+        }}
+      >
+        <TitlesProvider>
+          <SideNav links={buttons?.[user?.role]}>{children}</SideNav>
+        </TitlesProvider>
+      </Container>
 
-      {/*<div style={{marginTop:"60px", width:'100%', height:"20px"}}></div>*/}
+      {/* <div style={{ marginTop: "60px", width: "100%", height: "20px" }}></div> */}
     </>
   );
 };

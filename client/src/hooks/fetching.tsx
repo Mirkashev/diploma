@@ -14,7 +14,7 @@ const fetchConfig: RequestInit = {
 const fetcher = async (route: string, method: string, { arg }: any) => {
   if (route.match("undefined")) return;
 
-  let config = {
+  let config: any = {
     ...fetchConfig,
     headers: {
       "Content-Type": "application/json",
@@ -27,9 +27,10 @@ const fetcher = async (route: string, method: string, { arg }: any) => {
 
   const resp = await fetch("http://localhost:3030" + route, config);
 
+  console.log(resp.ok);
+
   if (!resp.ok) return resp.ok;
 
-  // console.log( await resp.json())
   try {
     return await resp.json();
   } catch (error) {
@@ -84,9 +85,11 @@ export function useGetData(route: string) {
 //   }
 // }
 
-export function usePostData(route: string, mutateRoute?: string) {
+export function postData(route: string, mutateRoute?: string) {
   const trigger = async (arg: any) => {
     const data = await fetcher(route, "POST", { arg });
+
+    console.log(data);
 
     if (!data) {
       return false;
@@ -102,7 +105,7 @@ export function usePostData(route: string, mutateRoute?: string) {
   };
 }
 
-export function usePatchDataM(route: string, mutateRoute?: string) {
+export function patchData(route: string, mutateRoute?: string) {
   const trigger = async (arg: any) => {
     const data = await fetcher(route, "PATCH", { arg });
 
@@ -120,20 +123,7 @@ export function usePatchDataM(route: string, mutateRoute?: string) {
   };
 }
 
-export function usePatchData(route: string) {
-  const { trigger, isMutating, error } = useSWRMutation(
-    route,
-    (route, { arg }) => fetcher(route, "PATCH", { arg })
-  );
-
-  return {
-    trigger,
-    isMutating,
-    error,
-  };
-}
-
-export function useDeleteData(route: string, mutateRoute?: string) {
+export function deleteData(route: string, mutateRoute?: string) {
   const trigger = async () => {
     console.log(route);
     const data = await fetcher(route, "DELETE", { undefined });

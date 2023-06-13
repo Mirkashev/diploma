@@ -1,19 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import CourseList from './Component.tsx'
-import {useGetData} from "@/hooks/fetching";
-import {Loader} from "semantic-ui-react";
+import CourseList from "./Component.tsx";
+import { useGetData } from "@/hooks/fetching";
+import { Loader } from "semantic-ui-react";
 
-const ConnectedCourseList = (props) => {
+const ConnectedCourseList = (props: any) => {
+  const { data, isLoading } = useGetData("/course");
 
-    const { data, isLoading} = useGetData('/course')
+  if (isLoading) return <Loader />;
 
+  return <CourseList {...props} data={data} loading={isLoading} />;
+};
 
-    if(isLoading) return <Loader/>
-
-    return (
-        <CourseList {...props} data={data} loading={isLoading}/>
-    )
-}
-
-export default ConnectedCourseList
+export default ConnectedCourseList;

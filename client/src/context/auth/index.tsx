@@ -1,6 +1,6 @@
-import React, { createContext, useEffect, useReducer } from 'react';
-import jwtDecode from 'jwt-decode';
-import { useRouter } from 'next/router';
+import React, { createContext, useEffect, useReducer } from "react";
+import jwtDecode from "jwt-decode";
+import { useRouter } from "next/router";
 
 export const initialState = {
   user: null,
@@ -14,12 +14,12 @@ const AuthContext = createContext({
 
 function authReducer(state: any, action: any) {
   switch (action.type) {
-    case 'LOGIN':
+    case "LOGIN":
       return {
         ...state,
         user: jwtDecode(action.payload),
       };
-    case 'LOGOUT':
+    case "LOGOUT":
       return {
         ...state,
         user: null,
@@ -33,41 +33,54 @@ const AuthProvider = (props: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const router = useRouter();
   useEffect(() => {
-    console.log('authprovider ueseees')
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+    console.log("authprovider ueseees");
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
       if (token !== null) {
         try {
           const decodedToken: any = jwtDecode(token);
 
           if (decodedToken?.exp * 1000 < Date.now()) {
-            console.log('token expired')
-            localStorage.removeItem('token');
+            console.log("token expired");
+            localStorage.removeItem("token");
           } else {
             login(token);
           }
           return;
         } catch (error) {
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
         }
       }
 
-      router.push('/auth');
+      router.push("/auth");
     }
   }, []);
 
   function login(token: string) {
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
 
     dispatch({
-      type: 'LOGIN',
+      type: "LOGIN",
       payload: token,
     });
+
+    const decodedToken: any = jwtDecode(token);
+
+    if (!!router.pathname.match("/auth")) {
+      router.push(
+        `${
+          decodedToken?.role === "student" || decodedToken?.role === "teacher"
+            ? "user"
+            : decodedToken?.role
+        }/topics/`
+      );
+    }
   }
 
   function logout() {
-    localStorage.removeItem('token');
-    dispatch({ type: 'LOGOUT' });
+    localStorage.removeItem("token");
+    dispatch({ type: "LOGOUT" });
+    router.push("/auth");
   }
 
   return (

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { error } from "console";
 
 const ConnectedAuthorization = () => {
-  const { login, user: userContext } = useContext(AuthContext);
+  const { login, user }: any = useContext(AuthContext);
   const router = useRouter();
   const [isShownPass, togglePassword] = useState("password");
 
@@ -41,9 +41,9 @@ const ConnectedAuthorization = () => {
     if (response.ok) {
       try {
         const data = await response.json();
-        login(data.access_token);
+        login(data.access_token, data.refresh_token);
 
-        router.push("/user/topics");
+        // router.push(`${user?.role === "student" ? "user" : user?.role}/topics`);
       } catch (error) {
         console.log(error);
       }
