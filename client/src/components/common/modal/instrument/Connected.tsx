@@ -1,6 +1,6 @@
 import { useGetData, patchData, postData, useUpload } from "@/hooks/fetching";
 import useToggle from "@/hooks/toggle";
-import toBase64 from "@/utils/fileToBase64";
+import { toBase64 } from "@/utils/fileToBase64";
 import { useState } from "react";
 import InstrumentModalComponent from "./Component";
 

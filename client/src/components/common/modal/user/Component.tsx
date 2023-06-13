@@ -1,4 +1,4 @@
-import toBase64 from "@/utils/fileToBase64";
+import { toBase64 } from "@/utils/fileToBase64";
 import { useEffect, useState } from "react";
 import {
   Button,
