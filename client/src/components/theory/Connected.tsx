@@ -30,12 +30,6 @@ const ConnectedChapterTheory = () => {
     const resp = data?.theory?.content
       ? await patch.trigger(sendingData)
       : await post.trigger(sendingData);
-
-    if (resp !== false) {
-      alert("Сохранено");
-    } else {
-      alert("Ошибка на сервере, повторите позднее");
-    }
   };
 
   if (isLoading || !id) return <div>...Loading</div>;

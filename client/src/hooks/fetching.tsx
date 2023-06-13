@@ -97,6 +97,8 @@ export function postData(route: string, mutateRoute?: string) {
 
     mutate(mutateRoute || route);
 
+    alert("Сохранено");
+
     return data;
   };
 
@@ -114,6 +116,8 @@ export function patchData(route: string, mutateRoute?: string) {
     }
 
     mutate(mutateRoute || route);
+
+    alert("Сохранено");
 
     return true;
   };
@@ -133,6 +137,8 @@ export function deleteData(route: string, mutateRoute?: string) {
     }
 
     mutate(mutateRoute || route);
+
+    alert("Удалено");
 
     return true;
   };
