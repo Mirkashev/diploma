@@ -36,7 +36,7 @@ export class ExercisesService {
     if(property) {
       if(property.exerciseSchema) {
         const schema = await this.schemaRepo.findOne({where:{exerciseId: id}})
-        schema.content = exercise.exerciseSchema.content;
+        schema.content = exercise?.exerciseSchema?.content ||schema.content;
         await this.schemaRepo.save(schema);
 
         property = {

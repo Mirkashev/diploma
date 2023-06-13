@@ -33,7 +33,7 @@ export class Result {
   @Column()
   testId!: number;
 
-  @ManyToOne(()=> User, x=> x.results)
+  @ManyToOne(()=> User, x=> x.results, {onDelete:'CASCADE'})
   user!: User; 
 
   @Column()

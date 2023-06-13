@@ -16,11 +16,23 @@ export class TheoriesService {
   ){}
 
   async create(id: number, theory: Theory) {
+    console.log(id, theory)
     if(!theory.content) {
       return;
     }
     theory.themeId = id;
-    return await this.repo.save(theory);
+    const theme = await this.repo.findOne({where: {themeId: id}})
+    if(!theme) {
+      return await this.repo.save(theory);
+    }
+
+    const property = await this.repo.preload(theme);
+
+    if(property) {
+      property.content = theory.content;
+      return await this.repo.save(property);
+    }
+
   }
 
   async save(theory: Theory) {
@@ -32,12 +44,10 @@ export class TheoriesService {
   }
 
   async update(id: number, theory: Theory) {
-    if(!theory.content) {
-      return;
-    }
     const property = await this.repo.preload(await this.repo.findOne({where: {themeId: id}}));
 
     if(property) {
+
       property.content = theory.content;
       return await this.repo.save(property);
     }

@@ -24,6 +24,7 @@ export class ExercisesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() exercise: Exercise) {
+    console.log(id, exercise);
     return this.exercisesService.update(+id, exercise);
   }
 
