@@ -17,7 +17,7 @@ import { Course } from './entities/course.entity';
       Media,
       Theory,
       Exercise,
-      ExerciseEl,
+      // ExerciseEl,
       ExerciseShema,
       Result,
       Course
@@ -34,7 +34,7 @@ import { Course } from './entities/course.entity';
       Media,
       Theory,
       Exercise,
-      ExerciseEl,
+      // ExerciseEl,
       // ExerciseElCoordinates,
       ExerciseShema,
       Result,

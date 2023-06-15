@@ -24,8 +24,8 @@ import { TheoriesController } from './theories/theories.controller';
 import { TheoriesService } from './theories/theories.service';
 import { ExercisesController } from './exercises/exercises.controller';
 import { ExercisesService } from './exercises/exercises.service';
-import { InstrumentsController } from './exercise-el/exercise-el.controller';
-import { InstrumentsService } from './exercise-el/exercise-el.service';
+// import { InstrumentsController } from './exercise-el/exercise-el.controller';
+// import { InstrumentsService } from './exercise-el/exercise-el.service';
 import { MediaController } from './media/media.controller';
 import { MediaService } from './media/media.service';
 import { QuestionsController } from './questions/questions.controller';
@@ -43,7 +43,7 @@ import dayjs from 'dayjs';
     TheoriesController,
     AuthController,
     ExercisesController,
-    InstrumentsController,
+    // InstrumentsController,
     MediaController,
   ],
   providers: [
@@ -56,7 +56,7 @@ import dayjs from 'dayjs';
     TheoriesService,
     AuthService,
     ExercisesService,
-    InstrumentsService,
+    // InstrumentsService,
     MediaService,
     // {
     //   provide: 'APP_GUARD',
