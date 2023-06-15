@@ -230,8 +230,8 @@ const ConnectedFlow = ({
 
   // todo: убрать юзлесс эффект
   useEffect(() => {
-    if (!data?.exerciseSchema) return;
-    const flow = JSON.parse(data?.exerciseSchema?.content);
+    if (!data?.content) return;
+    const flow = JSON.parse(data?.content);
 
     if (!flow) return;
 

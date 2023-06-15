@@ -31,7 +31,7 @@ const Exercise = () => {
       send.trigger(
         JSON.stringify({
           ...data,
-          exerciseSchema: { exerciseId: exercise_id, content: flow },
+          content: flow,
         })
       );
     }
