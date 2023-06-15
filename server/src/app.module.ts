@@ -1,16 +1,23 @@
 import { Module } from '@nestjs/common';
+import { AuthModule } from './auth/auth.module';
+import { ExerciseModule } from './exercise/exercise.module';
+import { GroupModule } from './group/group.module';
+import { ResultModule } from './result/result.module';
+import { TestModule } from './test/test.module';
+import { TheoryModule } from './theory/theory.module';
+import { TopicModule } from './topic/topic.module';
+import { UserModule } from './user/user.module';
+import { QuestionModule } from './question/question.module';
+import { AnswerModule } from './answer/answer.module';
+import { ConfigModule } from './config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from "@nestjs/typeorm/dist/interfaces/typeorm-options.interface"
-import { ApiModule } from './api/api.module';
-import { DbModule } from './db/db.module';
-import * as entities from './db/entities';
-import { ConfigModule } from './config/config.module';
-import { AppConfig } from './config/config.types';
 import { ConfigService } from './config/config.service';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './api/auth/auth.constants';
+import * as entities from './db/entities'
+// import { DbModule } from './db/db.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
-import { CourseModule } from './course/course.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/auth.constants';
 
 @Module({
   imports: [
@@ -28,7 +35,7 @@ import { CourseModule } from './course/course.module';
           username: config.db.user,
           password: config.db.pass,
           synchronize: true, // do not set it to "true" in production code
-          entities: Object.values(entities),
+          // entities: [],
           autoLoadEntities: true,
           // migrationsTableName: 'migrations',
           // migrations: ['dist/db/migrations/*.js'],
@@ -43,15 +50,23 @@ import { CourseModule } from './course/course.module';
       inject: [ConfigService],
       imports: [ConfigModule],
     }),
-    DbModule,
+    // DbModule,
     MinioClientModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '30d'}
     }),
-    ApiModule,
-    CourseModule,
+    AuthModule, 
+    ExerciseModule, 
+    GroupModule, 
+    ResultModule, 
+    TestModule, 
+    TheoryModule, 
+    TopicModule, 
+    UserModule, 
+    QuestionModule, 
+    AnswerModule
   ],
 })
 export class AppModule {}
