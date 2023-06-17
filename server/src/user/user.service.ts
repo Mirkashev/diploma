@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+// import { TypeOrmQueryService } from '@nestjs-query/query-typeorm';
 import { Raw, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 
 @Injectable()
-export class UserService {
+export class UserService{
 
   constructor(
     @InjectRepository(User) private readonly repo: Repository<User>
-  ){}
+  ){
+    // super(repo, { useSoftDelete: true });
+  }
 
   async create(user: User) {
     return await this.repo.save(user);
@@ -62,6 +65,6 @@ export class UserService {
 
   async remove(id: number) {
     const preloaded = await this.repo.preload(await this.repo.findOne({where:{id:id}}));
-    return await this.repo.remove(preloaded);
+    return await this.repo.softRemove(preloaded);
   }
 }

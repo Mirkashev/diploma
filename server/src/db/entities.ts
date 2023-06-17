@@ -1,9 +1,0 @@
-export { Answer } from 'src/answer/entities/answer.entity';
-export { Exercise } from 'src/exercise/entities/exercise.entity';
-export { Group } from 'src/group/entities/group.entity';
-export { Question } from 'src/question/entities/question.entity';
-export { Result } from 'src/result/entities/result.entity';
-export { Test } from 'src/test/entities/test.entity';
-export { Theory } from 'src/theory/entities/theory.entity';
-export { Topic } from 'src/topic/entities/topic.entity';
-export { User } from 'src/user/entities/user.entity';

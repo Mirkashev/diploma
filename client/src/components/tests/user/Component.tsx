@@ -1,45 +1,16 @@
 import { ChapterTestsInterface } from "../../interfaces";
 import { Table } from "semantic-ui-react";
 import Link from "next/link";
-import TabsNavComponent from "@/components/common/nav/tabs";
-import { useRouter } from "next/router";
+import TopicsTabs from "@/components/common/nav/tabs/topicsTabs";
 
 export default function UserTestComponent({
   tests,
   themeId,
   title,
 }: ChapterTestsInterface) {
-  const router = useRouter();
-  const { id } = router.query;
   return (
     <>
-      <TabsNavComponent
-        links={[
-          {
-            key: "topics",
-            name: "Назад",
-            onClick: () => router.push("/user/topics"),
-          },
-          {
-            key: "theory",
-            name: "Теория",
-            active: !!router.pathname.match("/theory"),
-            onClick: () => router.push(`/user/topics/${id}/theory`),
-          },
-          {
-            key: "tests",
-            name: "Тесты",
-            active: !!router.pathname.match("/tests"),
-            onClick: () => router.push(`/user/topics/${id}/tests`),
-          },
-          {
-            key: "exercises",
-            name: "Упражнения",
-            active: !!router.pathname.match("/exercises"),
-            onClick: () => router.push(`/user/topics/${id}/exercises`),
-          },
-        ]}
-      >
+      <TopicsTabs>
         <div
           style={{
             maxHeight: "75vh",
@@ -55,7 +26,7 @@ export default function UserTestComponent({
               }}
             >
               <Table.Row>
-                <Table.HeaderCell>Название теста</Table.HeaderCell>
+                <Table.HeaderCell>Список тестов:</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -80,7 +51,7 @@ export default function UserTestComponent({
             </Table.Body>
           </Table>
         </div>
-      </TabsNavComponent>
+      </TopicsTabs>
     </>
   );
 }

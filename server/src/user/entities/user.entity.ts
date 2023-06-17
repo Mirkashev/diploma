@@ -3,6 +3,8 @@ import { Group } from 'src/group/entities/group.entity';
 import { Result } from 'src/result/entities/result.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinTable,
@@ -11,6 +13,7 @@ import {
   OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 // import { Group } from './group.entity';
 // import { Result } from './result.entity';
@@ -46,13 +49,6 @@ export class User {
   @Column({ nullable:true})
   groupId?: number | null;
 
-  // @Column('timestamp', {
-  //   default: () => 'CURRENT_TIMESTAMP',
-  //   select: false,
-  // })
-  // @Index()
-  // createdAt?: Dayjs;
-
   @Column('varchar', {
     default: 'student',
   })
@@ -61,6 +57,15 @@ export class User {
 
   @OneToMany(()=> Result, x=> x.test)
   results?: Result;
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt!: Date;
+
+  @DeleteDateColumn({type: "timestamp"})
+  deletedAt?: Date;
 
   constructor(from: Partial<User>) {
     Object.assign(this, from);

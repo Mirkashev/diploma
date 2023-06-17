@@ -3,6 +3,8 @@ import { Result } from 'src/result/entities/result.entity';
 import { Topic } from 'src/topic/entities/topic.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -13,6 +15,7 @@ import {
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 
@@ -25,23 +28,26 @@ export class Test {
   @Index()
   title!: string;
 
-  // @Column('timestamptz', {
-  //   default: () => 'CURRENT_TIMESTAMP',
-  // })
-  // @Index()
-  // createdAt!: Dayjs;
-
-  @ManyToOne(()=> Topic, x=> x.tests, {onDelete: 'CASCADE'})
+  @ManyToOne(()=> Topic, x=> x.tests)
   topic!: Topic; 
 
   @Column({select:false})
   topicId!: number;
 
-  @OneToMany(()=> Question, x=> x.test)
+  @OneToMany(()=> Question, x=> x.test, {cascade: true})
   questions!: Question[]; 
 
-  @OneToMany(()=> Result, x=> x.test)
+  @OneToMany(()=> Result, x=> x.test, {cascade: true})
   results!: Result; 
+
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt!: Date;
+
+  @DeleteDateColumn({type: "timestamp"})
+  deletedAt?: Date;
 
   constructor(from: Partial<Test>) {
     Object.assign(this, from);

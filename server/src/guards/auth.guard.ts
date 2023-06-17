@@ -9,6 +9,7 @@ import { jwtConstants } from '../auth/auth.constants';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from 'src/decorators/public.route.decorator';
+import { IS_REFRESH_KEY } from 'src/decorators/verify.route.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -22,13 +23,45 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
+
+    const isRefresh = this.reflector.getAllAndOverride<boolean>(IS_REFRESH_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ])
     if (isPublic) {
       // 💡 See this condition
       return true;
     }
 
+    if(isRefresh) {
+      // refresh logic
+      const request = context.switchToHttp().getRequest();
+      // console.log(request, this.extractTokenFromHeader(request));
+      // return true;
+      const token = this.extractTokenFromHeader(request);
+      if (!token) {
+        throw new UnauthorizedException();
+      }
+      try {
+        const payload = await this.jwtService.verifyAsync(
+          token,
+          {
+            secret: jwtConstants.secret,
+          }
+        );
+        // 💡 We're assigning the payload to the request object here
+        // so that we can access it in our route handlers
+        request['refresh'] = payload;
+      } catch {
+        throw new UnauthorizedException();
+      }
+
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
+    // console.log(token)
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -36,11 +69,12 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(
         token,
         {
-          secret: jwtConstants.secret
+          secret: jwtConstants.secret,
         }
       );
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
+      // console.log(payload);
       request['user'] = payload;
     } catch {
       throw new UnauthorizedException();

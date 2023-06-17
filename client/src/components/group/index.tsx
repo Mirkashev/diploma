@@ -14,7 +14,6 @@ import {
 } from "semantic-ui-react";
 import { mutate } from "swr";
 import TabsNavComponent from "../common/nav/tabs";
-import { TitlesContext } from "@/context/titles";
 // import AddGroupModal from '@/components/common/modal'
 
 function AddToGroupModal() {

@@ -54,13 +54,13 @@ export class TopicService {
   }
 
   async update(id: number, topic: Topic) {
-    const theme2 = await this.repo.findOne({where:{id: id}});
-    theme2.title = topic.title
+    const topicInDb = await this.repo.findOne({where:{id: id}});
+    topicInDb.title = topic.title
 
-    return await this.repo.save(theme2);
+    return await this.repo.save(topicInDb);
   }
 
   async remove(id: number) {
-    return await this.repo.remove(await this.repo.find({where:{id:id}}))
+    return await this.repo.softRemove(await this.repo.find({where:{id:id}, relations:['tests.questions.answers', 'theory', 'exercises']}))
   }
 }

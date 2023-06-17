@@ -24,11 +24,11 @@ export class TestService {
   }
 
   async remove(id: number) {
-    return await this.repo.remove(await this.repo.find({where:{id: id}}))
+    return await this.repo.softRemove(await this.repo.find({where:{id: id}, relations:['questions.answers', 'results']}))
   }
 
   async findOne(testId: number) {
-    return await this.repo.findOne({where:{id: testId}, relations: ['questions.answers', 'theme']})
+    return await this.repo.findOne({where:{id: testId}, relations: ['questions.answers', 'topic']})
   }
 
   async countPercent(testId: number, questions: Array<any>) {

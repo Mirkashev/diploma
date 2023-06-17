@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Answer, Question } from 'src/db/entities';
+import { Question } from './entities/question.entity';
+import { Answer } from 'src/answer/entities/answer.entity';
 
 @Injectable()
 export class QuestionService {
@@ -24,10 +25,11 @@ export class QuestionService {
   }
 
   async update(questionId: number, question: Question) {
-    let loadedQuestion = await this.repo.preload(await this.repo.findOne({where: {id: questionId}}));
+    let loadedQuestion = await this.repo.preload(await this.repo.findOne({where: {id: questionId}, relations:{answers:true}}));
 
     if(loadedQuestion) {
-      await this.answersRepo.remove(await this.answersRepo.find({where: {questionId: questionId}}));
+
+      await this.answersRepo.remove(await this.answersRepo.find({where:{questionId: questionId}}));
       
       loadedQuestion = {
         ...loadedQuestion,
@@ -39,15 +41,7 @@ export class QuestionService {
   }
 
   async remove(questionId: number) {
-    let loadedQuestion = await this.repo.preload(await this.repo.findOne({where: {id: questionId}}));
-
-    if(loadedQuestion) {
-      await this.answersRepo.remove(await this.answersRepo.find({where: {questionId: questionId}}));
-
-      return this.repo.remove(loadedQuestion);
-    }
-
-    return false;
+    return this.repo.softRemove(await this.repo.findOne({where: {id: questionId}, relations:['answers']}));
   }
 
   async findOne(questionId: number) {

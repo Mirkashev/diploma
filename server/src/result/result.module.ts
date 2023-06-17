@@ -4,6 +4,7 @@ import { ResultController } from './result.controller';
 import { TestModule } from 'src/test/test.module';
 import { Result } from './entities/result.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+// import { TestService } from 'src/test/test.service';
 
 @Module({
   controllers: [ResultController],

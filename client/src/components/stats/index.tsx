@@ -12,7 +12,7 @@ const ExportToExcel = ({ apiData, fileName }: any) => {
     return apiData.map((el: any) => {
       return {
         Группа: el.user.group.title,
-        Тема: el.test.theme.title,
+        Тема: el.test.topic.title,
         Тест: el.test.title,
         ФИО: `${el.user.surname} ${el.user.firstName} ${el.user.lastName}`,
         Проценты: el.percent,
@@ -58,9 +58,9 @@ const StatsComponent = () => {
       ?.filter(
         ({
           test: {
-            theme: { title: theme },
+            topic: { title: topic },
           },
-        }: any) => theme.includes(router.query.theme) || !router.query?.theme
+        }: any) => topic.includes(router.query.topic) || !router.query?.topic
       )
       ?.filter(({ user }: any) => {
         if (user?.group?.title) {
@@ -145,7 +145,7 @@ const StatsComponent = () => {
                     router.push(
                       {
                         pathname: `/${user?.role}/stats`,
-                        query: { ...router.query, theme: value },
+                        query: { ...router.query, topic: value },
                       },
                       undefined,
                       { shallow: true }
@@ -158,7 +158,7 @@ const StatsComponent = () => {
                           (
                             {
                               test: {
-                                theme: { title },
+                                topic: { title },
                               },
                             }: any,
                             i: number
@@ -184,7 +184,7 @@ const StatsComponent = () => {
               <Table.Row key={el.id + i * Math.random()}>
                 <Table.Cell>{i}</Table.Cell>
                 <Table.Cell>{el?.user?.group?.title || "-"}</Table.Cell>
-                <Table.Cell>{el?.test?.theme?.title || "-"}</Table.Cell>
+                <Table.Cell>{el?.test?.topic?.title || "-"}</Table.Cell>
                 <Table.Cell>{el?.test?.title || "-"}</Table.Cell>
                 <Table.Cell>
                   {el?.user?.surname || "-"} {el?.user?.firstName || "-"}{" "}

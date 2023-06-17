@@ -1,39 +1,9 @@
-import TabsNavComponent from "@/components/common/nav/tabs";
-
-import { useRouter } from "next/router";
+import TopicsTabs from "@/components/common/nav/tabs/topicsTabs";
 
 const ExerciseAdminComponent = ({ data, onSave, children }: any) => {
-  const router = useRouter();
-  const { id } = router.query;
   return (
     <>
-      <TabsNavComponent
-        links={[
-          {
-            key: "topics",
-            name: "Назад",
-            onClick: () => router.push(`/admin/topics`),
-          },
-          {
-            key: "theory",
-            name: "Теория",
-            active: !!router.pathname.match("/theory"),
-            onClick: () => router.push(`/admin/topics/${id}/theory`),
-          },
-          {
-            key: "tests",
-            name: "Тесты",
-            active: !!router.pathname.match("/tests"),
-            onClick: () => router.push(`/admin/topics/${id}/tests`),
-          },
-          {
-            key: "exercises",
-            name: "Упражнения",
-            active: false,
-            onClick: () => router.push(`/admin/topics/${id}/exercises`),
-          },
-        ]}
-      >
+      <TopicsTabs>
         <div
           style={{
             width: "100%",
@@ -43,7 +13,7 @@ const ExerciseAdminComponent = ({ data, onSave, children }: any) => {
         >
           {children}
         </div>
-      </TabsNavComponent>
+      </TopicsTabs>
     </>
   );
 };

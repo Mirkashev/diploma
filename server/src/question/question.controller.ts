@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { Question } from 'src/db/entities';
 import { QuestionService } from './question.service';
+import { Question } from './entities/question.entity';
 
 @Controller('questions')
 export class QuestionController {

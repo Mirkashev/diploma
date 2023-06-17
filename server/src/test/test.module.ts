@@ -7,7 +7,8 @@ import { Test } from './entities/test.entity';
 @Module({
   imports: [TestModule, TypeOrmModule.forFeature([Test])],
   controllers: [TestController],
-  providers: [TestService]
+  providers: [TestService],
+  exports:[TestService]
 })
 export class TestModule {
   private readonly logger = new Logger('TEST MODULE')

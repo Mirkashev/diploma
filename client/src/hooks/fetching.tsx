@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
+import jwtDecode from "jwt-decode";
+
 //TODO: set api end point by env REFACTOR THIS ELEMENT
 const fetchConfig: RequestInit = {
   method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -11,8 +13,30 @@ const fetchConfig: RequestInit = {
   referrerPolicy: "no-referrer",
 };
 
+const updateToken = async () => {
+  const send = verifyToken("/auth/refresh");
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    const decodedtoken: any = jwtDecode(token);
+
+    if (decodedtoken?.exp * 1000 < Date.now()) {
+      const newToken = await send.trigger(
+        JSON.stringify({ access_token: token })
+      );
+
+      if (newToken) {
+        localStorage.setItem("token", newToken);
+        return;
+      }
+    }
+  }
+};
+
 const fetcher = async (route: string, method: string, { arg }: any) => {
   if (route.match("undefined")) return;
+
+  await updateToken();
 
   let config: any = {
     ...fetchConfig,
@@ -38,8 +62,37 @@ const fetcher = async (route: string, method: string, { arg }: any) => {
   }
 };
 
+const fetcherRefresh = async (route: string, method: string, { arg }: any) => {
+  if (route.match("undefined")) return;
+
+  let config: any = {
+    ...fetchConfig,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("refresh")}`,
+    },
+    method: method,
+  };
+
+  if (arg) config.body = arg;
+
+  const resp = await fetch("http://localhost:3030" + route, config);
+
+  console.log(resp.ok);
+
+  if (!resp.ok) return resp.ok;
+
+  try {
+    return await resp.json();
+  } catch (error) {
+    return false;
+  }
+};
+
 const fileFetcher = (route: string, { arg }: any) => {
   if (route.match("undefined")) return;
+
+  updateToken();
 
   return fetch("http://localhost:3030" + route, {
     ...fetchConfig,
@@ -74,17 +127,6 @@ export function useGetData(route: string) {
   };
 }
 
-// export function usePostData(route: string) {
-//   const { trigger, isMutating, error } = useSWRMutation(route,
-//     (route, { arg }) => fetcher(route, 'POST', { arg }))
-
-//   return {
-//     trigger,
-//     isMutating,
-//     error
-//   }
-// }
-
 export function postData(route: string, mutateRoute?: string) {
   const trigger = async (arg: any) => {
     const data = await fetcher(route, "POST", { arg });
@@ -100,6 +142,28 @@ export function postData(route: string, mutateRoute?: string) {
     alert("Сохранено");
 
     return data;
+  };
+
+  return {
+    trigger,
+  };
+}
+
+export function verifyToken(route: string, mutateRoute?: string) {
+  const trigger = async (arg: any) => {
+    const data = await fetcherRefresh(route, "POST", { arg });
+
+    console.log(data);
+
+    if (!data) {
+      return false;
+    }
+
+    // mutate(mutateRoute || route);
+
+    // alert("Сохранено");
+
+    return data.access_token;
   };
 
   return {

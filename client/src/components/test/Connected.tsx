@@ -15,7 +15,7 @@ const ConnectedTest = () => {
 
   useEffect(() => {
     setTestTitle(data?.title);
-    setTopicTitle(data?.theme?.title);
+    setTopicTitle(data?.topic?.title);
   }, [data]);
 
   if (isLoading || !test_id) return <div>...Loading</div>;
@@ -27,7 +27,7 @@ const ConnectedTest = () => {
       <TestComponent
         questions={data?.questions}
         title={data?.title || "Шаблонный тайтл теста"}
-        mainTitle={data?.theme?.title}
+        mainTitle={data?.topic?.title}
         test_id={+test_id}
       />
     );
@@ -37,7 +37,7 @@ const ConnectedTest = () => {
     <UserTestComponent
       questions={data?.questions}
       title={data?.title || "Шаблонный тайтл теста"}
-      mainTitle={data?.theme?.title}
+      mainTitle={data?.topic?.title}
     />
   );
 };

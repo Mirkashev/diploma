@@ -1,6 +1,8 @@
 import { Question } from 'src/question/entities/question.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -10,6 +12,7 @@ import {
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 
@@ -26,13 +29,16 @@ export class Answer {
   @Index()
   isTrue!: boolean;
 
-  // @Column('timestamptz', {
-  //   default: () => 'CURRENT_TIMESTAMP',
-  // })
-  // @Index()
-  // createdAt!: Dayjs;
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt!: Date;
 
-  @ManyToOne(()=> Question, x=> x.answers, {onDelete: 'CASCADE'})
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt!: Date;
+
+  @DeleteDateColumn({type: "timestamp"})
+  deletedAt?: Date;
+
+  @ManyToOne(()=> Question, x=> x.answers)
   question!: Question; 
 
   @Column()
