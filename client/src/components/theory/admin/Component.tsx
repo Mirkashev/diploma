@@ -1,8 +1,7 @@
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import { ChapterTheoryInterface } from "../../interfaces";
 import dynamic from "next/dynamic";
-import TabsNavComponent from "@/components/common/nav/tabs";
-import { useRouter } from "next/router";
+import TopicsTabs from "@/components/common/nav/tabs/topicsTabs";
 const CKeditor = dynamic(() => import("@/components/common/ckEditor"), {
   ssr: false,
 });
@@ -13,50 +12,22 @@ export default function ChapterTheoryComponent({
   setData,
   title,
 }: ChapterTheoryInterface) {
-  const router = useRouter();
-  const { id } = router.query;
-
   return (
     <>
-      <TabsNavComponent
-        links={[
-          {
-            key: "topics",
-            name: "Назад",
-            onClick: () => router.push("/admin/topics"),
-          },
-          {
-            key: "theory",
-            name: "Теория",
-            active: !!router.pathname.match("/theory"),
-            onClick: () => router.push(`/admin/topics/${id}/theory`),
-          },
-          {
-            key: "tests",
-            name: "Тесты",
-            active: !!router.pathname.match("/tests"),
-            onClick: () => router.push(`/admin/topics/${id}/tests`),
-          },
-          {
-            key: "exercises",
-            name: "Упражнения",
-            active: !!router.pathname.match("/exercises"),
-            onClick: () => router.push(`/admin/topics/${id}/exercises`),
-          },
-        ]}
-      >
-        <Button
+      <TopicsTabs>
+        <Icon
+          name="save"
+          size="large"
           style={{
             position: "absolute",
-            top: "59px",
+            top: 54,
             zIndex: 1,
-            right: "9px",
-            padding: "10px",
-            background: "#fff",
-            border: "1px solid #000",
-            borderRadius: "0px",
+            right: 2,
+            padding: 10,
+            width: 39,
+            height: 39,
+            cursor: "pointer",
           }}
-          icon="save"
           onClick={() => sendTheory()}
         />
         <CKeditor
@@ -66,7 +37,7 @@ export default function ChapterTheoryComponent({
           value={content}
           editorLoaded={true}
         />
-      </TabsNavComponent>
+      </TopicsTabs>
     </>
   );
 }

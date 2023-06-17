@@ -13,11 +13,10 @@ import { ConfigModule } from './config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from "@nestjs/typeorm/dist/interfaces/typeorm-options.interface"
 import { ConfigService } from './config/config.service';
-import * as entities from './db/entities'
-// import { DbModule } from './db/db.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/auth.constants';
+import { ExResultModule } from './exResult/ex-result.module';
 
 @Module({
   imports: [
@@ -29,7 +28,7 @@ import { jwtConstants } from './auth/auth.constants';
 
         const options: TypeOrmModuleOptions = {
           type: 'postgres',
-          database: config.db.dbname,
+          database: config.db.dbname, 
           host: config.db.host,
           port: config.db.port,
           username: config.db.user,
@@ -50,17 +49,17 @@ import { jwtConstants } from './auth/auth.constants';
       inject: [ConfigService],
       imports: [ConfigModule],
     }),
-    // DbModule,
     MinioClientModule,
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '30d'}
+      signOptions: { expiresIn: '15m'}
     }),
     AuthModule, 
     ExerciseModule, 
     GroupModule, 
-    ResultModule, 
+    ResultModule,
+    ExResultModule, 
     TestModule, 
     TheoryModule, 
     TopicModule, 

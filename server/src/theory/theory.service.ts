@@ -2,17 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Theory } from './entities/theory.entity';
-// import { ThemesService } from '../themes/themes.service';
 
 @Injectable()
 export class TheoryService {
   constructor(
-    // @InjectRepository(User) private readonly repo: Repository<User>
     @InjectRepository(Theory) private readonly repo: Repository<Theory>,
-    // private readonly themesService: ThemesService,
-    
-
-
   ){}
 
   async create(id: number, theory: Theory) {
@@ -21,12 +15,12 @@ export class TheoryService {
       return;
     }
     theory.topicId = id;
-    const theme = await this.repo.findOne({where: {topicId: id}})
-    if(!theme) {
+    const topic = await this.repo.findOne({where: {topicId: id}})
+    if(!topic) {
       return await this.repo.save(theory);
     }
 
-    const property = await this.repo.preload(theme);
+    const property = await this.repo.preload(topic);
 
     if(property) {
       property.content = theory.content;

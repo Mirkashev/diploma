@@ -7,8 +7,10 @@ import ExerciseAdminComponent from "./admin/Component";
 import FlowComponent from "./flow";
 import ExerciseComponent from "./user/Component";
 import { TitlesContext } from "@/context/titles";
+import { AuthContext } from "@/context/auth";
 
 const Exercise = () => {
+  const { user }: any = useContext(AuthContext);
   const router = useRouter();
   const { id, exercise_id } = router?.query;
   const [rfInstance, setRfInstance]: any = useState();
@@ -18,11 +20,13 @@ const Exercise = () => {
   const { setTopicTitle, setExerciseTitle } = useContext(TitlesContext);
 
   useEffect(() => {
-    setTopicTitle(data?.theme?.title);
+    setTopicTitle(data?.topic?.title);
     setExerciseTitle(data?.title);
   }, [data]);
 
   const send = patchData("/exercises/" + exercise_id);
+
+  const sendStud = postData("/resultsEx/");
 
   const onSave = useCallback(() => {
     if (rfInstance) {
@@ -42,7 +46,7 @@ const Exercise = () => {
 
     const flow = rfInstance.toObject();
 
-    const defaultFlow = JSON.parse(data?.exerciseSchema?.content);
+    const defaultFlow = JSON.parse(data?.content);
 
     console.log(flow.edges, defaultFlow.edges);
 
@@ -104,6 +108,23 @@ const Exercise = () => {
         };
       });
     });
+
+    console.log(trueEdges.length);
+
+    sendStud.trigger(
+      JSON.stringify({
+        exerciseId: data?.id,
+        userId: user?.sub,
+        isTrue: defaultFlow.edges.length === trueEdges.length,
+      })
+    );
+
+    if (defaultFlow.edges.length === trueEdges.length) {
+      alert("Успешное решение схемы");
+      return;
+    }
+
+    alert("Схема построена неправильно!");
   }, [rfInstance, data]);
 
   if (isLoading) return <div>...Loading</div>;

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // todo: need to write script to add this to node_modules 'yarn add file:./customCkEditor'
-import CustomEditor from '../../../../customCkEditor/build/ckeditor';
+import CustomEditor from "../../../../customCkEditor/build/ckeditor";
 import MyCustomUploadAdapterPlugin from "@/utils/ckUploadAdapter";
 import Timestamp from "./customPlugins/sendButton";
 
@@ -13,14 +13,7 @@ interface CKeditorProps {
   value: string;
 }
 
-
-
-export default function CKeditor({
-  onChange,
-  editorLoaded,
-  name,
-  value,
-}: any) {
+export default function CKeditor({ onChange, editorLoaded, name, value }: any) {
   // const editorRef = useRef<{ CKEditor: typeof CKEditor; ClassicEditor: typeof ClassicEditor }>();
 
   // useEffect(() => {
@@ -49,45 +42,43 @@ export default function CKeditor({
             toolbar: {
               items: [
                 // 'timestamp',
-                'blockQuote',
-                'bold',
+                "blockQuote",
+                "bold",
                 // 'imageUpload',
-                'link',
-                'heading',
-                'indent',
-                'outdent',
-                'italic',
-                'numberedList',
-                'bulletedList',
-                'insertTable',
-                'redo',
-                'undo',
-                'fontSize',
-                'fontFamily',
-                'fontColor',
-                'fontBackgroundColor',
+                "link",
+                "heading",
+                "indent",
+                "outdent",
+                "italic",
+                "numberedList",
+                "bulletedList",
+                "insertTable",
+                "redo",
+                "undo",
+                "fontSize",
+                "fontFamily",
+                "fontColor",
+                "fontBackgroundColor",
                 // 'imageInsert'
-              ]
+              ],
             },
-            extraPlugins:[
-              MyCustomUploadAdapterPlugin
-            ],
+            extraPlugins: [MyCustomUploadAdapterPlugin],
             // plugins:[
             //   Timestamp,
             // ],
             simpleUpload: {
-                            // The URL that the images are uploaded to.
-              uploadUrl: 'http://google.com',
+              // The URL that the images are uploaded to.
+              uploadUrl: "http://google.com",
 
               // Enable the XMLHttpRequest.withCredentials property.
               withCredentials: true,
 
               // Headers sent along with the XMLHttpRequest to the upload server.
               headers: {
-                  'X-CSRF-TOKEN': 'CSRF-Token',
-                  Authorization: 'Bearer <JSON Web Token>'
-              }
-            }
+                "X-CSRF-TOKEN": "CSRF-Token",
+                Authorization: "Bearer <JSON Web Token>",
+              },
+            },
           }}
         />
       ) : (

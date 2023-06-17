@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/router";
+import { postData, verifyToken } from "@/hooks/fetching";
 
 export const initialState = {
   user: null,
@@ -32,6 +33,7 @@ function authReducer(state: any, action: any) {
 const AuthProvider = (props: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const router = useRouter();
+  const send = verifyToken("/auth/refresh");
   useEffect(() => {
     console.log("authprovider ueseees");
     if (typeof window !== "undefined") {
@@ -42,7 +44,18 @@ const AuthProvider = (props: any) => {
 
           if (decodedToken?.exp * 1000 < Date.now()) {
             console.log("token expired");
-            localStorage.removeItem("token");
+
+            send
+              .trigger(JSON.stringify({ access_token: token }))
+              .then((token) => {
+                if (token) {
+                  localStorage.setItem("token", token);
+                  login(token);
+                  return;
+                }
+
+                router.push("/auth");
+              });
           } else {
             login(token);
           }
@@ -56,8 +69,10 @@ const AuthProvider = (props: any) => {
     }
   }, []);
 
-  function login(token: string) {
+  function login(token: string, refreshToken?: string) {
     localStorage.setItem("token", token);
+
+    if (refreshToken) localStorage.setItem("refresh", refreshToken);
 
     dispatch({
       type: "LOGIN",
@@ -79,6 +94,7 @@ const AuthProvider = (props: any) => {
 
   function logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
     dispatch({ type: "LOGOUT" });
     router.push("/auth");
   }

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { Group } from 'src/db/entities';
+import { Group } from './entities/group.entity';
 
 @Controller('groups')
 export class GroupController {

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ExerciseService } from './exercise.service';
-import { Exercise } from 'src/db/entities';
+import { Exercise } from './entities/exercise.entity';
 
 @Controller('exercises')
 export class ExerciseController {
@@ -11,11 +11,6 @@ export class ExerciseController {
     console.log(id, exercise);
     return this.exerciseService.create(id, exercise);
   }
-
-  // @Get(':id')
-  // findAll(@Param('id') id: number) {
-  //   return this.exerciseService.findByThemeId(id);
-  // }
 
   @Get(':id')
   findOne(@Param('id') id: number) {

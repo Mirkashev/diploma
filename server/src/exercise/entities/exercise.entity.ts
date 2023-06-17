@@ -1,6 +1,10 @@
+import { ExResult } from 'src/exResult/entities/ex-result.entity';
+import { Result } from 'src/result/entities/result.entity';
 import { Topic } from 'src/topic/entities/topic.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -11,6 +15,7 @@ import {
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 
@@ -27,11 +32,14 @@ export class Exercise {
   // @Index()
   description!: string;
 
-  // @Column('timestamptz', {
-  //   default: () => 'CURRENT_TIMESTAMP',
-  // })
-  // @Index()
-  // createdAt!: Dayjs;
+  @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+  updatedAt!: Date;
+
+  @DeleteDateColumn({type: "timestamp"})
+  deletedAt?: Date;
 
   @ManyToOne(()=> Topic, x=> x.exercises, {onDelete: 'CASCADE'})
   topic!: Topic; 
@@ -41,6 +49,9 @@ export class Exercise {
  
   @Column('text', {default:''})
   content?: string;
+
+  @OneToMany(()=> ExResult, x=> x.exercise, {cascade:true})
+  results: ExResult;
 
   // @OneToMany(()=> ExerciseElCoordinates, x=> x.exercise, { cascade: true })
   // exerciseElCoordinates!: ExerciseElCoordinates; 
