@@ -3,8 +3,11 @@ import { Menu } from "semantic-ui-react";
 const TabsNavComponent = ({ children, links, rightNames }: any) => {
   console.log(rightNames);
   return (
-    <div>
-      <Menu tabular style={{ boxShadow: "none", borderRadius: 0 }}>
+    <div style={{ width: "100%", alignItems: "flex-end", display: "flex" }}>
+      <Menu
+        tabular
+        style={{ boxShadow: "none", borderRadius: 0, width: "100%" }}
+      >
         {links?.map((item: any) => (
           <Menu.Item key={item.key} onClick={item.onClick} active={item.active}>
             {item.name}

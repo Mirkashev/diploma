@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { AuthContext, AuthProvider } from "../../context/auth";
+import { AuthContext } from "../../context/auth";
 import Nav from "@/components/common/nav/top-layer1";
 import buttons from "./page.layout.constants";
 import { Container } from "semantic-ui-react";
 import SideNav from "@/components/common/nav/sideNav";
 import { TitlesProvider } from "@/context/titles";
 
-const Page = ({ title, children, tabs }: any) => {
+const Page = ({ title, children }: any) => {
   const router = useRouter();
   const { user }: any = useContext(AuthContext);
 
@@ -51,8 +51,6 @@ const Page = ({ title, children, tabs }: any) => {
           <SideNav links={buttons?.[user?.role]}>{children}</SideNav>
         </TitlesProvider>
       </Container>
-
-      {/* <div style={{ marginTop: "60px", width: "100%", height: "20px" }}></div> */}
     </>
   );
 };
