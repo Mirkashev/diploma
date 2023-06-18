@@ -31,11 +31,6 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
       refresh_token: await this.jwtService.signAsync({refresh: true }, {expiresIn: dayjs().add(15, 'day').unix()})
     };
-
-    // console.log("AUTH.OK", user.);
-    // send JWT
-    // const user = this
-    // return this.usersService.create(user);
   }
 
   async verify(token: string) {
@@ -55,8 +50,6 @@ export class AuthService {
     if(!user) {
       throw new UnauthorizedException();
     }
-
-    // payload.expiresIn = date now + 60s
 
     return {
       access_token: await this.jwtService.signAsync({ login: user.login, sub: user.id, role: user.role }),

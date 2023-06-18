@@ -14,6 +14,8 @@ import {
 } from "semantic-ui-react";
 import { mutate } from "swr";
 import TabsNavComponent from "../common/nav/tabs";
+import TableContainerComponent from "../common/table/tableContainer";
+import TableHeaderComponent from "../common/table/tableHeader";
 // import AddGroupModal from '@/components/common/modal'
 
 function AddToGroupModal() {
@@ -50,7 +52,7 @@ function AddToGroupModal() {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button icon="plus" style={{ marginLeft: 5 }} />}
+      trigger={<Icon name="plus" />}
       size="mini"
     >
       <Form style={{ padding: "20px" }} onSubmit={submit}>
@@ -109,15 +111,31 @@ const GroupComponent = () => {
         },
       ]}
     >
-      <Table celled>
+      <TableContainerComponent>
         <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell style={{ display: "flex" }}>
+              <span style={{ marginRight: "4px" }}>
+                Список пользователей группы:{" "}
+              </span>{" "}
+              <AddToGroupModal />
+            </Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
           <Table.Row>
             <Table.HeaderCell>Логин</Table.HeaderCell>
             <Table.HeaderCell>Фамиля</Table.HeaderCell>
             <Table.HeaderCell>Имя</Table.HeaderCell>
-            <Table.HeaderCell>Отчество</Table.HeaderCell>
-            <Table.HeaderCell style={{ width: "5%", padding: 0 }}>
-              <AddToGroupModal />
+            <Table.HeaderCell
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              Отчество
             </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -133,10 +151,10 @@ const GroupComponent = () => {
               <Table.Cell>
                 <span>{el?.firstName || "Не указана"}</span>
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
                 <span>{el?.lastName || "Не указана"}</span>
-              </Table.Cell>
-              <Table.Cell style={{ display: "flex", justifyContent: "center" }}>
                 <Icon
                   style={{ cursor: "pointer" }}
                   onClick={() => removeFromGroup(el)}
@@ -146,7 +164,7 @@ const GroupComponent = () => {
             </Table.Row>
           ))}
         </Table.Body>
-      </Table>
+      </TableContainerComponent>
     </TabsNavComponent>
   );
 };

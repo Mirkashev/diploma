@@ -3,7 +3,14 @@ import { Menu } from "semantic-ui-react";
 const TabsNavComponent = ({ children, links, rightNames }: any) => {
   console.log(rightNames);
   return (
-    <div style={{ width: "100%", alignItems: "flex-end", display: "flex" }}>
+    <div
+      style={{
+        width: "100%",
+        alignItems: "flex-end",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Menu
         tabular
         style={{ boxShadow: "none", borderRadius: 0, width: "100%" }}
