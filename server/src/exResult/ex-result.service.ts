@@ -19,7 +19,7 @@ export class ExResultService {
   }
 
   async findAll() {
-    return await this.repo.find({relations:['test.topic', 'user.group']});
+    return await this.repo.find({relations:['exercise.topic', 'user.group']});
   }
 
   async findOne(id: number) {

@@ -1,10 +1,8 @@
-import { Button, Icon, Table } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import EditUserModal from "@/components/common/modal/user/";
 import DeleteComponent from "../../deleteButton";
-import Link from "next/link";
 import AddUserModal from "@/components/common/modal/user/";
 import TableContainerComponent from "../tableContainer";
-import TableHeaderComponent from "../tableHeader";
 
 export default function UsersTable({ array, pathname, route }: any) {
   return (

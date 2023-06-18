@@ -1,4 +1,3 @@
-// import { Dayjs } from 'dayjs';
 import { Group } from 'src/group/entities/group.entity';
 import { Result } from 'src/result/entities/result.entity';
 import {
@@ -7,16 +6,13 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
-  JoinTable,
-  ManyToMany,
+
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
+
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-// import { Group } from './group.entity';
-// import { Result } from './result.entity';
 
 @Entity('users')
 export class User {
@@ -45,7 +41,7 @@ export class User {
 
   @ManyToOne(()=> Group, x=> x.users, {cascade:true})
   group?: Group;
-  // возможно тут возникнут проблемы
+
   @Column({ nullable:true})
   groupId?: number | null;
 
