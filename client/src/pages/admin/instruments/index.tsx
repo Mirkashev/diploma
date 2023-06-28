@@ -1,60 +1,71 @@
 import DeleteComponent from "@/components/common/deleteButton";
-import { useGetData } from "@/hooks/fetching"
+import { useGetData } from "@/hooks/fetching";
 import Page from "@/layouts/page";
 import { Container, Icon, Table } from "semantic-ui-react";
 import EditInstrumentModal from "@/components/common/modal/instrument/index";
 
-
-export default function InstrumentPage(){
-  const { data, isLoading, isError } = useGetData('/instruments');
+export default function InstrumentPage() {
+  const { data, isLoading, isError } = useGetData("/instruments");
   console.log(data);
 
-  if(isLoading) return <div>...Loading</div>;
+  if (isLoading) return <div>...Loading</div>;
 
-  if(isError) return <div>There is some error, try to update page</div>
+  if (isError) return <div>There is some error, try to update page</div>;
 
   return (
-    <Page title='Инструменты'>
-      <Container as='main' style={{
-        flexGrow: 1,
-        maxWidth: '720px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        marginTop: '72px',
-        position: 'relative'
-      }}>
-        <Table celled> 
+    <Page title="Инструменты">
+      <Container
+        as="main"
+        style={{
+          flexGrow: 1,
+          maxWidth: "720px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          marginTop: "72px",
+          position: "relative",
+        }}
+      >
+        <Table celled>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Название</Table.HeaderCell>
-              <Table.HeaderCell style={{width:'5%'}}>Настройки</Table.HeaderCell>
+              <Table.HeaderCell style={{ width: "5%" }}>
+                Настройки
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-            <Table.Body>
-            {data?.map((el:any, i:number) => 
+          <Table.Body>
+            {data?.map((el: any, i: number) => (
               <Table.Row key={el.title + i}>
-                <Table.Cell>
-                  {el.title}
-                </Table.Cell>
-                <Table.Cell style={{display:'flex', justifyContent: 'space-between'}}>
-                  <EditInstrumentModal 
-                    route={'/instruments/'+el.id} 
-                    getRoute={'/instruments/'+el.id}
-                    mutateRoute={'/instruments'}
-                    method='PATCH' 
-                    modalType='instrument' 
+                <Table.Cell>{el.title}</Table.Cell>
+                <Table.Cell
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <EditInstrumentModal
+                    route={"/instruments/" + el.id}
+                    getRoute={"/instruments/" + el.id}
+                    mutateRoute={"/instruments"}
+                    method="PATCH"
+                    modalType="instrument"
                     instrument={el}
-                    triggerNode={<Icon style={{cursor:'pointer'}} name='pencil alternate' />}
+                    triggerNode={
+                      <Icon
+                        style={{ cursor: "pointer" }}
+                        name="pencil alternate"
+                      />
+                    }
                   />
-                  <DeleteComponent route={'/instruments/'+el.id} mutateRoute={'/instruments'}/>
+                  <DeleteComponent
+                    route={"/instruments/" + el.id}
+                    mutateRoute={"/instruments"}
+                  />
                 </Table.Cell>
-              </Table.Row>)}
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       </Container>
     </Page>
-
-
-  )
+  );
 }

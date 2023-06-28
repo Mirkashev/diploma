@@ -2,29 +2,13 @@ import React, { useContext, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { AuthContext } from "../../context/auth";
-import Nav from "@/components/common/nav/top-layer1";
+import Nav from "@/components/common/nav/top";
 import buttons from "./page.layout.constants";
 import { Container } from "semantic-ui-react";
-import SideNav from "@/components/common/nav/sideNav";
+import SideNav from "@/components/common/nav/side";
 import { TitlesProvider } from "@/context/titles";
 
-const Page = ({ title, children }: any) => {
-  const router = useRouter();
-  const { user }: any = useContext(AuthContext);
-
-  useEffect(() => {
-    if (
-      user != undefined &&
-      router.isReady &&
-      !!router.pathname.match("/admin") &&
-      user?.role !== "admin"
-    ) {
-      router.push("/user/topics");
-    }
-  }, [user?.role]);
-
-  if (!user?.role) return <div>...loading</div>;
-
+const Page = ({ title, children, user }: any) => {
   return (
     <>
       <Head>

@@ -1,6 +1,7 @@
 import { Button, Menu } from "semantic-ui-react";
 import * as FileSaver from "file-saver";
 import XLSX from "sheetjs-style";
+import ComponentButton from "../button";
 
 const ExportToExcel = ({ apiData, fileName, statsType }: any) => {
   const dataToJson = (apiData: any) => {
@@ -40,13 +41,11 @@ const ExportToExcel = ({ apiData, fileName, statsType }: any) => {
   };
 
   return (
-    <Button
-      name="export"
-      style={{ cursor: "pointer" }}
+    <ComponentButton
       onClick={(e) => exportToCSV(dataToJson(apiData), fileName)}
     >
       Выгрузить таблицу
-    </Button>
+    </ComponentButton>
   );
 };
 
