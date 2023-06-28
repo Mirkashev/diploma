@@ -1,25 +1,11 @@
-import {
-  Form,
-  Input,
-  Button,
-  Container,
-  Icon,
-  Menu,
-  Popup,
-  Table,
-} from "semantic-ui-react";
+import { Table } from "semantic-ui-react";
 import Link from "next/link";
 import { TopicsInterface } from "../interfaces";
-import TableContainerComponent from "@/components/common/table/tableContainer";
-import TableHeaderComponent from "@/components/common/table/tableHeader";
-import TableRowMonolitComponent from "@/components/common/table/tableRowTitle";
+import ComponentCustomTable from "@/components/common/table/customTable";
 
 export default function TopicsComponent({ topics }: TopicsInterface) {
   return (
-    <TableContainerComponent>
-      <TableHeaderComponent>
-        <Table.HeaderCell>Список тем:</Table.HeaderCell>
-      </TableHeaderComponent>
+    <ComponentCustomTable headerArray={["Список тем:"]}>
       <Table.Body>
         {topics?.map((el, i) => (
           <Table.Row key={el.id}>
@@ -34,6 +20,6 @@ export default function TopicsComponent({ topics }: TopicsInterface) {
           </Table.Row>
         ))}
       </Table.Body>
-    </TableContainerComponent>
+    </ComponentCustomTable>
   );
 }

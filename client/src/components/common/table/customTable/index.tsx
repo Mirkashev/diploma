@@ -31,7 +31,14 @@ const ComponentCustomTable = ({ children, headerArray }: ICustomTable) => {
       }}
     >
       <Table celled style={{ border: "none", borderRadius: 0 }}>
-        <Table.Header>{headerRows}</Table.Header>
+        <Table.Header
+          style={{
+            position: "sticky",
+            top: "0px",
+          }}
+        >
+          {headerRows}
+        </Table.Header>
         {children}
       </Table>
     </div>

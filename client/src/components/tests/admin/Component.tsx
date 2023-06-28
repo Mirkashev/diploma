@@ -1,38 +1,56 @@
 import { ChapterTestsInterface } from "../../interfaces";
-import { Button, Icon, Table } from "semantic-ui-react";
+import { Icon, Table } from "semantic-ui-react";
 import TitleModal from "@/components/common/modal/titleNew";
 import TopicsTabs from "@/components/common/nav/tabs/topicsTabs";
-import TableContainerComponent from "@/components/common/table/tableContainer";
-import TableHeaderComponent from "@/components/common/table/tableHeader";
-import TableRowTitleComponent from "@/components/common/table/tableRowTitle";
-import TableHeaderTitleComponent from "@/components/common/table/tableHeaderTitle";
+import ComponentCustomTable from "@/components/common/table/customTable";
+import Link from "next/link";
+import RowSettings from "@/components/common/table/rowSettings";
 
-const AdminTestComponent = ({
-  themeId,
-  tests,
-  title,
-}: ChapterTestsInterface) => {
+const AdminTestComponent = ({ themeId, tests }: ChapterTestsInterface) => {
   return (
     <>
       <TopicsTabs>
-        <TableContainerComponent>
-          <TableHeaderTitleComponent
-            title={"Список тестов:"}
-            route={"/tests/" + themeId}
-            mutateRoute={"/topics/" + themeId}
-          />
+        <ComponentCustomTable
+          headerArray={[
+            <>
+              <span style={{ display: "inline-block", marginRight: "4px" }}>
+                Список тестов:
+              </span>
+              <TitleModal
+                method="POST"
+                route={"/tests/" + themeId}
+                mutateRoute={"/topics/" + themeId}
+                triggerNode={<Icon name="plus" style={{ cursor: "pointer" }} />}
+              />
+            </>,
+          ]}
+        >
           <Table.Body>
             {tests?.map((el, i) => (
-              <TableRowTitleComponent
-                key={el.id}
-                route={"/tests/" + el.id}
-                mutateRoute={"/topics/" + themeId}
-                title={el.title}
-                pathname={`/admin/topics/${themeId}/tests/${el.id}`}
-              />
+              <Table.Row key={el.id}>
+                <Table.Cell style={{ display: "flex", padding: 0 }}>
+                  <Link
+                    href={{
+                      pathname: `/admin/topics/${themeId}/tests/${el.id}`,
+                    }}
+                    style={{
+                      display: "block",
+                      width: "93%",
+                      padding: 10,
+                    }}
+                  >
+                    {el.title}
+                  </Link>
+                  <RowSettings
+                    route={"/tests/" + el.id}
+                    mutateRoute={"/topics/" + themeId}
+                    title={el.title}
+                  />
+                </Table.Cell>
+              </Table.Row>
             ))}
           </Table.Body>
-        </TableContainerComponent>
+        </ComponentCustomTable>
       </TopicsTabs>
     </>
   );
